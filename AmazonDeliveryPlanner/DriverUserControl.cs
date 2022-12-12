@@ -6,10 +6,12 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AmazonDeliveryPlanner
 {
@@ -19,8 +21,8 @@ namespace AmazonDeliveryPlanner
 
         API.data.DriverRouteEntity driverRouteEntity;
 
-        string plan_note = null;
-        string op_note = null;
+        //string plan_note = null;
+        //string op_note = null;
 
         public event EventHandler/*<SessionClosedEventArgs>*/ SessionClosed;
         public event EventHandler<OpenURLEventArgs> OpenURL;
@@ -36,7 +38,7 @@ namespace AmazonDeliveryPlanner
 
         private void DriverUserControl_Load(object sender, EventArgs e)
         {
-            savedIdLabel.Text = "not saved";
+            //savedIdLabel.Text = "not saved";
 
             locationLabel.Text = driver.more_info.address.Length > 55 ? driver.more_info.address.Substring(0, 55) + "..." : driver.more_info.address;
             odometerLabel.Text = driver.more_info.km.ToString() + " km";
@@ -46,31 +48,33 @@ namespace AmazonDeliveryPlanner
 
             testLabel.Text = string.Format("{0}  {1} {2}  {3}", driver.driver_id, driver.first_name, driver.last_name, driver.group_name);
 
-            dayRadioButton.Checked = true;
+            fileDownloadedLabel.Text = "";
+            //dayRadioButton.Checked = true;
         }
 
+        /*
         private void saveButton_Click(object sender, EventArgs e)
         {
             try
             {
                 // MessageBox.Show("Not implemented", GlobalContext.ApplicationTitle);
 
-                string plan_note = this.plan_note; // (driverRouteEntity != null ? driverRouteEntity.plan_note : null);
-                string op_note = this.op_note; // (driverRouteEntity != null ? driverRouteEntity.op_note : null);
+                //string plan_note = this.plan_note; // (driverRouteEntity != null ? driverRouteEntity.plan_note : null);
+                //string op_note = this.op_note; // (driverRouteEntity != null ? driverRouteEntity.op_note : null);
                 long? id = (driverRouteEntity != null ? driverRouteEntity.id : null);
 
                 driverRouteEntity = DriversAPI.PostRoute(new API.data.DriverRouteEntity()
                 {
                     id = id,
                     driver_id = driver.driver_id,
-                    vrid = vridTextBox.Text,
-                    loc1 = location1TextBox.Text,
-                    loc2 = location2TextBox.Text,
-                    loc3 = location3TextBox.Text,
-                    pick_up_date = dateTimePicker.Value,
-                    plan_note = plan_note,
-                    op_note = op_note,
-                    shift = dayRadioButton.Checked ? 'D' : 'N',
+                    //vrid = vridTextBox.Text,
+                    //loc1 = location1TextBox.Text,
+                    //loc2 = location2TextBox.Text,
+                    //loc3 = location3TextBox.Text,
+                    //pick_up_date = dateTimePicker.Value,
+                    //plan_note = plan_note,
+                    //op_note = op_note,
+                    //shift = dayRadioButton.Checked ? 'D' : 'N',
                 });//.Result;
 
                 if (driverRouteEntity.id == null)
@@ -112,7 +116,7 @@ namespace AmazonDeliveryPlanner
                 op_note = eonForm.OpNotes;
             // driverRouteEntity.op_note = eonForm.OpNotes;
         }
-
+        */
         private void closeButton_Click(object sender, EventArgs e)
         {
             if (SessionClosed != null)
@@ -125,6 +129,39 @@ namespace AmazonDeliveryPlanner
 
             // System.Diagnostics.Process.Start(gmURL);
             this.OpenURL(this, new OpenURLEventArgs(gmURL, this));
+        }
+
+        private void addBrowserTabButton_Click(object sender, EventArgs e)
+        {
+            this.OpenURL(this, new OpenURLEventArgs("", this));
+        }
+
+        Timer t;
+
+        public void UpdateUploadLabel(string text)
+        {
+            fileDownloadedLabel.Text = text;
+
+            if (t != null)
+            {
+                t.Enabled = false;
+                t.Dispose();
+                t = null;
+            }
+
+            t = new Timer();
+
+            t.Interval = 14000;
+            t.Tick += T_Tick;
+            t.Enabled = true;            
+        }
+
+        private void T_Tick(object sender, EventArgs e)
+        {
+            (sender as Timer).Enabled = false;
+            t = null;
+
+            fileDownloadedLabel.Text = "";
         }
     }
 

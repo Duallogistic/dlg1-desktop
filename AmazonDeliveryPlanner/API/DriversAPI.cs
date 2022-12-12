@@ -60,8 +60,13 @@ namespace AmazonDeliveryPlanner.API
         {
             using (WebClient wc = new WebClient())
             {
-                var jsonResponse = wc.DownloadString(Settings.Default.ApiGetEndPoint);
+                string getDriversURL = GlobalContext.SerializedConfiguration.ApiBaseURL + "/auth2/external/drivers";
 
+                GlobalContext.Log("Getting drivers from  '{0}'", getDriversURL);
+
+                var jsonResponse = wc.DownloadString(getDriversURL);
+
+                
                 DriverList driverList = JsonConvert.DeserializeObject<DriverList>(jsonResponse);
 
                 return driverList;
@@ -100,7 +105,9 @@ namespace AmazonDeliveryPlanner.API
 
                 // HttpResponseMessage response = await client.PostAsync(Settings.Default.ApiPostEndPoint, content);
 
-                using (HttpResponseMessage response = /*await */client.PostAsync(Settings.Default.ApiPostEndPoint, content).Result)
+                throw new Exception("undefined api endpoint");
+
+                using (HttpResponseMessage response = /*await */client.PostAsync("", content).Result)
                 {
                     response.EnsureSuccessStatusCode();
                     

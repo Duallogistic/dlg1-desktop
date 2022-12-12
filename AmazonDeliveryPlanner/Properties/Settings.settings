@@ -2,11 +2,5 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="AmazonDeliveryPlanner.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ApiGetEndPoint" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://srv.dlg1.app/api/auth2/external/drivers</Value>
-    </Setting>
-    <Setting Name="ApiPostEndPoint" Type="System.String" Scope="User">
-      <Value Profile="(Default)">https://qa-srv.dlg1.app/api/auth2/external/save</Value>
-    </Setting>
   </Settings>
 </SettingsFile>

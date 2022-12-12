@@ -1,0 +1,12 @@
+{
+  "admin_url": "https://admin.dlg1.app",
+  "default_tabs": [
+    "https://relay.amazon.com/",
+    "http://google.com"
+  ],
+  "api_base_url": "https://srv.dlg1.app/api/v1",
+  "relay_credentials_email": null,
+  "relay_credentials_pass": null,
+  "admin_credentials_email": null,
+  "admin_credentials_pass": null
+}

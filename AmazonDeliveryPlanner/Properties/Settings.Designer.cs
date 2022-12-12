@@ -22,29 +22,5 @@ namespace AmazonDeliveryPlanner.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://srv.dlg1.app/api/auth2/external/drivers")]
-        public string ApiGetEndPoint {
-            get {
-                return ((string)(this["ApiGetEndPoint"]));
-            }
-            set {
-                this["ApiGetEndPoint"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("https://qa-srv.dlg1.app/api/auth2/external/save")]
-        public string ApiPostEndPoint {
-            get {
-                return ((string)(this["ApiPostEndPoint"]));
-            }
-            set {
-                this["ApiPostEndPoint"] = value;
-            }
-        }
     }
 }

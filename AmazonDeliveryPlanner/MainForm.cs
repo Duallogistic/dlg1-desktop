@@ -17,11 +17,19 @@ using AmazonDeliveryPlanner.API;
 using System.Net;
 using System.Security.Policy;
 using static System.Net.WebRequestMethods;
+using Newtonsoft.Json;
+using File = System.IO.File;
+using System.Threading;
+using CefSharp.Handler;
+using System.Runtime.InteropServices;
 
 namespace AmazonDeliveryPlanner
 {
     public partial class MainForm : Form
     {
+        ChromiumWebBrowser adminBrowser;
+        static string configurationFilePath;
+
         public MainForm()
         {
             InitializeComponent();
@@ -33,6 +41,7 @@ namespace AmazonDeliveryPlanner
             try
             {
                 Init();
+                InitAdminBrowser();
             }
             catch (Exception ex)
             {
@@ -66,12 +75,14 @@ namespace AmazonDeliveryPlanner
 
             string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs\\c1");
 
-            if (!Directory.Exists(cachePath))
-                Directory.CreateDirectory(cachePath);
+            cachePath = "";
+
+            //if (!Directory.Exists(cachePath))
+            //    Directory.CreateDirectory(cachePath);
 
             CefSettings cfsettings = new CefSettings();
 
-            cfsettings.UserAgent = GlobalContext.UserAgent;
+            // cfsettings.UserAgent = GlobalContext.UserAgent;
             // cfsettings.CachePath = cachePath;
 
             // set this to LogSeverity.Disable to avoid logging to 'debug.log' file and generating a big file
@@ -83,16 +94,52 @@ namespace AmazonDeliveryPlanner
 
             // GlobalContext.GlobalCefSettings = cfsettings;
 
-            GlobalContext.Log("Proces CEF initializat; cachePath={0}", cachePath);
+            GlobalContext.Log("Proces CEF initializat", cachePath);
+            // GlobalContext.Log("Proces CEF initializat; cachePath={0}", cachePath);
             //browser.BrowserSettings.ApplicationCache = CefSharp.CefState.Disabled;
             //Cef.Initialize(cfsettings);
 
             // GlobalContext.ShowDevTools = false;
-
         }
 
         void Init()
         {
+            try
+            {
+                if (!Directory.Exists(GetFileStoragePath()))
+                    Directory.CreateDirectory(GetFileStoragePath());
+            }
+            catch (Exception)
+            {
+            }
+
+            //settingsFilePath = Utilities.GetApplicationPath() + Path.DirectorySeparatorChar + GlobalContext.OptionsFile;
+            //settingsFilePath = Utilities.GetUserApplicationPath() + Path.DirectorySeparatorChar + GlobalContext.OptionsFile;
+            configurationFilePath = GetFileStoragePath() + Path.DirectorySeparatorChar + GlobalContext.ConfigurationFileName;
+
+            if (File.Exists(configurationFilePath))
+                LoadConfiguration();
+                // GlobalContext.SerializedConfiguration = (SerializedConfiguration)Utilities.LoadXML(configurationFilePath, typeof(SerializedConfiguration));
+            else
+            {
+                // SerializedConfiguration conf = SerializedConfiguration.GetDefaultOptions();
+                SerializedConfiguration conf = new SerializedConfiguration();
+
+                GlobalContext.SerializedConfiguration = conf;
+
+                SaveConfiguration();
+                // Utilities.SaveXML(configurationFilePath, GlobalContext.SerializedConfiguration);
+            }
+
+            try
+            {
+                if (!Directory.Exists(GlobalContext.SerializedConfiguration.DownloadDirectoryPath))
+                    Directory.CreateDirectory(GlobalContext.SerializedConfiguration.DownloadDirectoryPath);
+            }
+            catch (Exception)
+            {
+            }
+
             // using System.Net;
             ServicePointManager.Expect100Continue = true;
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
@@ -107,16 +154,19 @@ namespace AmazonDeliveryPlanner
 
             // InitBrowser();
 
-            GlobalContext.Urls = new List<string>();
+            //GlobalContext.Urls = new List<string>();
 
-            // test
-            GlobalContext.Urls = new List<string>()
-            {
-                "https://relay.amazon.com/",
-                "http://localhost",
-                // "http://localhost/test_cookie/test_set_cookie.php",
-                // "http://localhost/test_cookie/test_show_cookie.php"
-            };
+            //// test
+            //GlobalContext.Urls = new List<string>()
+            //{
+            //    "https://relay.amazon.com/",
+            //    // "http://localhost",
+            //    // "http://localhost/test_cookie/test_set_cookie.php",
+            //    // "http://localhost/test_cookie/test_show_cookie.php"
+            //};
+
+            if (!GlobalContext.SerializedConfiguration.Debug)
+                mainTabControl.TabPages.Remove(loggingTabPage);
         }
 
         #region logging
@@ -153,7 +203,7 @@ namespace AmazonDeliveryPlanner
         }
 
         public void Output(string text)
-        {/*
+        {
             if (this.logTextBox.InvokeRequired)
             {
                 SetTextCallback stc = new SetTextCallback(Output);
@@ -168,67 +218,69 @@ namespace AmazonDeliveryPlanner
             }
             else
             {
-                try
+                if (GlobalContext.SerializedConfiguration.Debug)
                 {
-                    //if (text == "x")
-                    //{
-                    //    UpdateProgress();
-                    //    return;
-                    //}
-
-                    if (autoScrollCheckBox.Checked)
+                    try
                     {
-                        bool bottomFlag = false;
-                        int VSmin;
-                        int VSmax;
-                        int sbOffset;
-                        int savedVpos;
+                        //if (text == "x")
+                        //{
+                        //    UpdateProgress();
+                        //    return;
+                        //}
 
-                        // Win32 magic to keep the textbox scrolling to the newest append to the textbox unless
-                        // the user has moved the scrollbox up
-                        sbOffset = (int)((this.logTextBox.ClientSize.Height - SystemInformation.HorizontalScrollBarHeight) / (this.logTextBox.Font.Height));
-                        savedVpos = GetScrollPos(this.logTextBox.Handle, SB_VERT);
-                        GetScrollRange(this.logTextBox.Handle, SB_VERT, out VSmin, out VSmax);
-                        if (savedVpos >= (VSmax - sbOffset - 1))
-                            bottomFlag = true;
-
-                        this.logTextBox.AppendText("[" + DateTime.Now.ToString("dd HH:mm:ss.fff") + "] " + text + "\r\n");
-
-                        if (bottomFlag)
+                        if (autoScrollCheckBox.Checked)
                         {
+                            bool bottomFlag = false;
+                            int VSmin;
+                            int VSmax;
+                            int sbOffset;
+                            int savedVpos;
+
+                            // Win32 magic to keep the textbox scrolling to the newest append to the textbox unless
+                            // the user has moved the scrollbox up
+                            sbOffset = (int)((this.logTextBox.ClientSize.Height - SystemInformation.HorizontalScrollBarHeight) / (this.logTextBox.Font.Height));
+                            savedVpos = GetScrollPos(this.logTextBox.Handle, SB_VERT);
                             GetScrollRange(this.logTextBox.Handle, SB_VERT, out VSmin, out VSmax);
-                            savedVpos = VSmax - sbOffset;
-                            bottomFlag = false;
+                            if (savedVpos >= (VSmax - sbOffset - 1))
+                                bottomFlag = true;
+
+                            this.logTextBox.AppendText("[" + DateTime.Now.ToString("dd HH:mm:ss.fff") + "] " + text + "\r\n");
+
+                            if (bottomFlag)
+                            {
+                                GetScrollRange(this.logTextBox.Handle, SB_VERT, out VSmin, out VSmax);
+                                savedVpos = VSmax - sbOffset;
+                                bottomFlag = false;
+                            }
+
+                            SetScrollPos(this.logTextBox.Handle, SB_VERT, savedVpos, true);
+                            PostMessageA(this.logTextBox.Handle, WM_VSCROLL, SB_THUMBPOSITION + 0x10000 * savedVpos, 0);
                         }
+                        else
+                            logTextBox.AppendText("[" + DateTime.Now.ToString("dd HH:mm:ss.fff") + "] " + text + "\r\n");
 
-                        SetScrollPos(this.logTextBox.Handle, SB_VERT, savedVpos, true);
-                        PostMessageA(this.logTextBox.Handle, WM_VSCROLL, SB_THUMBPOSITION + 0x10000 * savedVpos, 0);
+
+                        //if (autoScrollCheckBox.Checked)
+                        //{
+                        //    logTextBox.Select()
+                        //    logTextBox.SelectionStart = logTextBox.Text.Length;
+                        //    logTextBox.ScrollToCaret();
+                        //}
+
+                        if (logCounter++ > 9000)
+                        {
+                            logTextBox.Clear();
+                            logCounter = 0;
+                        }
                     }
-                    else
-                        logTextBox.AppendText("[" + DateTime.Now.ToString("dd HH:mm:ss.fff") + "] " + text + "\r\n");
-
-
-                    //if (autoScrollCheckBox.Checked)
-                    //{
-                    //    logTextBox.Select()
-                    //    logTextBox.SelectionStart = logTextBox.Text.Length;
-                    //    logTextBox.ScrollToCaret();
-                    //}
-
-                    if (logCounter++ > 9000)
+                    catch (ObjectDisposedException //ex
+                )
                     {
-                        logTextBox.Clear();
-                        logCounter = 0;
-                    }
-                }
-                catch (ObjectDisposedException //ex
-            )
-                {
 
+                    }
                 }
         }
-
-            */
+            
         }
 
         #endregion
@@ -247,7 +299,7 @@ namespace AmazonDeliveryPlanner
 
             foreach (TabPage page in tabControl.TabPages)
             {
-                if ((long)page.Tag == selectedDriver.driver_id)
+                if (((DriverSessionObject)page.Tag).DriverId == selectedDriver.driver_id)
                 { 
                     tabControl.SelectedTab = page;
                     return;
@@ -268,7 +320,11 @@ namespace AmazonDeliveryPlanner
             stp.Name = "PageSesiune" + sessionCount;
             stp.Text = "Sesiune " + selectedDriver.ToString();
 
-            stp.Tag = selectedDriver.driver_id; // the object changes on resfreshing data from server as new objects are created for the same entity
+            DriverSessionObject driverSessionObject = new DriverSessionObject() { 
+                DriverId = selectedDriver.driver_id                
+            };
+
+            stp.Tag = driverSessionObject; // the object changes on resfreshing data from server as new objects are created for the same entity
             // stp.Text = "Sesiune " + sessionCount;
             // tp.Tag = bUC;
 
@@ -330,7 +386,7 @@ namespace AmazonDeliveryPlanner
             requestContextSettings.PersistSessionCookies = !false;
             requestContextSettings.PersistUserPreferences = !false;
 
-            string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "TCSesiune" + sessionCount);
+            string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "TCSesiune_" + selectedDriver.driver_id); // "TCSesiune" + sessionCount
 
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
@@ -338,7 +394,7 @@ namespace AmazonDeliveryPlanner
             requestContextSettings.CachePath = cachePath;
 
             // if (false)
-            foreach (string url in GlobalContext.Urls)
+            foreach (string url in GlobalContext.SerializedConfiguration.DefaultTabs /*GlobalContext.Urls*/)
             {
                 TabPage urlTabPage = new System.Windows.Forms.TabPage();
 
@@ -358,10 +414,12 @@ namespace AmazonDeliveryPlanner
                 urlTabPage.Padding = new System.Windows.Forms.Padding(3);
                 urlTabPage.Size = new System.Drawing.Size(1071, 659 /*- driverUC.Height*/);
                 urlTabPage.TabIndex = 0;
-                urlTabPage.Text = url;
+                urlTabPage.Text = GetUrlTabPageName(url);
                 urlTabPage.UseVisualStyleBackColor = true;
 
                 // urlTabPage.BackColor = Color.Green;
+
+                driverSessionObject.ReqContextSettings = requestContextSettings;
 
                 BrowserUserControl bUC = new BrowserUserControl(url, requestContextSettings);
 
@@ -381,10 +439,14 @@ namespace AmazonDeliveryPlanner
                     // bpipbUC.Name = "x";
                     // this.tabControl1.Size = new System.Drawing.Size(852, 586);
                     bUC.TabIndex = 1;
+                    bUC.Close += BUC_Close;
 
                     bUC.ResumeLayout(!false);
 
                     bUC.PerformLayout();
+
+                    bUC.Tag = driverUC;
+                    bUC.FileUploadFinished += BUC_FileUploadFinished;
                 }
 
                 urlTabPage.ResumeLayout();
@@ -417,6 +479,20 @@ namespace AmazonDeliveryPlanner
             openTabDrivers[selectedDriver.driver_id] = true;
         }
 
+        private void BUC_FileUploadFinished(object sender, BrowserUserControl.FileUploadFinishedEventArgs e)
+        {
+            System.Action sa = (System.Action)(() =>
+            {
+                ((sender as BrowserUserControl).Tag as DriverUserControl).UpdateUploadLabel("uploaded file " + e.FileName);
+            });
+
+            if (this.InvokeRequired)
+                this.Invoke(sa);
+            else
+                sa();
+            
+        }
+
         private void DriverUC_OpenURL(object sender, OpenURLEventArgs e)
         {
             foreach (TabPage page in tabControl.TabPages)
@@ -427,6 +503,18 @@ namespace AmazonDeliveryPlanner
                         if (c is TabControl)
                         {
                             TabControl urlsTabControl = c as TabControl;
+
+
+                            #region GMaps open test
+                            bool isGMapsOpen = false;
+
+                            foreach (TabPage tp in urlsTabControl.TabPages) // 
+                                if ((tp.Tag as BrowserUserControl).Url.Contains("google.com/maps"))
+                                    isGMapsOpen = true;
+
+                            if (isGMapsOpen && e.URL.Contains("google.com/maps"))
+                                break; // if there's one tap page already open with the google maps location, don't open a second one
+                            #endregion
 
                             TabPage urlTabPage = new System.Windows.Forms.TabPage();
 
@@ -446,12 +534,12 @@ namespace AmazonDeliveryPlanner
                             urlTabPage.Padding = new System.Windows.Forms.Padding(3);
                             urlTabPage.Size = new System.Drawing.Size(1071, 659 /*- driverUC.Height*/);
                             urlTabPage.TabIndex = 0;
-                            urlTabPage.Text = e.URL.Substring(0, 20);
+                            urlTabPage.Text = GetUrlTabPageName(e.URL);
                             urlTabPage.UseVisualStyleBackColor = true;
 
                             // urlTabPage.BackColor = Color.Green;
-
-                            BrowserUserControl bUC = new BrowserUserControl(e.URL, null /*requestContextSettings*/);
+                            
+                            BrowserUserControl bUC = new BrowserUserControl(e.URL, ((DriverSessionObject)page.Tag).ReqContextSettings);
 
                             {
                                 // mfbUC.Cif = cif;
@@ -469,6 +557,7 @@ namespace AmazonDeliveryPlanner
                                 // bpipbUC.Name = "x";
                                 // this.tabControl1.Size = new System.Drawing.Size(852, 586);
                                 bUC.TabIndex = 1;
+                                bUC.Close += BUC_Close;
 
                                 bUC.ResumeLayout(!false);
 
@@ -476,11 +565,28 @@ namespace AmazonDeliveryPlanner
                             }
 
                             urlTabPage.ResumeLayout();
+
+                            urlsTabControl.SelectedTab = urlTabPage;
                         }
                 }
             }
         }
 
+        private void BUC_Close(object sender, EventArgs e)
+        {
+            foreach (TabPage page in tabControl.TabPages)
+            {
+                foreach (Control c in page.Controls)
+                    if (c is TabControl)
+                    {
+                        TabControl urlsTabControl = c as TabControl;
+
+                        foreach (TabPage tp in urlsTabControl.TabPages) // 
+                            if ((tp.Tag as BrowserUserControl) == sender)
+                                urlsTabControl.TabPages.Remove(tp);
+                    }
+            }
+        }
         private void DriverUC_SessionClosed(object sender, EventArgs e)
         {
             foreach (TabPage page in tabControl.TabPages)
@@ -490,7 +596,7 @@ namespace AmazonDeliveryPlanner
                     tabControl.TabPages.Remove(page);
 
 
-                    Driver drv = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == (long)page.Tag).SingleOrDefault();
+                    Driver drv = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == ((DriverSessionObject)page.Tag).DriverId).SingleOrDefault();
 
                     openTabDrivers[drv.driver_id] = false;
 
@@ -505,6 +611,7 @@ namespace AmazonDeliveryPlanner
 
             if (sForm.ShowDialog() == DialogResult.OK)
             {
+                SaveConfiguration();
                 // ...
             }
         }
@@ -521,18 +628,32 @@ namespace AmazonDeliveryPlanner
 
         void UpdateDriverList()
         {
-            try
-            {
-                DriverList driverList = DriversAPI.GetDrivers();
+            int tryCount = 0;
+            Exception lastException = null;
 
-                GlobalContext.LastDriverList = driverList;
-
-                UpdateDriverListControl();
-            }
-            catch (Exception ex)
+            do
             {
-                GlobalContext.Log("Exception getting drivers from web service: '{0}'", ex.Message);
-            }
+                try
+                {
+                    tryCount++;
+
+                    DriverList driverList = DriversAPI.GetDrivers();
+
+                    GlobalContext.LastDriverList = driverList;
+
+                    UpdateDriverListControl();
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    GlobalContext.Log("Exception getting drivers from web service: '{0}'", ex.Message);
+                    lastException = ex;
+                }
+            } while (tryCount < 4);
+
+            if (lastException != null)
+                MessageBox.Show("Exception loading drivers: " + lastException.Message);
         }
 
         void UpdateDriverListControl()
@@ -580,6 +701,9 @@ namespace AmazonDeliveryPlanner
 
         private void driverListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
+            if (e.Index < 0)
+                return;
+
             e.DrawBackground();
 
             Graphics g = e.Graphics;
@@ -600,5 +724,189 @@ namespace AmazonDeliveryPlanner
             Application.Exit();
             System.Diagnostics.Process.GetCurrentProcess().Kill();
         }
+
+        public static string GetUrlTabPageName(string url)
+        {
+            if (url.Contains("google.com/maps"))
+                return "Google Maps";
+            else
+            if (url.Contains("relay.amazon.com"))
+                return "Amazon Relay";
+            else
+                return string.IsNullOrEmpty(url) ? "_____________" : (url.Length >= 20) ? url.Substring(0, 20) : url;
+        }
+
+        void InitAdminBrowser()
+        {
+            // !
+            // System.AccessViolationException: 'Attempted to read or write protected memory. This is often an indication that other memory is corrupt.'
+            //GlobalContext.GlobalCefSettings.CachePath = @"C:\temp\cache_1";
+            // string cachePath = GlobalContext.GlobalCefSettings.CachePath;
+            // requestContextSettings.CachePath
+
+            // string upworkStartUrl = "www.google.com"; // "https://www.upwork.com";
+            // string upworkStartUrl = "https://www.upwork.com";
+
+            adminBrowser = new ChromiumWebBrowser();
+            // browser = new ChromiumWebBrowser(url, requestContextSettings.);
+
+            
+            RequestContextSettings requestContextSettings = new RequestContextSettings();
+
+            requestContextSettings.PersistSessionCookies = !false;
+            requestContextSettings.PersistUserPreferences = !false;
+
+            string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "sesiune_admin");
+
+            if (!Directory.Exists(cachePath))
+                Directory.CreateDirectory(cachePath);
+
+            requestContextSettings.CachePath = cachePath;
+
+
+            if (requestContextSettings != null)
+                adminBrowser.RequestContext = new RequestContext(requestContextSettings);
+
+
+            // projectSearchTabPage.SuspendLayout();
+
+            this.adminTabPage.Controls.Add(adminBrowser);
+            adminBrowser.Dock = DockStyle.Fill;
+
+            // projectSearchTabPage.ResumeLayout();
+
+            // projectSearchTabPage.Refresh();
+
+            //browser.LoadingStateChanged += Browser_LoadingStateChanged;
+            adminBrowser.FrameLoadEnd += AdminBrowser_FrameLoadEnd;
+
+            //browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
+
+            // browser.RequestHandler = new CustomRequestHandler();
+
+            //browser.Show();
+            //browser.PerformLayout();
+            this.PerformLayout();
+            this.Invalidate();
+            this.Refresh();
+            //browser.Invalidate();
+            //browser.Refresh();
+
+            // LoadMFIFCPage();
+
+            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL /* "https://admin.dlg1.app" */);
+
+            adminBrowser.Dock = DockStyle.Fill;
+
+            //adminBrowser.KeyUp += AdminBrowser_KeyUp;
+            //adminBrowser.PreviewKeyDown += AdminBrowser_PreviewKeyDown;
+
+            // adminBrowser.KeyboardHandler.OnKeyEvent(adminBrowser, adminBrowser)
+            // adminBrowser.KeyboardHandler = new KeyboardHandler();
+            // adminBrowser.KeyboardHandler.
+        }
+
+        //private void AdminBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        //private void AdminBrowser_KeyUp(object sender, KeyEventArgs e)
+        //{            
+        //    if (e.Control && (e.KeyCode == Keys.NumPad1 || e.KeyCode == Keys.D1))
+        //        e.Handled = false; // MainForm_KeyUp(sender, e);
+        //    else
+        //    if (e.Control && (e.KeyCode == Keys.NumPad2 || e.KeyCode == Keys.D2))
+        //        e.Handled = false; // MainForm_KeyUp(sender, e);
+        //}
+
+        private void MainForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+
+        }
+
+        private void MainForm_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Control && (e.KeyCode == Keys.NumPad1 || e.KeyCode == Keys.D1))
+                mainTabControl.SelectedTab = sessionsTabPage;
+            else
+            if (e.Control && (e.KeyCode == Keys.NumPad2 || e.KeyCode == Keys.D2))
+                mainTabControl.SelectedTab = adminTabPage;
+        }
+
+        void SaveConfiguration()
+        {
+            string confJsonString = Newtonsoft.Json.JsonConvert.SerializeObject(GlobalContext.SerializedConfiguration, Formatting.Indented);
+
+            File.WriteAllText(configurationFilePath, confJsonString);
+        }
+
+        void LoadConfiguration()
+        {
+            string confJsonString = File.ReadAllText(configurationFilePath);
+
+            GlobalContext.SerializedConfiguration = Newtonsoft.Json.JsonConvert.DeserializeObject<SerializedConfiguration>(confJsonString);
+
+            if (GlobalContext.SerializedConfiguration.DefaultTabs == null)
+                GlobalContext.SerializedConfiguration.DefaultTabs = new string[0];
+        }
+
+        // This is the directory in which  the settings, output files and measurements directory are placed
+        // Normally it would be the %APPDATA% - User Application Path directory but for portability reasons (to be easily moved between computers keeping settings), the application path can be used
+        public static string GetFileStoragePath()
+        {
+            return Utilities.GetApplicationPath();
+            //return Utilities.GetUserApplicationPath();
+        }
+
+        private async void AdminBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+            GlobalContext.Log("Admin Browser_FrameLoadEnd url={0} frame={1}", e.Url, e.Frame.Name);
+
+            Thread.Sleep(800);
+
+            if (e.Frame.IsMain)
+            {
+                // var watch = System.Diagnostics.Stopwatch.StartNew();
+                // string html = await browser.GetSourceAsync();
+
+                // https://www.amazon.com/ap/signin?openid.return_to=https://relay.amazon.com/&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.assoc_handle=amzn_relay_desktop_us&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.ns=http://specs.openid.net/auth/2.0&pageId=amzn_relay_desktop_us
+                // if (e.Url.IndexOf("login") >= 0)
+                {
+                    string email = GlobalContext.SerializedConfiguration.AdminCredentialsEmail;
+                    string pass = GlobalContext.SerializedConfiguration.AdminCredentialsPass;
+
+                    string email_input_element_type = "email";
+                    string pass_input_element_type = "<undefined>";
+
+                    string jsSource1 = string.Format(
+                        "(function () {{ " +
+                        "var inputs = document.getElementsByTagName('input');\r\n\r\nfor(var i = 0; i < inputs.length; i++) {{\r\n    if(inputs[i].type.toLowerCase() == '{2}') {{\r\n  inputs[i].value = '{0}';       \r\n    }}\r\n if(inputs[i].type.toLowerCase() == '{3}') {{\r\n  inputs[i].value = '{1}';       \r\n    }}\r\n}}" +
+                        " }} )(); ",
+                        email,
+                        pass,
+                        email_input_element_type,
+                        pass_input_element_type
+                    );
+
+                    // ExecuteJavaScript(browser, jscode);
+
+                    JavascriptResponse response = await adminBrowser.GetMainFrame().EvaluateScriptAsync(jsSource1);
+
+                    // bool result = (bool)response.Result;
+                }
+            }
+        }
+
+        private void toggleLeftPanelVisibilityButton_Click(object sender, EventArgs e)
+        {
+            ToggleLeftPanelVisibility();
+        }
+
+        void ToggleLeftPanelVisibility()
+        {
+            splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
+            toggleLeftPanelVisibilityButton.Text = splitContainer1.Panel1Collapsed ? "\u220E \u220E" : "| \u220E";
+        }        
     }
 }

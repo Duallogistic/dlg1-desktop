@@ -43,10 +43,9 @@
             this.saveButton.Location = new System.Drawing.Point(129, 360);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(64, 20);
-            this.saveButton.TabIndex = 0;
+            this.saveButton.TabIndex = 4;
             this.saveButton.Text = "Salveaza";
             this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Visible = false;
             this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
             // 
             // closeButton
@@ -55,7 +54,7 @@
             this.closeButton.Location = new System.Drawing.Point(199, 360);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(64, 20);
-            this.closeButton.TabIndex = 1;
+            this.closeButton.TabIndex = 5;
             this.closeButton.Text = "Inchide";
             this.closeButton.UseVisualStyleBackColor = true;
             this.closeButton.Click += new System.EventHandler(this.closeButton_Click);
@@ -69,7 +68,7 @@
             this.urlListBox.Location = new System.Drawing.Point(10, 79);
             this.urlListBox.Name = "urlListBox";
             this.urlListBox.Size = new System.Drawing.Size(416, 264);
-            this.urlListBox.TabIndex = 2;
+            this.urlListBox.TabIndex = 0;
             // 
             // addButton
             // 
@@ -77,7 +76,7 @@
             this.addButton.Location = new System.Drawing.Point(362, 10);
             this.addButton.Name = "addButton";
             this.addButton.Size = new System.Drawing.Size(64, 21);
-            this.addButton.TabIndex = 3;
+            this.addButton.TabIndex = 1;
             this.addButton.Text = "Adauga";
             this.addButton.UseVisualStyleBackColor = true;
             this.addButton.Click += new System.EventHandler(this.addButton_Click);
@@ -89,7 +88,7 @@
             this.urlTextBox.Location = new System.Drawing.Point(42, 10);
             this.urlTextBox.Name = "urlTextBox";
             this.urlTextBox.Size = new System.Drawing.Size(315, 20);
-            this.urlTextBox.TabIndex = 4;
+            this.urlTextBox.TabIndex = 0;
             // 
             // label1
             // 
@@ -115,7 +114,7 @@
             this.deleteButton.Location = new System.Drawing.Point(362, 53);
             this.deleteButton.Name = "deleteButton";
             this.deleteButton.Size = new System.Drawing.Size(64, 21);
-            this.deleteButton.TabIndex = 7;
+            this.deleteButton.TabIndex = 3;
             this.deleteButton.Text = "Sterge";
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
