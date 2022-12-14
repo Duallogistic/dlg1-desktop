@@ -389,18 +389,25 @@ namespace AmazonDeliveryPlanner
                         // bool result = (bool)response.Result;
                     }
 
-                    System.Action sa = (System.Action)(() =>
-                    {
+                    //System.Action sa = (System.Action)(() =>
+                    //{
+                    //    urlTextBox.Text = e.Url;
+                    //    // urlTextBox.Text = 
+                    //    if (((TabPage)this.Parent).Text == "_____________")
+                    //        ((TabPage)this.Parent).Text = MainForm.GetUrlTabPageName(e.Url);
+                    //});
+
+                    //if (this.InvokeRequired)
+                    //    this.Invoke(sa);
+                    //else
+                    //    sa();
+
+                    this.Invoke((MethodInvoker)delegate {
                         urlTextBox.Text = e.Url;
                         // urlTextBox.Text = 
                         if (((TabPage)this.Parent).Text == "_____________")
                             ((TabPage)this.Parent).Text = MainForm.GetUrlTabPageName(e.Url);
                     });
-
-                    if (this.InvokeRequired)
-                        this.Invoke(sa);
-                    else
-                        sa();
                 }
             }
             catch (Exception ex)
@@ -409,12 +416,12 @@ namespace AmazonDeliveryPlanner
             }
         }
 
-        private void BilantPageBrowser_ConsoleMessage(object sender, ConsoleMessageEventArgs e)
+        private void Browser_ConsoleMessage(object sender, ConsoleMessageEventArgs e)
         {
             // throw new NotImplementedException();
         }
 
-        private void BilantPageBrowser_BrowserInitialized(object sender, EventArgs e)
+        private void Browser_BrowserInitialized(object sender, EventArgs e)
         {
             
             // (sender as CefSharp.OffScreen.ChromiumWebBrowser).Load("");
@@ -507,6 +514,11 @@ namespace AmazonDeliveryPlanner
             }
             
             public string FileName { get; set; }
+        }
+
+        private void goForwardButton_Click(object sender, EventArgs e)
+        {
+            browser.Forward();
         }
 
 

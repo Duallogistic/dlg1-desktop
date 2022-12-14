@@ -38,12 +38,13 @@ namespace AmazonDeliveryPlanner
             this.loadUrlButton = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.goBackButton = new System.Windows.Forms.Button();
+            this.goForwardButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // showDevToolsButton
             // 
             this.showDevToolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.showDevToolsButton.Location = new System.Drawing.Point(784, -1);
+            this.showDevToolsButton.Location = new System.Drawing.Point(796, -1);
             this.showDevToolsButton.Margin = new System.Windows.Forms.Padding(0);
             this.showDevToolsButton.Name = "showDevToolsButton";
             this.showDevToolsButton.Size = new System.Drawing.Size(26, 23);
@@ -81,7 +82,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.increaseTextSizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.increaseTextSizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.increaseTextSizeButton.Location = new System.Drawing.Point(730, -1);
+            this.increaseTextSizeButton.Location = new System.Drawing.Point(753, -1);
             this.increaseTextSizeButton.Name = "increaseTextSizeButton";
             this.increaseTextSizeButton.Size = new System.Drawing.Size(20, 23);
             this.increaseTextSizeButton.TabIndex = 33;
@@ -93,7 +94,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.decreaseTextSizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.decreaseTextSizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.decreaseTextSizeButton.Location = new System.Drawing.Point(750, -1);
+            this.decreaseTextSizeButton.Location = new System.Drawing.Point(773, -1);
             this.decreaseTextSizeButton.Name = "decreaseTextSizeButton";
             this.decreaseTextSizeButton.Size = new System.Drawing.Size(20, 23);
             this.decreaseTextSizeButton.TabIndex = 34;
@@ -145,10 +146,23 @@ namespace AmazonDeliveryPlanner
             this.goBackButton.UseVisualStyleBackColor = true;
             this.goBackButton.Click += new System.EventHandler(this.goBackButton_Click);
             // 
+            // goForwardButton
+            // 
+            this.goForwardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.goForwardButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.goForwardButton.Location = new System.Drawing.Point(724, 0);
+            this.goForwardButton.Name = "goForwardButton";
+            this.goForwardButton.Size = new System.Drawing.Size(26, 23);
+            this.goForwardButton.TabIndex = 49;
+            this.goForwardButton.Text = "→";
+            this.goForwardButton.UseVisualStyleBackColor = true;
+            this.goForwardButton.Click += new System.EventHandler(this.goForwardButton_Click);
+            // 
             // BrowserUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.goForwardButton);
             this.Controls.Add(this.goBackButton);
             this.Controls.Add(this.loadUrlButton);
             this.Controls.Add(this.urlTextBox);
@@ -177,5 +191,6 @@ namespace AmazonDeliveryPlanner
         private System.Windows.Forms.Button loadUrlButton;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button goBackButton;
+        private System.Windows.Forms.Button goForwardButton;
     }
 }

@@ -21,7 +21,7 @@ using Newtonsoft.Json;
 using File = System.IO.File;
 using System.Threading;
 using CefSharp.Handler;
-using System.Runtime.InteropServices;
+// using System.Runtime.InteropServices;
 
 namespace AmazonDeliveryPlanner
 {
@@ -754,7 +754,7 @@ namespace AmazonDeliveryPlanner
             RequestContextSettings requestContextSettings = new RequestContextSettings();
 
             requestContextSettings.PersistSessionCookies = !false;
-            requestContextSettings.PersistUserPreferences = !false;
+            requestContextSettings.PersistUserPreferences = !false;            
 
             string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "sesiune_admin");
 
@@ -770,7 +770,8 @@ namespace AmazonDeliveryPlanner
 
             // projectSearchTabPage.SuspendLayout();
 
-            this.adminTabPage.Controls.Add(adminBrowser);
+            // this.adminTabPage.Controls.Add(adminBrowser);
+            adminBrowserPanel.Controls.Add(adminBrowser);
             adminBrowser.Dock = DockStyle.Fill;
 
             // projectSearchTabPage.ResumeLayout();
@@ -870,6 +871,18 @@ namespace AmazonDeliveryPlanner
                 // var watch = System.Diagnostics.Stopwatch.StartNew();
                 // string html = await browser.GetSourceAsync();
 
+                //System.Action sa = (System.Action)(() =>
+                //{
+                //    urlTextBox.Text = e.Url;
+                //});
+
+                //if (this.InvokeRequired)
+                //    this.Invoke(sa);
+                //else
+                //    sa();
+                
+                this.Invoke((MethodInvoker)delegate { urlTextBox.Text = e.Url; });
+
                 // https://www.amazon.com/ap/signin?openid.return_to=https://relay.amazon.com/&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.assoc_handle=amzn_relay_desktop_us&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.ns=http://specs.openid.net/auth/2.0&pageId=amzn_relay_desktop_us
                 // if (e.Url.IndexOf("login") >= 0)
                 {
@@ -907,6 +920,60 @@ namespace AmazonDeliveryPlanner
         {
             splitContainer1.Panel1Collapsed = !splitContainer1.Panel1Collapsed;
             toggleLeftPanelVisibilityButton.Text = splitContainer1.Panel1Collapsed ? "\u220E \u220E" : "| \u220E";
-        }        
+        }
+
+        private void closeButton_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void showDevToolsButton_Click(object sender, EventArgs e)
+        {
+            adminBrowser.ShowDevTools();
+        }
+
+        private async void decreaseTextSizeButton_Click(object sender, EventArgs e)
+        {
+            // adminBrowser.SetZoomLevel(adminBrowser.GetZoomLevelAsync().Result - 0.1);
+
+            var zoom = await adminBrowser.GetZoomLevelAsync();
+
+            adminBrowser.SetZoomLevel(zoom - 0.1);
+        }
+
+        private async void increaseTextSizeButton_Click(object sender, EventArgs e)
+        {
+            // adminBrowser.SetZoomLevel(adminBrowser.GetZoomLevelAsync().Result + 0.1);
+
+            var zoom = await adminBrowser.GetZoomLevelAsync();
+
+            adminBrowser.SetZoomLevel(zoom + 0.1);
+        }
+
+        private void goBackButton_Click(object sender, EventArgs e)
+        {
+            adminBrowser.Back();
+        }
+
+        private void refrehPageButton_Click(object sender, EventArgs e)
+        {
+            adminBrowser.Reload(true);
+        }
+
+        private void loadUrlButton_Click(object sender, EventArgs e)
+        {
+            adminBrowser.Load(urlTextBox.Text);
+        }
+
+        private void urlTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                adminBrowser.Load(urlTextBox.Text);
+        }
+
+        private void goForwardButton_Click(object sender, EventArgs e)
+        {
+            adminBrowser.Forward();
+        }
     }
 }
