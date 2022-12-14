@@ -753,16 +753,16 @@ namespace AmazonDeliveryPlanner
             
             RequestContextSettings requestContextSettings = new RequestContextSettings();
 
-            requestContextSettings.PersistSessionCookies = !false;
-            requestContextSettings.PersistUserPreferences = !false;            
+            requestContextSettings.PersistSessionCookies = false;
+            requestContextSettings.PersistUserPreferences = false;            
 
-            string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "sesiune_admin");
+            /*string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "sesiune_admin");
 
             if (!Directory.Exists(cachePath))
                 Directory.CreateDirectory(cachePath);
 
             requestContextSettings.CachePath = cachePath;
-
+            */
 
             if (requestContextSettings != null)
                 adminBrowser.RequestContext = new RequestContext(requestContextSettings);
