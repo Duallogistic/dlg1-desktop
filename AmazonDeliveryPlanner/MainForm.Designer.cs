@@ -41,10 +41,19 @@
             this.sessionsTabPage = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.adminTabPage = new System.Windows.Forms.TabPage();
-            this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
             this.loggingTabPage = new System.Windows.Forms.TabPage();
-            this.logTextBox = new System.Windows.Forms.TextBox();
             this.autoScrollCheckBox = new System.Windows.Forms.CheckBox();
+            this.logTextBox = new System.Windows.Forms.TextBox();
+            this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
+            this.goBackButton = new System.Windows.Forms.Button();
+            this.loadUrlButton = new System.Windows.Forms.Button();
+            this.urlTextBox = new System.Windows.Forms.TextBox();
+            this.decreaseTextSizeButton = new System.Windows.Forms.Button();
+            this.increaseTextSizeButton = new System.Windows.Forms.Button();
+            this.refrehPageButton = new System.Windows.Forms.Button();
+            this.showDevToolsButton = new System.Windows.Forms.Button();
+            this.adminBrowserPanel = new System.Windows.Forms.Panel();
+            this.goForwardButton = new System.Windows.Forms.Button();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -52,6 +61,7 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.adminTabPage.SuspendLayout();
             this.loggingTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -210,6 +220,15 @@
             // 
             // adminTabPage
             // 
+            this.adminTabPage.Controls.Add(this.goForwardButton);
+            this.adminTabPage.Controls.Add(this.adminBrowserPanel);
+            this.adminTabPage.Controls.Add(this.goBackButton);
+            this.adminTabPage.Controls.Add(this.loadUrlButton);
+            this.adminTabPage.Controls.Add(this.urlTextBox);
+            this.adminTabPage.Controls.Add(this.decreaseTextSizeButton);
+            this.adminTabPage.Controls.Add(this.increaseTextSizeButton);
+            this.adminTabPage.Controls.Add(this.refrehPageButton);
+            this.adminTabPage.Controls.Add(this.showDevToolsButton);
             this.adminTabPage.Location = new System.Drawing.Point(4, 22);
             this.adminTabPage.Name = "adminTabPage";
             this.adminTabPage.Padding = new System.Windows.Forms.Padding(3);
@@ -217,18 +236,6 @@
             this.adminTabPage.TabIndex = 1;
             this.adminTabPage.Text = "Admin";
             this.adminTabPage.UseVisualStyleBackColor = true;
-            // 
-            // toggleLeftPanelVisibilityButton
-            // 
-            this.toggleLeftPanelVisibilityButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.toggleLeftPanelVisibilityButton.Location = new System.Drawing.Point(1430, 2);
-            this.toggleLeftPanelVisibilityButton.Margin = new System.Windows.Forms.Padding(0);
-            this.toggleLeftPanelVisibilityButton.Name = "toggleLeftPanelVisibilityButton";
-            this.toggleLeftPanelVisibilityButton.Size = new System.Drawing.Size(42, 20);
-            this.toggleLeftPanelVisibilityButton.TabIndex = 6;
-            this.toggleLeftPanelVisibilityButton.Text = "| █";
-            this.toggleLeftPanelVisibilityButton.UseVisualStyleBackColor = true;
-            this.toggleLeftPanelVisibilityButton.Click += new System.EventHandler(this.toggleLeftPanelVisibilityButton_Click);
             // 
             // loggingTabPage
             // 
@@ -242,6 +249,17 @@
             this.loggingTabPage.Text = "Log";
             this.loggingTabPage.UseVisualStyleBackColor = true;
             // 
+            // autoScrollCheckBox
+            // 
+            this.autoScrollCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.autoScrollCheckBox.AutoSize = true;
+            this.autoScrollCheckBox.Location = new System.Drawing.Point(1458, 758);
+            this.autoScrollCheckBox.Name = "autoScrollCheckBox";
+            this.autoScrollCheckBox.Size = new System.Drawing.Size(75, 17);
+            this.autoScrollCheckBox.TabIndex = 1;
+            this.autoScrollCheckBox.Text = "Auto scroll";
+            this.autoScrollCheckBox.UseVisualStyleBackColor = true;
+            // 
             // logTextBox
             // 
             this.logTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -254,16 +272,122 @@
             this.logTextBox.Size = new System.Drawing.Size(1551, 775);
             this.logTextBox.TabIndex = 0;
             // 
-            // autoScrollCheckBox
+            // toggleLeftPanelVisibilityButton
             // 
-            this.autoScrollCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoScrollCheckBox.AutoSize = true;
-            this.autoScrollCheckBox.Location = new System.Drawing.Point(1458, 758);
-            this.autoScrollCheckBox.Name = "autoScrollCheckBox";
-            this.autoScrollCheckBox.Size = new System.Drawing.Size(75, 17);
-            this.autoScrollCheckBox.TabIndex = 1;
-            this.autoScrollCheckBox.Text = "Auto scroll";
-            this.autoScrollCheckBox.UseVisualStyleBackColor = true;
+            this.toggleLeftPanelVisibilityButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.toggleLeftPanelVisibilityButton.Location = new System.Drawing.Point(1430, 2);
+            this.toggleLeftPanelVisibilityButton.Margin = new System.Windows.Forms.Padding(0);
+            this.toggleLeftPanelVisibilityButton.Name = "toggleLeftPanelVisibilityButton";
+            this.toggleLeftPanelVisibilityButton.Size = new System.Drawing.Size(42, 20);
+            this.toggleLeftPanelVisibilityButton.TabIndex = 6;
+            this.toggleLeftPanelVisibilityButton.Text = "| █";
+            this.toggleLeftPanelVisibilityButton.UseVisualStyleBackColor = true;
+            this.toggleLeftPanelVisibilityButton.Click += new System.EventHandler(this.toggleLeftPanelVisibilityButton_Click);
+            // 
+            // goBackButton
+            // 
+            this.goBackButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.goBackButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.goBackButton.Location = new System.Drawing.Point(1405, 1);
+            this.goBackButton.Name = "goBackButton";
+            this.goBackButton.Size = new System.Drawing.Size(26, 23);
+            this.goBackButton.TabIndex = 46;
+            this.goBackButton.Text = "←";
+            this.goBackButton.UseVisualStyleBackColor = true;
+            this.goBackButton.Click += new System.EventHandler(this.goBackButton_Click);
+            // 
+            // loadUrlButton
+            // 
+            this.loadUrlButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.loadUrlButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.loadUrlButton.Location = new System.Drawing.Point(1346, 0);
+            this.loadUrlButton.Name = "loadUrlButton";
+            this.loadUrlButton.Size = new System.Drawing.Size(26, 23);
+            this.loadUrlButton.TabIndex = 45;
+            this.loadUrlButton.Text = "►";
+            this.loadUrlButton.UseVisualStyleBackColor = true;
+            this.loadUrlButton.Click += new System.EventHandler(this.loadUrlButton_Click);
+            // 
+            // urlTextBox
+            // 
+            this.urlTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.urlTextBox.Location = new System.Drawing.Point(3, 3);
+            this.urlTextBox.Name = "urlTextBox";
+            this.urlTextBox.Size = new System.Drawing.Size(1337, 20);
+            this.urlTextBox.TabIndex = 44;
+            this.urlTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.urlTextBox_KeyUp);
+            // 
+            // decreaseTextSizeButton
+            // 
+            this.decreaseTextSizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.decreaseTextSizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.decreaseTextSizeButton.Location = new System.Drawing.Point(1490, 0);
+            this.decreaseTextSizeButton.Name = "decreaseTextSizeButton";
+            this.decreaseTextSizeButton.Size = new System.Drawing.Size(20, 23);
+            this.decreaseTextSizeButton.TabIndex = 43;
+            this.decreaseTextSizeButton.Text = "-";
+            this.decreaseTextSizeButton.UseVisualStyleBackColor = true;
+            this.decreaseTextSizeButton.Click += new System.EventHandler(this.decreaseTextSizeButton_Click);
+            // 
+            // increaseTextSizeButton
+            // 
+            this.increaseTextSizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.increaseTextSizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.increaseTextSizeButton.Location = new System.Drawing.Point(1470, 0);
+            this.increaseTextSizeButton.Name = "increaseTextSizeButton";
+            this.increaseTextSizeButton.Size = new System.Drawing.Size(20, 23);
+            this.increaseTextSizeButton.TabIndex = 42;
+            this.increaseTextSizeButton.Text = "+";
+            this.increaseTextSizeButton.UseVisualStyleBackColor = true;
+            this.increaseTextSizeButton.Click += new System.EventHandler(this.increaseTextSizeButton_Click);
+            // 
+            // refrehPageButton
+            // 
+            this.refrehPageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.refrehPageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refrehPageButton.Location = new System.Drawing.Point(1376, 0);
+            this.refrehPageButton.Margin = new System.Windows.Forms.Padding(0);
+            this.refrehPageButton.Name = "refrehPageButton";
+            this.refrehPageButton.Size = new System.Drawing.Size(26, 23);
+            this.refrehPageButton.TabIndex = 40;
+            this.refrehPageButton.Text = "⟳";
+            this.refrehPageButton.UseVisualStyleBackColor = true;
+            this.refrehPageButton.Click += new System.EventHandler(this.refrehPageButton_Click);
+            // 
+            // showDevToolsButton
+            // 
+            this.showDevToolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showDevToolsButton.Location = new System.Drawing.Point(1524, 0);
+            this.showDevToolsButton.Margin = new System.Windows.Forms.Padding(0);
+            this.showDevToolsButton.Name = "showDevToolsButton";
+            this.showDevToolsButton.Size = new System.Drawing.Size(26, 23);
+            this.showDevToolsButton.TabIndex = 39;
+            this.showDevToolsButton.Text = "ੴ";
+            this.showDevToolsButton.UseVisualStyleBackColor = true;
+            this.showDevToolsButton.Click += new System.EventHandler(this.showDevToolsButton_Click);
+            // 
+            // adminBrowserPanel
+            // 
+            this.adminBrowserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.adminBrowserPanel.Location = new System.Drawing.Point(3, 23);
+            this.adminBrowserPanel.Name = "adminBrowserPanel";
+            this.adminBrowserPanel.Size = new System.Drawing.Size(1552, 758);
+            this.adminBrowserPanel.TabIndex = 47;
+            // 
+            // goForwardButton
+            // 
+            this.goForwardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.goForwardButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.goForwardButton.Location = new System.Drawing.Point(1430, 1);
+            this.goForwardButton.Name = "goForwardButton";
+            this.goForwardButton.Size = new System.Drawing.Size(26, 23);
+            this.goForwardButton.TabIndex = 48;
+            this.goForwardButton.Text = "→";
+            this.goForwardButton.UseVisualStyleBackColor = true;
+            this.goForwardButton.Click += new System.EventHandler(this.goForwardButton_Click);
             // 
             // MainForm
             // 
@@ -288,6 +412,8 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.adminTabPage.ResumeLayout(false);
+            this.adminTabPage.PerformLayout();
             this.loggingTabPage.ResumeLayout(false);
             this.loggingTabPage.PerformLayout();
             this.ResumeLayout(false);
@@ -312,5 +438,14 @@
         private System.Windows.Forms.TabPage loggingTabPage;
         private System.Windows.Forms.TextBox logTextBox;
         private System.Windows.Forms.CheckBox autoScrollCheckBox;
+        private System.Windows.Forms.Panel adminBrowserPanel;
+        private System.Windows.Forms.Button goBackButton;
+        private System.Windows.Forms.Button loadUrlButton;
+        private System.Windows.Forms.TextBox urlTextBox;
+        private System.Windows.Forms.Button decreaseTextSizeButton;
+        private System.Windows.Forms.Button increaseTextSizeButton;
+        private System.Windows.Forms.Button refrehPageButton;
+        private System.Windows.Forms.Button showDevToolsButton;
+        private System.Windows.Forms.Button goForwardButton;
     }
 }
