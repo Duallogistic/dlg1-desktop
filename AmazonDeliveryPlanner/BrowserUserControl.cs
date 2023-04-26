@@ -124,7 +124,8 @@ namespace AmazonDeliveryPlanner
             {
                 try
                 {
-                    string uploadURL = GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
+                    // string uploadURL = GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
+                    string uploadURL = "http://167.86.94.125:52031/api/auth2/external/upload";
 
                     // uploadURL = "https://qa-srv.dlg1.app/api/auth2/external/upload";
 

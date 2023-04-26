@@ -318,7 +318,7 @@ namespace AmazonDeliveryPlanner
 
 
             stp.Name = "PageSesiune" + sessionCount;
-            stp.Text = "Sesiune " + selectedDriver.ToString();
+            stp.Text = selectedDriver.ToString();
 
             DriverSessionObject driverSessionObject = new DriverSessionObject() { 
                 DriverId = selectedDriver.driver_id                
