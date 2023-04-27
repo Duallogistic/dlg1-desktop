@@ -421,7 +421,7 @@ namespace AmazonDeliveryPlanner
 
                 driverSessionObject.ReqContextSettings = requestContextSettings;
 
-                BrowserUserControl bUC = new BrowserUserControl(url, requestContextSettings);
+                BrowserUserControl bUC = new BrowserUserControl(url, requestContextSettings, selectedDriver.id);
 
                 {
                     // mfbUC.Cif = cif;
@@ -539,7 +539,7 @@ namespace AmazonDeliveryPlanner
 
                             // urlTabPage.BackColor = Color.Green;
                             
-                            BrowserUserControl bUC = new BrowserUserControl(e.URL, ((DriverSessionObject)page.Tag).ReqContextSettings);
+                            BrowserUserControl bUC = new BrowserUserControl(e.URL, ((DriverSessionObject)page.Tag).ReqContextSettings, ((DriverSessionObject)page.Tag).DriverId);
 
                             {
                                 // mfbUC.Cif = cif;

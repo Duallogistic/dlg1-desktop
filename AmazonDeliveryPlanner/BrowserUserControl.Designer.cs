@@ -39,6 +39,10 @@ namespace AmazonDeliveryPlanner
             this.panel1 = new System.Windows.Forms.Panel();
             this.goBackButton = new System.Windows.Forms.Button();
             this.goForwardButton = new System.Windows.Forms.Button();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // showDevToolsButton
@@ -129,9 +133,9 @@ namespace AmazonDeliveryPlanner
             this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel1.Location = new System.Drawing.Point(0, 20);
+            this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(848, 414);
+            this.panel1.Size = new System.Drawing.Size(551, 405);
             this.panel1.TabIndex = 37;
             // 
             // goBackButton
@@ -158,10 +162,27 @@ namespace AmazonDeliveryPlanner
             this.goForwardButton.UseVisualStyleBackColor = true;
             this.goForwardButton.Click += new System.EventHandler(this.goForwardButton_Click);
             // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(0, 23);
+            this.splitContainer1.Margin = new System.Windows.Forms.Padding(0);
+            this.splitContainer1.Name = "splitContainer1";
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.panel1);
+            this.splitContainer1.Size = new System.Drawing.Size(848, 411);
+            this.splitContainer1.SplitterDistance = 557;
+            this.splitContainer1.TabIndex = 51;
+            // 
             // BrowserUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.goForwardButton);
             this.Controls.Add(this.goBackButton);
             this.Controls.Add(this.loadUrlButton);
@@ -171,10 +192,12 @@ namespace AmazonDeliveryPlanner
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.refrehPageButton);
             this.Controls.Add(this.showDevToolsButton);
-            this.Controls.Add(this.panel1);
             this.Name = "BrowserUserControl";
             this.Size = new System.Drawing.Size(848, 434);
             this.Load += new System.EventHandler(this.UserControl1_Load);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -192,5 +215,7 @@ namespace AmazonDeliveryPlanner
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Button goBackButton;
         private System.Windows.Forms.Button goForwardButton;
+        
+        private System.Windows.Forms.SplitContainer splitContainer1;
     }
 }

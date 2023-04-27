@@ -19,6 +19,8 @@ using CefSharp.DevTools.Network;
 using RestSharp;
 using Newtonsoft.Json;
 using System.Net.Http;
+using AmazonDeliveryPlanner.API;
+using CefSharp.DevTools.WebAudio;
 
 namespace AmazonDeliveryPlanner
 {
@@ -33,18 +35,22 @@ namespace AmazonDeliveryPlanner
         public event EventHandler Close;
         public event EventHandler<FileUploadFinishedEventArgs> FileUploadFinished;
 
-        public BrowserUserControl(string url, RequestContextSettings requestContextSettings)
+        long driverId;
+
+        public BrowserUserControl(string url, RequestContextSettings requestContextSettings, long driverId)
         {
+            this.driverId = driverId;
             this.url = url;
             this.requestContextSettings = requestContextSettings;
 
             InitializeComponent();            
 
             InitBrowser();
+            InitPanel2Browser();
 
             // new Task(() => { Thread.Sleep(800); InitBrowser(); }).Start();
 
-            urlTextBox.Text = url;
+            urlTextBox.Text = url;            
         }
 
         //public delegate void InitBrowserHandler();
@@ -551,5 +557,59 @@ namespace AmazonDeliveryPlanner
             }
         }
         */
+
+        void InitPanel2Browser()
+        {
+            // !
+            // System.AccessViolationException: 'Attempted to read or write protected memory. This is often an indication that other memory is corrupt.'
+            //GlobalContext.GlobalCefSettings.CachePath = @"C:\temp\cache_1";
+            // string cachePath = GlobalContext.GlobalCefSettings.CachePath;
+            // requestContextSettings.CachePath
+
+            // string upworkStartUrl = "www.google.com"; // "https://www.upwork.com";
+            // string upworkStartUrl = "https://www.upwork.com";
+
+            ChromiumWebBrowser browser2 = new ChromiumWebBrowser();
+            // browser = new ChromiumWebBrowser(url, requestContextSettings.);
+
+            if (requestContextSettings != null)
+                browser2.RequestContext = new RequestContext(requestContextSettings);
+            // projectSearchTabPage.SuspendLayout();
+
+            // browser2.DownloadHandler = new DownloadHandler();
+
+            // ((DownloadHandler)browser.DownloadHandler).OnDownloadUpdatedFired += BrowserUserControl_OnDownloadUpdatedFired;
+
+            // this.Controls.Add(browser);
+            splitContainer1.Panel2.Controls.Add(browser2);
+
+            browser2.Dock = DockStyle.Fill;
+
+            // projectSearchTabPage.ResumeLayout();
+
+            // projectSearchTabPage.Refresh();
+
+            // browser.LoadingStateChanged += Browser_LoadingStateChanged;
+            // browser2.FrameLoadEnd += Browser_FrameLoadEnd;
+
+            //browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
+
+            // browser.RequestHandler = new CustomRequestHandler();
+
+            //browser.Show();
+            //browser.PerformLayout();
+            this.PerformLayout();
+            this.Invalidate();
+            this.Refresh();
+            //browser.Invalidate();
+            //browser.Refresh();
+
+            // LoadMFIFCPage();
+
+            string panel2URL = string.Format("https://dlg1.app/planning-overview/{0}/info", driverId);
+            browser2.Load(panel2URL);
+
+            browser2.Dock = DockStyle.Fill;            
+        }
     }
 }

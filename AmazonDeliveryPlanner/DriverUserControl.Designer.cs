@@ -54,6 +54,7 @@
             this.label1.Size = new System.Drawing.Size(51, 13);
             this.label1.TabIndex = 37;
             this.label1.Text = "Location:";
+            this.label1.Visible = false;
             // 
             // label2
             // 
@@ -64,6 +65,7 @@
             this.label2.Size = new System.Drawing.Size(56, 13);
             this.label2.TabIndex = 38;
             this.label2.Text = "Odometer:";
+            this.label2.Visible = false;
             // 
             // label3
             // 
@@ -74,6 +76,7 @@
             this.label3.Size = new System.Drawing.Size(61, 13);
             this.label3.TabIndex = 39;
             this.label3.Text = "Current job:";
+            this.label3.Visible = false;
             // 
             // label4
             // 
@@ -84,6 +87,7 @@
             this.label4.Size = new System.Drawing.Size(49, 13);
             this.label4.TabIndex = 40;
             this.label4.Text = "Next job:";
+            this.label4.Visible = false;
             // 
             // locationLabel
             // 
@@ -94,6 +98,7 @@
             this.locationLabel.Size = new System.Drawing.Size(17, 18);
             this.locationLabel.TabIndex = 41;
             this.locationLabel.Text = "_";
+            this.locationLabel.Visible = false;
             // 
             // odometerLabel
             // 
@@ -104,6 +109,7 @@
             this.odometerLabel.Size = new System.Drawing.Size(17, 18);
             this.odometerLabel.TabIndex = 42;
             this.odometerLabel.Text = "_";
+            this.odometerLabel.Visible = false;
             // 
             // currentJobLabel
             // 
@@ -114,6 +120,7 @@
             this.currentJobLabel.Size = new System.Drawing.Size(17, 18);
             this.currentJobLabel.TabIndex = 43;
             this.currentJobLabel.Text = "_";
+            this.currentJobLabel.Visible = false;
             // 
             // nextJobLabel
             // 
@@ -124,6 +131,7 @@
             this.nextJobLabel.Size = new System.Drawing.Size(17, 18);
             this.nextJobLabel.TabIndex = 44;
             this.nextJobLabel.Text = "_";
+            this.nextJobLabel.Visible = false;
             // 
             // testLabel
             // 
@@ -133,12 +141,13 @@
             this.testLabel.Size = new System.Drawing.Size(13, 13);
             this.testLabel.TabIndex = 56;
             this.testLabel.Text = "_";
+            this.testLabel.Visible = false;
             // 
             // closeButton
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.closeButton.Location = new System.Drawing.Point(1142, 82);
+            this.closeButton.Location = new System.Drawing.Point(1142, 3);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(56, 23);
             this.closeButton.TabIndex = 57;
@@ -155,6 +164,7 @@
             this.regPlateLabel.Size = new System.Drawing.Size(17, 18);
             this.regPlateLabel.TabIndex = 64;
             this.regPlateLabel.Text = "_";
+            this.regPlateLabel.Visible = false;
             // 
             // label12
             // 
@@ -165,11 +175,12 @@
             this.label12.Size = new System.Drawing.Size(51, 13);
             this.label12.TabIndex = 63;
             this.label12.Text = "Reg. no.:";
+            this.label12.Visible = false;
             // 
             // openAddressGoogleMapsButton
             // 
             this.openAddressGoogleMapsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openAddressGoogleMapsButton.Location = new System.Drawing.Point(1102, 13);
+            this.openAddressGoogleMapsButton.Location = new System.Drawing.Point(901, 3);
             this.openAddressGoogleMapsButton.Name = "openAddressGoogleMapsButton";
             this.openAddressGoogleMapsButton.Size = new System.Drawing.Size(96, 23);
             this.openAddressGoogleMapsButton.TabIndex = 65;
@@ -181,7 +192,7 @@
             // 
             this.addBrowserTabButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.addBrowserTabButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addBrowserTabButton.Location = new System.Drawing.Point(1102, 37);
+            this.addBrowserTabButton.Location = new System.Drawing.Point(1003, 3);
             this.addBrowserTabButton.Name = "addBrowserTabButton";
             this.addBrowserTabButton.Size = new System.Drawing.Size(96, 23);
             this.addBrowserTabButton.TabIndex = 66;
@@ -193,7 +204,7 @@
             // 
             this.fileDownloadedLabel.AutoSize = true;
             this.fileDownloadedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fileDownloadedLabel.Location = new System.Drawing.Point(713, 83);
+            this.fileDownloadedLabel.Location = new System.Drawing.Point(465, 4);
             this.fileDownloadedLabel.Name = "fileDownloadedLabel";
             this.fileDownloadedLabel.Size = new System.Drawing.Size(17, 18);
             this.fileDownloadedLabel.TabIndex = 67;
@@ -220,7 +231,7 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "DriverUserControl";
-            this.Size = new System.Drawing.Size(1201, 108);
+            this.Size = new System.Drawing.Size(1201, 28);
             this.Load += new System.EventHandler(this.DriverUserControl_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
