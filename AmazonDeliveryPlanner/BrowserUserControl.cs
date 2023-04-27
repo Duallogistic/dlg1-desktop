@@ -189,6 +189,8 @@ namespace AmazonDeliveryPlanner
                         response.EnsureSuccessStatusCode();
 
                         FileUploadFinished?.Invoke(this, new FileUploadFinishedEventArgs(fileName));
+
+                        MessageBox.Show("Fisierul " + fileName + " a fost descarcat", GlobalContext.ApplicationTitle);
                     }
 
                     // responseStream.RunSynchronously();                  
