@@ -163,6 +163,8 @@ namespace AmazonDeliveryPlanner
                     string csvFileContents = File.ReadAllText(e.FullPath);                    
                     csvFileContents = csvFileContents.Replace(",Operator ID,Spot Work", ",Operator ID,Spot Work,ColBC,COlBD");
 
+                    // niggere, hai sa puscam o bere, lasa prostiile ca oricum nu stii ce faci acolo
+
                     byte[] bytes = Encoding.UTF8.GetBytes(csvFileContents); // byte[] bytes = Encoding.ASCII.GetBytes();
 
                     HttpContent bytesContent = new ByteArrayContent(bytes);
