@@ -608,7 +608,17 @@ namespace AmazonDeliveryPlanner
 
             // LoadMFIFCPage();
 
-            string panel2URL = string.Format("https://dlg1.app/planning-overview/{0}/info", driverId);
+            // string panel2URL = string.Format("https://dlg1.app/planning-overview/{0}/info", driverId);
+
+            if (string.IsNullOrWhiteSpace(GlobalContext.SerializedConfiguration.PlanningOverviewURL))
+            {
+                GlobalContext.Log("Error: planning_overview_url value not set in configuration file.");
+                MessageBox.Show("planning_overview_url value not set in configuration file.", GlobalContext.ApplicationTitle);
+                return;
+            }
+            
+            // ex.: http://dlg1.app/planning-overview/{user_id}/info
+            string panel2URL = GlobalContext.SerializedConfiguration.PlanningOverviewURL.Replace("{user_id}", driverId.ToString());
             browser2.Load(panel2URL);
 
             browser2.Dock = DockStyle.Fill;            

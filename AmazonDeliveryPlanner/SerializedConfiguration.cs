@@ -23,6 +23,7 @@ namespace AmazonDeliveryPlanner
         string adminCredentialsPass;
         string downloadDirectoryPath;
         string fileUploadURL;
+        string planningOverviewURL;
         bool debug;
 
         [JsonProperty("admin_url")]
@@ -45,5 +46,7 @@ namespace AmazonDeliveryPlanner
         public string FileUploadURL { get => fileUploadURL; set => fileUploadURL = value; }
         [JsonProperty("debug")]
         public bool Debug { get => debug; set => debug = value; }
+        [JsonProperty("planning_overview_url")]
+        public string PlanningOverviewURL { get => planningOverviewURL; set => planningOverviewURL = value; }
     }
 }
