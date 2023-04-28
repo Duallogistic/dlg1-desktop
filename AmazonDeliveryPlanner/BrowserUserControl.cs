@@ -159,7 +159,14 @@ namespace AmazonDeliveryPlanner
                     // Task<Stream> responseStream = Upload(uploadURL, File.ReadAllBytes(e.FullPath), fileName);
 
                     string responseText = null;
-                    HttpContent bytesContent = new ByteArrayContent(File.ReadAllBytes(e.FullPath));
+
+                    string csvFileContents = File.ReadAllText(e.FullPath);                    
+                    csvFileContents = csvFileContents.Replace(",Operator ID,Spot Work", ",Operator ID,Spot Work,ColBC,COlBD");
+
+                    byte[] bytes = Encoding.UTF8.GetBytes(csvFileContents); // byte[] bytes = Encoding.ASCII.GetBytes();
+
+                    HttpContent bytesContent = new ByteArrayContent(bytes);
+                    // HttpContent bytesContent = new ByteArrayContent(File.ReadAllBytes(e.FullPath));                    
 
                     using (var client = new HttpClient())
                     using (var formData = new MultipartFormDataContent())
