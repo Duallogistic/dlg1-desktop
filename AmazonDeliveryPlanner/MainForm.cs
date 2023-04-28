@@ -794,8 +794,9 @@ namespace AmazonDeliveryPlanner
             //browser.Refresh();
 
             // LoadMFIFCPage();
-
-            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL /* "https://admin.dlg1.app" */);
+            
+            /* "https://admin.dlg1.app" */
+            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL);
 
             adminBrowser.Dock = DockStyle.Fill;
 

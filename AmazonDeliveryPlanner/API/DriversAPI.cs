@@ -60,8 +60,8 @@ namespace AmazonDeliveryPlanner.API
         {
             using (WebClient wc = new WebClient())
             {
-                // string getDriversURL = GlobalContext.SerializedConfiguration.ApiBaseURL + "/auth2/external/drivers";
-                string getDriversURL = "http://167.86.94.125:52031/api/auth2/external/drivers";
+                string getDriversURL = GlobalContext.SerializedConfiguration.ApiBaseURL + "/auth2/external/drivers";
+                // string getDriversURL = "http://167.86.94.125:52031/api/auth2/external/drivers";
 
                 GlobalContext.Log("Getting drivers from  '{0}'", getDriversURL);
 
