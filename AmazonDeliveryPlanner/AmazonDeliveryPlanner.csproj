@@ -127,6 +127,12 @@
     <Compile Include="DriverUserControl.Designer.cs">
       <DependentUpon>DriverUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="OpenDriverForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpenDriverForm.Designer.cs">
+      <DependentUpon>OpenDriverForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="EditOpNotesForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -164,6 +170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DriverUserControl.resx">
       <DependentUpon>DriverUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpenDriverForm.resx">
+      <DependentUpon>OpenDriverForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="EditOpNotesForm.resx">
       <DependentUpon>EditOpNotesForm.cs</DependentUpon>

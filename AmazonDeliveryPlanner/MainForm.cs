@@ -629,6 +629,8 @@ namespace AmazonDeliveryPlanner
 
         }
 
+        DriverList _driverList;
+
         void UpdateDriverList()
         {
             int tryCount = 0;
@@ -643,6 +645,8 @@ namespace AmazonDeliveryPlanner
                     DriverList driverList = DriversAPI.GetDrivers();
 
                     GlobalContext.LastDriverList = driverList;
+
+                    _driverList = driverList;
 
                     UpdateDriverListControl();
 
@@ -1062,6 +1066,19 @@ namespace AmazonDeliveryPlanner
         private void refreshDriverListBrowserButton_Click(object sender, EventArgs e)
         {
             driversPanelBrowser.Reload(true);            
+        }
+
+        private void showOpenDriverFormButton_Click(object sender, EventArgs e)
+        {
+            OpenDriverForm openDriverForm = new OpenDriverForm(_driverList.drivers);
+
+            openDriverForm.StartPosition = FormStartPosition.CenterParent;
+
+            if (openDriverForm.ShowDialog() == DialogResult.OK)
+            {
+                selectedDriver = openDriverForm.SelectedDriver;
+                AddSessionTab();
+            }
         }
     }
 }

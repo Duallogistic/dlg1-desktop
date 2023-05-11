@@ -55,6 +55,7 @@
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
             this.refreshDriverListBrowserButton = new System.Windows.Forms.Button();
+            this.showOpenDriverFormButton = new System.Windows.Forms.Button();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -405,11 +406,24 @@
             this.refreshDriverListBrowserButton.UseVisualStyleBackColor = true;
             this.refreshDriverListBrowserButton.Click += new System.EventHandler(this.refreshDriverListBrowserButton_Click);
             // 
+            // showOpenDriverFormButton
+            // 
+            this.showOpenDriverFormButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.showOpenDriverFormButton.Location = new System.Drawing.Point(1380, 2);
+            this.showOpenDriverFormButton.Margin = new System.Windows.Forms.Padding(0);
+            this.showOpenDriverFormButton.Name = "showOpenDriverFormButton";
+            this.showOpenDriverFormButton.Size = new System.Drawing.Size(42, 20);
+            this.showOpenDriverFormButton.TabIndex = 7;
+            this.showOpenDriverFormButton.Text = "🔎";
+            this.showOpenDriverFormButton.UseVisualStyleBackColor = true;
+            this.showOpenDriverFormButton.Click += new System.EventHandler(this.showOpenDriverFormButton_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1565, 807);
+            this.Controls.Add(this.showOpenDriverFormButton);
             this.Controls.Add(this.toggleLeftPanelVisibilityButton);
             this.Controls.Add(this.openSettingsButton);
             this.Controls.Add(this.mainTabControl);
@@ -464,5 +478,6 @@
         private System.Windows.Forms.Button showDevToolsButton;
         private System.Windows.Forms.Button goForwardButton;
         private System.Windows.Forms.Button refreshDriverListBrowserButton;
+        private System.Windows.Forms.Button showOpenDriverFormButton;
     }
 }
