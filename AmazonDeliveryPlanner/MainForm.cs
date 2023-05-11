@@ -1061,7 +1061,7 @@ namespace AmazonDeliveryPlanner
 
         private void refreshDriverListBrowserButton_Click(object sender, EventArgs e)
         {
-            driversPanelBrowser.Reload(true);
+            driversPanelBrowser.Reload(true);            
         }
     }
 }
