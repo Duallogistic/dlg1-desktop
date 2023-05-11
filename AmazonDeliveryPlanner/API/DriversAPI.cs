@@ -26,6 +26,8 @@ namespace AmazonDeliveryPlanner.API
     
     public class Driver
     {
+        public static bool _ListModeToString = false;
+
         public long id { get; set; }
         public long driver_id { get; set; }
         public string fleet_id { get; set; }
@@ -44,7 +46,11 @@ namespace AmazonDeliveryPlanner.API
 
         public override string ToString()
         {
-            return string.IsNullOrWhiteSpace(this.group_name) ? this.first_name + " " + this.last_name : this.group_name;
+            if (_ListModeToString)
+                return (string.IsNullOrWhiteSpace(this.group_name) ? "" : this.group_name.Replace(this.first_name != null ? this.first_name.Trim() : "Z_8_1", "")).Replace(this.last_name != null ? this.last_name.Trim() : "Z_8_1", "") + "  "
+                        + this.first_name + " " + this.last_name + "  (" + this.reg_plate + ")";
+            else
+                return string.IsNullOrWhiteSpace(this.group_name) ? this.first_name + " " + this.last_name : this.group_name;
         }
     }
 

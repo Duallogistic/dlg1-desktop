@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using File = System.IO.File;
 using System.Threading;
 using CefSharp.Handler;
+using System.Web.Configuration;
 // using System.Runtime.InteropServices;
 
 namespace AmazonDeliveryPlanner
@@ -1068,17 +1069,22 @@ namespace AmazonDeliveryPlanner
             driversPanelBrowser.Reload(true);            
         }
 
+        bool displayOnlyDriverGroupNameInDriversForm = false;
+
         private void showOpenDriverFormButton_Click(object sender, EventArgs e)
         {
             OpenDriverForm openDriverForm = new OpenDriverForm(_driverList.drivers);
 
+            openDriverForm.DisplayOnlyDriverGroupName = displayOnlyDriverGroupNameInDriversForm;
             openDriverForm.StartPosition = FormStartPosition.CenterParent;
 
             if (openDriverForm.ShowDialog() == DialogResult.OK)
             {
                 selectedDriver = openDriverForm.SelectedDriver;
-                AddSessionTab();
+                AddSessionTab();                
             }
+
+            displayOnlyDriverGroupNameInDriversForm = openDriverForm.DisplayOnlyDriverGroupName;
         }
     }
 }

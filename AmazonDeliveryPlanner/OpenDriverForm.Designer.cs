@@ -34,6 +34,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.filterDriversTextBox = new System.Windows.Forms.TextBox();
             this.filteredDriversListBox = new System.Windows.Forms.ListBox();
+            this.displayOnlyDriverGroupNameCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -103,12 +104,25 @@
             this.filteredDriversListBox.SelectedIndexChanged += new System.EventHandler(this.filteredDriversListBox_SelectedIndexChanged);
             this.filteredDriversListBox.DoubleClick += new System.EventHandler(this.filteredDriversListBox_DoubleClick);
             // 
+            // displayOnlyDriverGroupNameCheckBox
+            // 
+            this.displayOnlyDriverGroupNameCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.displayOnlyDriverGroupNameCheckBox.AutoSize = true;
+            this.displayOnlyDriverGroupNameCheckBox.Location = new System.Drawing.Point(447, 425);
+            this.displayOnlyDriverGroupNameCheckBox.Name = "displayOnlyDriverGroupNameCheckBox";
+            this.displayOnlyDriverGroupNameCheckBox.Size = new System.Drawing.Size(106, 17);
+            this.displayOnlyDriverGroupNameCheckBox.TabIndex = 7;
+            this.displayOnlyDriverGroupNameCheckBox.Text = "Only group name";
+            this.displayOnlyDriverGroupNameCheckBox.UseVisualStyleBackColor = true;
+            this.displayOnlyDriverGroupNameCheckBox.CheckedChanged += new System.EventHandler(this.displayOnlyDriverGroupNameCheckBox_CheckedChanged);
+            // 
             // OpenDriverForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(565, 456);
+            this.Controls.Add(this.displayOnlyDriverGroupNameCheckBox);
             this.Controls.Add(this.filteredDriversListBox);
             this.Controls.Add(this.filterDriversTextBox);
             this.Controls.Add(this.label2);
@@ -120,6 +134,7 @@
             this.Name = "OpenDriverForm";
             this.ShowInTaskbar = false;
             this.Text = "Open driver";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OpenDriverForm_FormClosed);
             this.Load += new System.EventHandler(this.EditPlanningNotesForm_Load);
             this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OpenDriverForm_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OpenDriverForm_KeyUp);
@@ -137,5 +152,6 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox filterDriversTextBox;
         private System.Windows.Forms.ListBox filteredDriversListBox;
+        private System.Windows.Forms.CheckBox displayOnlyDriverGroupNameCheckBox;
     }
 }

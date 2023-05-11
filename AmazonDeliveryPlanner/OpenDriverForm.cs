@@ -17,9 +17,11 @@ namespace AmazonDeliveryPlanner
         Driver[] drivers;
         IEnumerable<Driver> filteredDrivers;
         Driver selectedDriver;
+        bool displayOnlyDriverGroupName;
 
         public Driver[] Drivers { get => drivers; /*set => drivers = value;*/ }
         public Driver SelectedDriver { get => selectedDriver; set => selectedDriver = value; }
+        public bool DisplayOnlyDriverGroupName { get => displayOnlyDriverGroupName; set => displayOnlyDriverGroupName = value; }
 
         public OpenDriverForm(Driver[] drivers)
         {
@@ -28,6 +30,8 @@ namespace AmazonDeliveryPlanner
             this.drivers = drivers;
             this.filteredDrivers = drivers.ToArray();
             // this.drivers.CopyTo(this.filteredDrivers, 0);
+            
+            Driver._ListModeToString = true;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -43,6 +47,8 @@ namespace AmazonDeliveryPlanner
 
         private void EditPlanningNotesForm_Load(object sender, EventArgs e)
         {
+            displayOnlyDriverGroupNameCheckBox.Checked = displayOnlyDriverGroupName;
+
             this.ActiveControl = filterDriversTextBox;
             filterDriversTextBox.Focus();
 
@@ -126,7 +132,7 @@ namespace AmazonDeliveryPlanner
 
         private void filterDriversTextBox_TextChanged(object sender, EventArgs e)
         {
-            filteredDrivers = drivers.Where(dr => (dr.first_name + " " + dr.last_name).IndexOf(filterDriversTextBox.Text, StringComparison.CurrentCultureIgnoreCase) >= 0);
+            filteredDrivers = drivers.Where(dr => (dr.group_name + " " + dr.first_name + " " + dr.last_name + " " + dr.reg_plate).IndexOf(filterDriversTextBox.Text, StringComparison.CurrentCultureIgnoreCase) >= 0);
 
             RefreshFilteredDriverList();
         }
@@ -174,6 +180,18 @@ namespace AmazonDeliveryPlanner
             if (e.KeyCode == Keys.Enter)
                 OpenDriver();
             // Save();
+        }
+
+        private void OpenDriverForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Driver._ListModeToString = false;
+        }
+
+        private void displayOnlyDriverGroupNameCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            Driver._ListModeToString = !displayOnlyDriverGroupNameCheckBox.Checked;
+            displayOnlyDriverGroupName = displayOnlyDriverGroupNameCheckBox.Checked;
+            RefreshFilteredDriverList();
         }
     }
 }
