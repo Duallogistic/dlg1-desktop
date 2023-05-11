@@ -1,5 +1,6 @@
 {
   "admin_url": "https://admin.dlg1.app",
+  "driver_list_url": "https://admin.dlg1.app/#/drivers-list",
   "file_upload_url": "/auth2/external/upload",
   "default_tabs": [
     "https://relay.amazon.com/",

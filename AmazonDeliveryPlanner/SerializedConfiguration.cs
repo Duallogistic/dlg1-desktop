@@ -15,6 +15,7 @@ namespace AmazonDeliveryPlanner
     public class SerializedConfiguration
     {
         string adminURL;
+        string driverListURL;
         string[] defaultTabs;
         string apiBaseURL;
         string relayCredentialsEmail;
@@ -28,6 +29,8 @@ namespace AmazonDeliveryPlanner
 
         [JsonProperty("admin_url")]
         public string AdminURL { get => adminURL; set => adminURL = value; }
+        [JsonProperty("driver_list_url")]
+        public string DriverListURL { get => driverListURL; set => driverListURL = value; }
         [JsonProperty("default_tabs")]
         public string[] DefaultTabs { get => defaultTabs; set => defaultTabs = value; }
         [JsonProperty("api_base_url")]

@@ -28,6 +28,7 @@ namespace AmazonDeliveryPlanner
     public partial class MainForm : Form
     {
         ChromiumWebBrowser adminBrowser;
+        ChromiumWebBrowser driversPanelBrowser;
         static string configurationFilePath;
 
         public MainForm()
@@ -42,6 +43,7 @@ namespace AmazonDeliveryPlanner
             {
                 Init();
                 InitAdminBrowser();
+                InitDriversPanelBrowser();
             }
             catch (Exception ex)
             {
@@ -55,6 +57,7 @@ namespace AmazonDeliveryPlanner
                 Application.Exit();
             }
 
+            driversPanel.Visible = false;
         }
 
         public static void InitializeCEF()
@@ -753,8 +756,8 @@ namespace AmazonDeliveryPlanner
             
             RequestContextSettings requestContextSettings = new RequestContextSettings();
 
-            requestContextSettings.PersistSessionCookies = false;
-            requestContextSettings.PersistUserPreferences = false;            
+            requestContextSettings.PersistSessionCookies = !false;
+            requestContextSettings.PersistUserPreferences = !false;            
 
             /*string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "sesiune_admin");
 
@@ -975,6 +978,90 @@ namespace AmazonDeliveryPlanner
         private void goForwardButton_Click(object sender, EventArgs e)
         {
             adminBrowser.Forward();
+        }
+
+        void InitDriversPanelBrowser()
+        {
+            // !
+            // System.AccessViolationException: 'Attempted to read or write protected memory. This is often an indication that other memory is corrupt.'
+            //GlobalContext.GlobalCefSettings.CachePath = @"C:\temp\cache_1";
+            // string cachePath = GlobalContext.GlobalCefSettings.CachePath;
+            // requestContextSettings.CachePath
+
+            // string upworkStartUrl = "www.google.com"; // "https://www.upwork.com";
+            // string upworkStartUrl = "https://www.upwork.com";
+
+            driversPanelBrowser = new ChromiumWebBrowser();
+            // browser = new ChromiumWebBrowser(url, requestContextSettings.);
+
+
+            RequestContextSettings requestContextSettings = new RequestContextSettings();
+
+            requestContextSettings.PersistSessionCookies = !false;
+            requestContextSettings.PersistUserPreferences = !false;
+
+            /*string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "sesiune_admin");
+
+            if (!Directory.Exists(cachePath))
+                Directory.CreateDirectory(cachePath);
+
+            requestContextSettings.CachePath = cachePath;
+            */
+
+            if (requestContextSettings != null)
+                driversPanelBrowser.RequestContext = new RequestContext(requestContextSettings);
+
+
+            // projectSearchTabPage.SuspendLayout();
+
+            // this.adminTabPage.Controls.Add(driversPanelBrowser);
+            splitContainer1.Panel1.Controls.Add(driversPanelBrowser);
+            driversPanelBrowser.Dock = DockStyle.Fill;
+
+            // projectSearchTabPage.ResumeLayout();
+
+            // projectSearchTabPage.Refresh();
+
+            //browser.LoadingStateChanged += Browser_LoadingStateChanged;
+            driversPanelBrowser.FrameLoadEnd += DriversPanelBrowser_FrameLoadEnd;
+
+            //browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
+
+            // browser.RequestHandler = new CustomRequestHandler();
+
+            //browser.Show();
+            //browser.PerformLayout();
+            this.PerformLayout();
+            this.Invalidate();
+            this.Refresh();
+            //browser.Invalidate();
+            //browser.Refresh();
+
+            // LoadMFIFCPage();
+
+            /* "https://admin.dlg1.app" */
+            driversPanelBrowser.Load(GlobalContext.SerializedConfiguration.DriverListURL);
+
+            driversPanelBrowser.Dock = DockStyle.Fill;
+
+            //driversPanelBrowser.KeyUp += driversPanelBrowser_KeyUp;
+            //driversPanelBrowser.PreviewKeyDown += driversPanelBrowser_PreviewKeyDown;
+
+            // driversPanelBrowser.KeyboardHandler.OnKeyEvent(driversPanelBrowser, driversPanelBrowser)
+            // driversPanelBrowser.KeyboardHandler = new KeyboardHandler();
+            // driversPanelBrowser.KeyboardHandler.
+
+            refreshDriverListBrowserButton.BringToFront();
+        }
+
+        private void DriversPanelBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
+        {
+            // throw new NotImplementedException();
+        }
+
+        private void refreshDriverListBrowserButton_Click(object sender, EventArgs e)
+        {
+            driversPanelBrowser.Reload(true);
         }
     }
 }

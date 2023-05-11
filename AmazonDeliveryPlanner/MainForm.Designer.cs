@@ -41,10 +41,8 @@
             this.sessionsTabPage = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.adminTabPage = new System.Windows.Forms.TabPage();
-            this.loggingTabPage = new System.Windows.Forms.TabPage();
-            this.autoScrollCheckBox = new System.Windows.Forms.CheckBox();
-            this.logTextBox = new System.Windows.Forms.TextBox();
-            this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
+            this.goForwardButton = new System.Windows.Forms.Button();
+            this.adminBrowserPanel = new System.Windows.Forms.Panel();
             this.goBackButton = new System.Windows.Forms.Button();
             this.loadUrlButton = new System.Windows.Forms.Button();
             this.urlTextBox = new System.Windows.Forms.TextBox();
@@ -52,8 +50,11 @@
             this.increaseTextSizeButton = new System.Windows.Forms.Button();
             this.refrehPageButton = new System.Windows.Forms.Button();
             this.showDevToolsButton = new System.Windows.Forms.Button();
-            this.adminBrowserPanel = new System.Windows.Forms.Panel();
-            this.goForwardButton = new System.Windows.Forms.Button();
+            this.loggingTabPage = new System.Windows.Forms.TabPage();
+            this.autoScrollCheckBox = new System.Windows.Forms.CheckBox();
+            this.logTextBox = new System.Windows.Forms.TextBox();
+            this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
+            this.refreshDriverListBrowserButton = new System.Windows.Forms.Button();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -83,7 +84,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1340, 775);
+            this.tabControl.Size = new System.Drawing.Size(1260, 775);
             this.tabControl.TabIndex = 0;
             // 
             // driverListBox
@@ -96,7 +97,7 @@
             this.driverListBox.FormattingEnabled = true;
             this.driverListBox.Location = new System.Drawing.Point(0, 53);
             this.driverListBox.Name = "driverListBox";
-            this.driverListBox.Size = new System.Drawing.Size(201, 719);
+            this.driverListBox.Size = new System.Drawing.Size(281, 719);
             this.driverListBox.TabIndex = 3;
             this.driverListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.driverListBox_DrawItem);
             this.driverListBox.SelectedIndexChanged += new System.EventHandler(this.driverListBox_SelectedIndexChanged);
@@ -139,7 +140,7 @@
             // 
             this.refreshDriversButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.refreshDriversButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshDriversButton.Location = new System.Drawing.Point(172, 739);
+            this.refreshDriversButton.Location = new System.Drawing.Point(252, 739);
             this.refreshDriversButton.Name = "refreshDriversButton";
             this.refreshDriversButton.Size = new System.Drawing.Size(28, 31);
             this.refreshDriversButton.TabIndex = 7;
@@ -173,7 +174,7 @@
             this.driversPanel.Controls.Add(this.driverListBox);
             this.driversPanel.Location = new System.Drawing.Point(3, 3);
             this.driversPanel.Name = "driversPanel";
-            this.driversPanel.Size = new System.Drawing.Size(204, 2051);
+            this.driversPanel.Size = new System.Drawing.Size(284, 2051);
             this.driversPanel.TabIndex = 4;
             // 
             // mainTabControl
@@ -209,13 +210,14 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.refreshDriverListBrowserButton);
             this.splitContainer1.Panel1.Controls.Add(this.driversPanel);
             // 
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl);
             this.splitContainer1.Size = new System.Drawing.Size(1551, 775);
-            this.splitContainer1.SplitterDistance = 207;
+            this.splitContainer1.SplitterDistance = 287;
             this.splitContainer1.TabIndex = 5;
             // 
             // adminTabPage
@@ -237,52 +239,27 @@
             this.adminTabPage.Text = "Admin";
             this.adminTabPage.UseVisualStyleBackColor = true;
             // 
-            // loggingTabPage
+            // goForwardButton
             // 
-            this.loggingTabPage.Controls.Add(this.autoScrollCheckBox);
-            this.loggingTabPage.Controls.Add(this.logTextBox);
-            this.loggingTabPage.Location = new System.Drawing.Point(4, 22);
-            this.loggingTabPage.Name = "loggingTabPage";
-            this.loggingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.loggingTabPage.Size = new System.Drawing.Size(1557, 781);
-            this.loggingTabPage.TabIndex = 2;
-            this.loggingTabPage.Text = "Log";
-            this.loggingTabPage.UseVisualStyleBackColor = true;
+            this.goForwardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.goForwardButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.goForwardButton.Location = new System.Drawing.Point(1430, 1);
+            this.goForwardButton.Name = "goForwardButton";
+            this.goForwardButton.Size = new System.Drawing.Size(26, 23);
+            this.goForwardButton.TabIndex = 48;
+            this.goForwardButton.Text = "→";
+            this.goForwardButton.UseVisualStyleBackColor = true;
+            this.goForwardButton.Click += new System.EventHandler(this.goForwardButton_Click);
             // 
-            // autoScrollCheckBox
+            // adminBrowserPanel
             // 
-            this.autoScrollCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.autoScrollCheckBox.AutoSize = true;
-            this.autoScrollCheckBox.Location = new System.Drawing.Point(1458, 758);
-            this.autoScrollCheckBox.Name = "autoScrollCheckBox";
-            this.autoScrollCheckBox.Size = new System.Drawing.Size(75, 17);
-            this.autoScrollCheckBox.TabIndex = 1;
-            this.autoScrollCheckBox.Text = "Auto scroll";
-            this.autoScrollCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // logTextBox
-            // 
-            this.logTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.adminBrowserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.logTextBox.Location = new System.Drawing.Point(3, 3);
-            this.logTextBox.Multiline = true;
-            this.logTextBox.Name = "logTextBox";
-            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logTextBox.Size = new System.Drawing.Size(1551, 775);
-            this.logTextBox.TabIndex = 0;
-            // 
-            // toggleLeftPanelVisibilityButton
-            // 
-            this.toggleLeftPanelVisibilityButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.toggleLeftPanelVisibilityButton.Location = new System.Drawing.Point(1430, 2);
-            this.toggleLeftPanelVisibilityButton.Margin = new System.Windows.Forms.Padding(0);
-            this.toggleLeftPanelVisibilityButton.Name = "toggleLeftPanelVisibilityButton";
-            this.toggleLeftPanelVisibilityButton.Size = new System.Drawing.Size(42, 20);
-            this.toggleLeftPanelVisibilityButton.TabIndex = 6;
-            this.toggleLeftPanelVisibilityButton.Text = "| █";
-            this.toggleLeftPanelVisibilityButton.UseVisualStyleBackColor = true;
-            this.toggleLeftPanelVisibilityButton.Click += new System.EventHandler(this.toggleLeftPanelVisibilityButton_Click);
+            this.adminBrowserPanel.Location = new System.Drawing.Point(3, 23);
+            this.adminBrowserPanel.Name = "adminBrowserPanel";
+            this.adminBrowserPanel.Size = new System.Drawing.Size(1552, 758);
+            this.adminBrowserPanel.TabIndex = 47;
             // 
             // goBackButton
             // 
@@ -367,27 +344,65 @@
             this.showDevToolsButton.UseVisualStyleBackColor = true;
             this.showDevToolsButton.Click += new System.EventHandler(this.showDevToolsButton_Click);
             // 
-            // adminBrowserPanel
+            // loggingTabPage
             // 
-            this.adminBrowserPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            this.loggingTabPage.Controls.Add(this.autoScrollCheckBox);
+            this.loggingTabPage.Controls.Add(this.logTextBox);
+            this.loggingTabPage.Location = new System.Drawing.Point(4, 22);
+            this.loggingTabPage.Name = "loggingTabPage";
+            this.loggingTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.loggingTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.loggingTabPage.TabIndex = 2;
+            this.loggingTabPage.Text = "Log";
+            this.loggingTabPage.UseVisualStyleBackColor = true;
+            // 
+            // autoScrollCheckBox
+            // 
+            this.autoScrollCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.autoScrollCheckBox.AutoSize = true;
+            this.autoScrollCheckBox.Location = new System.Drawing.Point(1458, 758);
+            this.autoScrollCheckBox.Name = "autoScrollCheckBox";
+            this.autoScrollCheckBox.Size = new System.Drawing.Size(75, 17);
+            this.autoScrollCheckBox.TabIndex = 1;
+            this.autoScrollCheckBox.Text = "Auto scroll";
+            this.autoScrollCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // logTextBox
+            // 
+            this.logTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.adminBrowserPanel.Location = new System.Drawing.Point(3, 23);
-            this.adminBrowserPanel.Name = "adminBrowserPanel";
-            this.adminBrowserPanel.Size = new System.Drawing.Size(1552, 758);
-            this.adminBrowserPanel.TabIndex = 47;
+            this.logTextBox.Location = new System.Drawing.Point(3, 3);
+            this.logTextBox.Multiline = true;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.logTextBox.Size = new System.Drawing.Size(1551, 775);
+            this.logTextBox.TabIndex = 0;
             // 
-            // goForwardButton
+            // toggleLeftPanelVisibilityButton
             // 
-            this.goForwardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.goForwardButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.goForwardButton.Location = new System.Drawing.Point(1430, 1);
-            this.goForwardButton.Name = "goForwardButton";
-            this.goForwardButton.Size = new System.Drawing.Size(26, 23);
-            this.goForwardButton.TabIndex = 48;
-            this.goForwardButton.Text = "→";
-            this.goForwardButton.UseVisualStyleBackColor = true;
-            this.goForwardButton.Click += new System.EventHandler(this.goForwardButton_Click);
+            this.toggleLeftPanelVisibilityButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.toggleLeftPanelVisibilityButton.Location = new System.Drawing.Point(1430, 2);
+            this.toggleLeftPanelVisibilityButton.Margin = new System.Windows.Forms.Padding(0);
+            this.toggleLeftPanelVisibilityButton.Name = "toggleLeftPanelVisibilityButton";
+            this.toggleLeftPanelVisibilityButton.Size = new System.Drawing.Size(42, 20);
+            this.toggleLeftPanelVisibilityButton.TabIndex = 6;
+            this.toggleLeftPanelVisibilityButton.Text = "| █";
+            this.toggleLeftPanelVisibilityButton.UseVisualStyleBackColor = true;
+            this.toggleLeftPanelVisibilityButton.Click += new System.EventHandler(this.toggleLeftPanelVisibilityButton_Click);
+            // 
+            // refreshDriverListBrowserButton
+            // 
+            this.refreshDriverListBrowserButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.refreshDriverListBrowserButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refreshDriverListBrowserButton.Location = new System.Drawing.Point(0, 752);
+            this.refreshDriverListBrowserButton.Margin = new System.Windows.Forms.Padding(0);
+            this.refreshDriverListBrowserButton.Name = "refreshDriverListBrowserButton";
+            this.refreshDriverListBrowserButton.Size = new System.Drawing.Size(26, 23);
+            this.refreshDriverListBrowserButton.TabIndex = 32;
+            this.refreshDriverListBrowserButton.Text = "⟳";
+            this.refreshDriverListBrowserButton.UseVisualStyleBackColor = true;
+            this.refreshDriverListBrowserButton.Click += new System.EventHandler(this.refreshDriverListBrowserButton_Click);
             // 
             // MainForm
             // 
@@ -447,5 +462,6 @@
         private System.Windows.Forms.Button refrehPageButton;
         private System.Windows.Forms.Button showDevToolsButton;
         private System.Windows.Forms.Button goForwardButton;
+        private System.Windows.Forms.Button refreshDriverListBrowserButton;
     }
 }
