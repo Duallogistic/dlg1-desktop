@@ -808,12 +808,24 @@ namespace AmazonDeliveryPlanner
 
             adminBrowser.Dock = DockStyle.Fill;
 
+            adminBrowser.PreviewKeyDown += Browser_PreviewKeyDown;
+            adminBrowser.KeyboardHandler = new BrowserKeyboardHandler();
+
             //adminBrowser.KeyUp += AdminBrowser_KeyUp;
             //adminBrowser.PreviewKeyDown += AdminBrowser_PreviewKeyDown;
 
             // adminBrowser.KeyboardHandler.OnKeyEvent(adminBrowser, adminBrowser)
             // adminBrowser.KeyboardHandler = new KeyboardHandler();
             // adminBrowser.KeyboardHandler.
+        }
+
+        private void Browser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if ((e.Control || e.KeyCode == Keys.ControlKey) && (e.KeyCode == Keys.F))
+            {
+                // mainTabControl.SelectedTab = sessionsTabPage;
+                OpenSearchDriverForm();
+            }
         }
 
         //private void AdminBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -842,6 +854,9 @@ namespace AmazonDeliveryPlanner
             else
             if (e.Control && (e.KeyCode == Keys.NumPad2 || e.KeyCode == Keys.D2))
                 mainTabControl.SelectedTab = adminTabPage;
+
+            if ((e.Control || e.KeyCode == Keys.ControlKey) && (e.KeyCode == Keys.F))
+                OpenSearchDriverForm();
         }
 
         void SaveConfiguration()
@@ -1057,6 +1072,9 @@ namespace AmazonDeliveryPlanner
             // driversPanelBrowser.KeyboardHandler.
 
             refreshDriverListBrowserButton.BringToFront();
+
+            driversPanelBrowser.PreviewKeyDown += Browser_PreviewKeyDown;
+            driversPanelBrowser.KeyboardHandler = new BrowserKeyboardHandler();
         }
 
         private void DriversPanelBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
@@ -1073,6 +1091,11 @@ namespace AmazonDeliveryPlanner
 
         private void showOpenDriverFormButton_Click(object sender, EventArgs e)
         {
+            OpenSearchDriverForm();
+        }
+
+        public void OpenSearchDriverForm()
+        {
             OpenDriverForm openDriverForm = new OpenDriverForm(_driverList.drivers);
 
             openDriverForm.DisplayOnlyDriverGroupName = displayOnlyDriverGroupNameInDriversForm;
@@ -1081,7 +1104,8 @@ namespace AmazonDeliveryPlanner
             if (openDriverForm.ShowDialog() == DialogResult.OK)
             {
                 selectedDriver = openDriverForm.SelectedDriver;
-                AddSessionTab();                
+                AddSessionTab();
+                mainTabControl.SelectedTab = sessionsTabPage;
             }
 
             displayOnlyDriverGroupNameInDriversForm = openDriverForm.DisplayOnlyDriverGroupName;

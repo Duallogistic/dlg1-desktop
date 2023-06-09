@@ -127,6 +127,7 @@
     <Compile Include="DriverUserControl.Designer.cs">
       <DependentUpon>DriverUserControl.cs</DependentUpon>
     </Compile>
+    <Compile Include="BrowserKeyboardHandler.cs" />
     <Compile Include="OpenDriverForm.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -50,7 +50,22 @@ namespace AmazonDeliveryPlanner
 
             // new Task(() => { Thread.Sleep(800); InitBrowser(); }).Start();
 
+            browser.PreviewKeyDown += Browser_PreviewKeyDown;
+            browser.KeyUp += Browser_KeyUp;
+            browser.KeyboardHandler = new BrowserKeyboardHandler();
+
             urlTextBox.Text = url;            
+        }
+
+        private void Browser_KeyUp(object sender, KeyEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Browser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if ((e.Control || e.KeyCode == Keys.ControlKey) && (e.KeyCode == Keys.F))
+                GlobalContext.MainWindow.OpenSearchDriverForm();
         }
 
         //public delegate void InitBrowserHandler();
