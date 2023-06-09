@@ -1075,6 +1075,17 @@ namespace AmazonDeliveryPlanner
 
             driversPanelBrowser.PreviewKeyDown += Browser_PreviewKeyDown;
             driversPanelBrowser.KeyboardHandler = new BrowserKeyboardHandler();
+
+            var browserCallbackObjectForJs = new BrowserCallbackObjectForJs();
+            
+            // driversPanelBrowser.RegisterAsyncJsObject("driverCallbackObj", browserCallbackObjectForJs);
+            CefSharpSettings.WcfEnabled = true;
+            driversPanelBrowser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
+            driversPanelBrowser.JavascriptObjectRepository.Register("driverCallbackObj", browserCallbackObjectForJs, isAsync: false, options: BindingOptions.DefaultBinder);
+
+            // or async            
+            //browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
+            //browser.JavascriptObjectRepository.Register("boundAsync", new AsyncBoundObject(), isAsync: true, options: BindingOptions.DefaultBinder);
         }
 
         private void DriversPanelBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
@@ -1114,6 +1125,38 @@ namespace AmazonDeliveryPlanner
         private void showDriversBrowserControlDevToolsButton_Click(object sender, EventArgs e)
         {
             driversPanelBrowser.ShowDevTools();
+        }
+
+        public void OpenDriverWindow(string driverId)
+        {
+            int _driverId = 0;
+
+            try
+            {
+                _driverId = Convert.ToInt32(driverId);
+            }
+            catch (Exception ex)
+            {
+                Output(string.Format("The specified driverId value ('{1}') is not an integer number: '{0}'", ex.Message, driverId));
+                MessageBox.Show(string.Format("The specified driverId value ('{1}') is not an integer number: '{0}'", ex.Message, driverId), GlobalContext.ApplicationTitle);
+                return;
+            }
+
+            Driver clickedDriver = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == _driverId).FirstOrDefault();
+
+            if (clickedDriver == null)
+            {
+                Output(string.Format("The specified driverId value ('{0}') could not be found.", driverId));
+                MessageBox.Show(string.Format("The specified driverId value ('{0}') could not be found.", driverId), GlobalContext.ApplicationTitle);
+                return;
+            }
+
+            if (this.InvokeRequired)
+                this.Invoke((MethodInvoker)delegate
+                {
+                    selectedDriver = clickedDriver;
+                    AddSessionTab();
+                });
         }
     }
 }

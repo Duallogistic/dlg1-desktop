@@ -167,7 +167,7 @@
             // 
             this.driversPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));            
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.driversPanel.Controls.Add(this.refreshDriversButton);
             this.driversPanel.Controls.Add(this.allRadioButton);
             this.driversPanel.Controls.Add(this.drivers_24_45_radioButton);
@@ -181,12 +181,12 @@
             // 
             // showDriversBrowserControlDevToolsButton
             // 
-            this.showDriversBrowserControlDevToolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.showDriversBrowserControlDevToolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.showDriversBrowserControlDevToolsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showDriversBrowserControlDevToolsButton.Location = new System.Drawing.Point(255, 749);
+            this.showDriversBrowserControlDevToolsButton.Location = new System.Drawing.Point(28, 752);
             this.showDriversBrowserControlDevToolsButton.Margin = new System.Windows.Forms.Padding(0);
             this.showDriversBrowserControlDevToolsButton.Name = "showDriversBrowserControlDevToolsButton";
-            this.showDriversBrowserControlDevToolsButton.Size = new System.Drawing.Size(24, 21);
+            this.showDriversBrowserControlDevToolsButton.Size = new System.Drawing.Size(26, 23);
             this.showDriversBrowserControlDevToolsButton.TabIndex = 9;
             this.showDriversBrowserControlDevToolsButton.Text = "ੴ";
             this.showDriversBrowserControlDevToolsButton.UseVisualStyleBackColor = true;

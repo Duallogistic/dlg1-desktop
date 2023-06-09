@@ -95,6 +95,7 @@ namespace AmazonDeliveryPlanner
                 if (processed)
                 {
                     state = PreProcessControlState.MessageProcessed;
+                    // state = PreProcessControlState.MessageNeeded;
                 }
                 else
                 {
@@ -112,7 +113,8 @@ namespace AmazonDeliveryPlanner
             else if (state == PreProcessControlState.MessageProcessed)
             {
                 // Most of the interesting cases get processed by PreProcessControlMessage.
-                result = true;
+                result = true; //-- ?
+                result = false;
             }
             Debug.WriteLine(String.Format("OnPreKeyEvent: KeyType: {0} 0x{1:X} Modifiers: {2}", type, windowsKeyCode, modifiers));
             Debug.WriteLine(String.Format("OnPreKeyEvent PreProcessControlState: {0}", state));
