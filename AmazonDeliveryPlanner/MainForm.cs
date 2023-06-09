@@ -999,7 +999,7 @@ namespace AmazonDeliveryPlanner
         {
             adminBrowser.Forward();
         }
-
+        
         void InitDriversPanelBrowser()
         {
             // !
@@ -1109,6 +1109,11 @@ namespace AmazonDeliveryPlanner
             }
 
             displayOnlyDriverGroupNameInDriversForm = openDriverForm.DisplayOnlyDriverGroupName;
+        }
+
+        private void showDriversBrowserControlDevToolsButton_Click(object sender, EventArgs e)
+        {
+            driversPanelBrowser.ShowDevTools();
         }
     }
 }

@@ -37,9 +37,11 @@
             this.refreshDriversButton = new System.Windows.Forms.Button();
             this.allRadioButton = new System.Windows.Forms.RadioButton();
             this.driversPanel = new System.Windows.Forms.Panel();
+            this.showDriversBrowserControlDevToolsButton = new System.Windows.Forms.Button();
             this.mainTabControl = new System.Windows.Forms.TabControl();
             this.sessionsTabPage = new System.Windows.Forms.TabPage();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.refreshDriverListBrowserButton = new System.Windows.Forms.Button();
             this.adminTabPage = new System.Windows.Forms.TabPage();
             this.goForwardButton = new System.Windows.Forms.Button();
             this.adminBrowserPanel = new System.Windows.Forms.Panel();
@@ -54,7 +56,6 @@
             this.autoScrollCheckBox = new System.Windows.Forms.CheckBox();
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
-            this.refreshDriverListBrowserButton = new System.Windows.Forms.Button();
             this.showOpenDriverFormButton = new System.Windows.Forms.Button();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
@@ -166,7 +167,7 @@
             // 
             this.driversPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            | System.Windows.Forms.AnchorStyles.Right)));            
             this.driversPanel.Controls.Add(this.refreshDriversButton);
             this.driversPanel.Controls.Add(this.allRadioButton);
             this.driversPanel.Controls.Add(this.drivers_24_45_radioButton);
@@ -177,6 +178,19 @@
             this.driversPanel.Name = "driversPanel";
             this.driversPanel.Size = new System.Drawing.Size(284, 2051);
             this.driversPanel.TabIndex = 4;
+            // 
+            // showDriversBrowserControlDevToolsButton
+            // 
+            this.showDriversBrowserControlDevToolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.showDriversBrowserControlDevToolsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.showDriversBrowserControlDevToolsButton.Location = new System.Drawing.Point(255, 749);
+            this.showDriversBrowserControlDevToolsButton.Margin = new System.Windows.Forms.Padding(0);
+            this.showDriversBrowserControlDevToolsButton.Name = "showDriversBrowserControlDevToolsButton";
+            this.showDriversBrowserControlDevToolsButton.Size = new System.Drawing.Size(24, 21);
+            this.showDriversBrowserControlDevToolsButton.TabIndex = 9;
+            this.showDriversBrowserControlDevToolsButton.Text = "ੴ";
+            this.showDriversBrowserControlDevToolsButton.UseVisualStyleBackColor = true;
+            this.showDriversBrowserControlDevToolsButton.Click += new System.EventHandler(this.showDriversBrowserControlDevToolsButton_Click);
             // 
             // mainTabControl
             // 
@@ -212,6 +226,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.showDriversBrowserControlDevToolsButton);
             this.splitContainer1.Panel1.Controls.Add(this.refreshDriverListBrowserButton);
             this.splitContainer1.Panel1.Controls.Add(this.driversPanel);
             // 
@@ -221,6 +236,19 @@
             this.splitContainer1.Size = new System.Drawing.Size(1551, 775);
             this.splitContainer1.SplitterDistance = 287;
             this.splitContainer1.TabIndex = 5;
+            // 
+            // refreshDriverListBrowserButton
+            // 
+            this.refreshDriverListBrowserButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.refreshDriverListBrowserButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.refreshDriverListBrowserButton.Location = new System.Drawing.Point(0, 752);
+            this.refreshDriverListBrowserButton.Margin = new System.Windows.Forms.Padding(0);
+            this.refreshDriverListBrowserButton.Name = "refreshDriverListBrowserButton";
+            this.refreshDriverListBrowserButton.Size = new System.Drawing.Size(26, 23);
+            this.refreshDriverListBrowserButton.TabIndex = 32;
+            this.refreshDriverListBrowserButton.Text = "⟳";
+            this.refreshDriverListBrowserButton.UseVisualStyleBackColor = true;
+            this.refreshDriverListBrowserButton.Click += new System.EventHandler(this.refreshDriverListBrowserButton_Click);
             // 
             // adminTabPage
             // 
@@ -393,19 +421,6 @@
             this.toggleLeftPanelVisibilityButton.UseVisualStyleBackColor = true;
             this.toggleLeftPanelVisibilityButton.Click += new System.EventHandler(this.toggleLeftPanelVisibilityButton_Click);
             // 
-            // refreshDriverListBrowserButton
-            // 
-            this.refreshDriverListBrowserButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.refreshDriverListBrowserButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshDriverListBrowserButton.Location = new System.Drawing.Point(0, 752);
-            this.refreshDriverListBrowserButton.Margin = new System.Windows.Forms.Padding(0);
-            this.refreshDriverListBrowserButton.Name = "refreshDriverListBrowserButton";
-            this.refreshDriverListBrowserButton.Size = new System.Drawing.Size(26, 23);
-            this.refreshDriverListBrowserButton.TabIndex = 32;
-            this.refreshDriverListBrowserButton.Text = "⟳";
-            this.refreshDriverListBrowserButton.UseVisualStyleBackColor = true;
-            this.refreshDriverListBrowserButton.Click += new System.EventHandler(this.refreshDriverListBrowserButton_Click);
-            // 
             // showOpenDriverFormButton
             // 
             this.showOpenDriverFormButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -479,5 +494,6 @@
         private System.Windows.Forms.Button goForwardButton;
         private System.Windows.Forms.Button refreshDriverListBrowserButton;
         private System.Windows.Forms.Button showOpenDriverFormButton;
+        private System.Windows.Forms.Button showDriversBrowserControlDevToolsButton;
     }
 }
