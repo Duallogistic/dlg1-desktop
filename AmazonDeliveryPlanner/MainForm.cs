@@ -1250,10 +1250,25 @@ namespace AmazonDeliveryPlanner
             }
             else
             {
+                ClosePreviousPlannerTabs();
+
                 plannerLabel.Text = "\uA19C" + " " + GlobalContext.LoggedInPlanner.ToString(); // U+1F464 ??  U+A19C ?
-                
+
                 adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL + "?token=" + GlobalContext.LoggedInPlanner.token);
-                driversPanelBrowser.Load(GlobalContext.SerializedConfiguration.DriverListURL + "?token=" + GlobalContext.LoggedInPlanner.token);
+                driversPanelBrowser.Load(GlobalContext.SerializedConfiguration.DriverListURL + "?token=" + GlobalContext.LoggedInPlanner.token);                
+            }
+        }
+
+        void ClosePreviousPlannerTabs()
+        {            
+            foreach (TabPage page in tabControl.TabPages)
+            {
+                    tabControl.TabPages.Remove(page);
+
+                    Driver drv = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == ((DriverSessionObject)page.Tag).DriverId).SingleOrDefault();
+
+                    openTabDrivers[drv.driver_id] = false;
+                    // driverListBox.Refresh();
             }
         }
     }
