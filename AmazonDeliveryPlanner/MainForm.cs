@@ -1241,5 +1241,20 @@ namespace AmazonDeliveryPlanner
                 MessageBox.Show("Exception loading planners: " + lastException.Message);
         }
 
+        private void changeUserButton_Click(object sender, EventArgs e)
+        {
+            if (!OpenPlannerSelectorForm())
+            {
+                MessageBox.Show("Could not get planner list!", GlobalContext.ApplicationTitle);
+                return;
+            }
+            else
+            {
+                plannerLabel.Text = "\uA19C" + " " + GlobalContext.LoggedInPlanner.ToString(); // U+1F464 ??  U+A19C ?
+                
+                adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL + "?token=" + GlobalContext.LoggedInPlanner.token);
+                driversPanelBrowser.Load(GlobalContext.SerializedConfiguration.DriverListURL + "?token=" + GlobalContext.LoggedInPlanner.token);
+            }
+        }
     }
 }

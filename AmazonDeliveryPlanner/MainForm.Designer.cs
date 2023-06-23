@@ -58,6 +58,7 @@
             this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
             this.showOpenDriverFormButton = new System.Windows.Forms.Button();
             this.plannerLabel = new System.Windows.Forms.Label();
+            this.changeUserButton = new System.Windows.Forms.Button();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -436,17 +437,30 @@
             // 
             // plannerLabel
             // 
-            this.plannerLabel.Location = new System.Drawing.Point(1185, 4);
+            this.plannerLabel.Location = new System.Drawing.Point(1140, 4);
             this.plannerLabel.Name = "plannerLabel";
             this.plannerLabel.Size = new System.Drawing.Size(192, 17);
             this.plannerLabel.TabIndex = 6;
             this.plannerLabel.Text = "_____ loged in planner ____";
+            // 
+            // changeUserButton
+            // 
+            this.changeUserButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.changeUserButton.Location = new System.Drawing.Point(1331, 2);
+            this.changeUserButton.Margin = new System.Windows.Forms.Padding(0);
+            this.changeUserButton.Name = "changeUserButton";
+            this.changeUserButton.Size = new System.Drawing.Size(42, 20);
+            this.changeUserButton.TabIndex = 8;
+            this.changeUserButton.Text = "👤";
+            this.changeUserButton.UseVisualStyleBackColor = true;
+            this.changeUserButton.Click += new System.EventHandler(this.changeUserButton_Click);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1565, 807);
+            this.Controls.Add(this.changeUserButton);
             this.Controls.Add(this.plannerLabel);
             this.Controls.Add(this.showOpenDriverFormButton);
             this.Controls.Add(this.toggleLeftPanelVisibilityButton);
@@ -506,5 +520,6 @@
         private System.Windows.Forms.Button showOpenDriverFormButton;
         private System.Windows.Forms.Button showDriversBrowserControlDevToolsButton;
         private System.Windows.Forms.Label plannerLabel;
+        private System.Windows.Forms.Button changeUserButton;
     }
 }
