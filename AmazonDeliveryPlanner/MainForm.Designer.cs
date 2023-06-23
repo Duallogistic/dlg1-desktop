@@ -57,6 +57,7 @@
             this.logTextBox = new System.Windows.Forms.TextBox();
             this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
             this.showOpenDriverFormButton = new System.Windows.Forms.Button();
+            this.plannerLabel = new System.Windows.Forms.Label();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -433,11 +434,20 @@
             this.showOpenDriverFormButton.UseVisualStyleBackColor = true;
             this.showOpenDriverFormButton.Click += new System.EventHandler(this.showOpenDriverFormButton_Click);
             // 
+            // plannerLabel
+            // 
+            this.plannerLabel.Location = new System.Drawing.Point(1185, 4);
+            this.plannerLabel.Name = "plannerLabel";
+            this.plannerLabel.Size = new System.Drawing.Size(192, 17);
+            this.plannerLabel.TabIndex = 6;
+            this.plannerLabel.Text = "_____ loged in planner ____";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1565, 807);
+            this.Controls.Add(this.plannerLabel);
             this.Controls.Add(this.showOpenDriverFormButton);
             this.Controls.Add(this.toggleLeftPanelVisibilityButton);
             this.Controls.Add(this.openSettingsButton);
@@ -495,5 +505,6 @@
         private System.Windows.Forms.Button refreshDriverListBrowserButton;
         private System.Windows.Forms.Button showOpenDriverFormButton;
         private System.Windows.Forms.Button showDriversBrowserControlDevToolsButton;
+        private System.Windows.Forms.Label plannerLabel;
     }
 }

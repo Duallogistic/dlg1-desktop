@@ -32,6 +32,7 @@ namespace AmazonDeliveryPlanner
         public static DriverList LastDriverList { get => lastDriverList; set => lastDriverList = value; }
         public static SerializedConfiguration SerializedConfiguration { get => serializedConfiguration; set => serializedConfiguration = value; }
         public static string ConfigurationFileName { get => "conf.json"; }
+        public static Planner LoggedInPlanner { get => loggedInPlanner; set => loggedInPlanner = value; }
 
         public static void Log(string text, params object[] args)
         {
@@ -80,6 +81,8 @@ namespace AmazonDeliveryPlanner
 
         static DriverList lastDriverList;
 
-        static SerializedConfiguration serializedConfiguration;        
+        static SerializedConfiguration serializedConfiguration;
+
+        static Planner loggedInPlanner;
     }
 }

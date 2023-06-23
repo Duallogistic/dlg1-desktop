@@ -18,6 +18,7 @@ namespace AmazonDeliveryPlanner
         string driverListURL;
         string[] defaultTabs;
         string apiBaseURL;
+        string plannerListURL;
         string relayCredentialsEmail;
         string relayCredentialsPass;
         string adminCredentialsEmail;
@@ -35,6 +36,8 @@ namespace AmazonDeliveryPlanner
         public string[] DefaultTabs { get => defaultTabs; set => defaultTabs = value; }
         [JsonProperty("api_base_url")]
         public string ApiBaseURL { get => apiBaseURL; set => apiBaseURL = value; }
+        [JsonProperty("planner_list_url")]
+        public string PlannerListURL { get => plannerListURL; set => plannerListURL = value; }
         [JsonProperty("relay_credentials_email")]
         public string RelayCredentialsEmail { get => relayCredentialsEmail; set => relayCredentialsEmail = value; }
         [JsonProperty("relay_credentials_pass")]

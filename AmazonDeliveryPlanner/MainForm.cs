@@ -43,6 +43,23 @@ namespace AmazonDeliveryPlanner
             try
             {
                 Init();
+
+                //this.Hide();
+                if (!OpenPlannerSelectorForm())
+                {
+                    MessageBox.Show("Could not get planner list - application will now exit!", GlobalContext.ApplicationTitle);
+
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                    Application.Exit();                    
+                    return;
+                }
+                else
+                    plannerLabel.Text = "\uA19C" + " " + GlobalContext.LoggedInPlanner.ToString(); // U+1F464 ??  U+A19C ?
+                //this.Show();
+
+                //// InitializeComponent();
+
+                InitMainFormDataControls();
                 InitAdminBrowser();
                 InitDriversPanelBrowser();
             }
@@ -55,7 +72,9 @@ namespace AmazonDeliveryPlanner
                     ex.Source + System.Environment.NewLine
                     );
                 
-                Application.Exit();
+                // Application.Exit();                
+                // System.Diagnostics.Process.GetCurrentProcess().Kill();
+                // return;
             }
 
             driversPanel.Visible = false;
@@ -123,7 +142,7 @@ namespace AmazonDeliveryPlanner
 
             if (File.Exists(configurationFilePath))
                 LoadConfiguration();
-                // GlobalContext.SerializedConfiguration = (SerializedConfiguration)Utilities.LoadXML(configurationFilePath, typeof(SerializedConfiguration));
+            // GlobalContext.SerializedConfiguration = (SerializedConfiguration)Utilities.LoadXML(configurationFilePath, typeof(SerializedConfiguration));
             else
             {
                 // SerializedConfiguration conf = SerializedConfiguration.GetDefaultOptions();
@@ -149,7 +168,10 @@ namespace AmazonDeliveryPlanner
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             // Use SecurityProtocolType.Ssl3 if needed for compatibility reasons
             // otherwise we get {"The request was aborted: Could not create SSL/TLS secure channel."}
+        }
 
+        void InitMainFormDataControls()
+        {
             UpdateDriverList();
 
             // LoadScripts();
@@ -208,6 +230,9 @@ namespace AmazonDeliveryPlanner
 
         public void Output(string text)
         {
+            if (this.logTextBox == null)
+                return;
+
             if (this.logTextBox.InvokeRequired)
             {
                 SetTextCallback stc = new SetTextCallback(Output);
@@ -804,7 +829,7 @@ namespace AmazonDeliveryPlanner
             // LoadMFIFCPage();
             
             /* "https://admin.dlg1.app" */
-            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL);
+            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL + "?token=" + GlobalContext.LoggedInPlanner.token);
 
             adminBrowser.Dock = DockStyle.Fill;
 
@@ -1060,7 +1085,7 @@ namespace AmazonDeliveryPlanner
             // LoadMFIFCPage();
 
             /* "https://admin.dlg1.app" */
-            driversPanelBrowser.Load(GlobalContext.SerializedConfiguration.DriverListURL);
+            driversPanelBrowser.Load(GlobalContext.SerializedConfiguration.DriverListURL + "?token=" + GlobalContext.LoggedInPlanner.token);
 
             driversPanelBrowser.Dock = DockStyle.Fill;
 
@@ -1158,5 +1183,63 @@ namespace AmazonDeliveryPlanner
                     AddSessionTab();
                 });
         }
+
+        public bool OpenPlannerSelectorForm()
+        {
+            UpdatePlannerList();
+
+            if (_plannerList == null || _plannerList.planners == null || _plannerList.planners.Length == 0)
+                return false;
+
+            PlannerSelectorForm plannerSelectorForm = new PlannerSelectorForm(_plannerList.planners);
+
+            plannerSelectorForm.DisplayOnlyPlannerGroupName = false;
+            plannerSelectorForm.StartPosition = FormStartPosition.CenterScreen;
+
+            if (plannerSelectorForm.ShowDialog() == DialogResult.OK && plannerSelectorForm.SelectedPlanner != null)
+            {
+                GlobalContext.LoggedInPlanner = plannerSelectorForm.SelectedPlanner;
+                GlobalContext.Log($"Planner logged in: '{GlobalContext.LoggedInPlanner}'");
+
+                return true;
+            }
+
+            return false;
+        }
+
+        PlannerList _plannerList;
+
+        void UpdatePlannerList()
+        {
+            int tryCount = 0;
+            Exception lastException = null;
+
+            do
+            {
+                try
+                {
+                    tryCount++;
+
+                    PlannerList plannerList = PlannersAPI.GetPlanners();
+
+                    // GlobalContext.LastDriverList = driverList;
+
+                    _plannerList = plannerList;
+
+                    // UpdateDriverListControl();
+
+                    return;
+                }
+                catch (Exception ex)
+                {
+                    GlobalContext.Log("Exception getting planners from web service: '{0}'", ex.Message);
+                    lastException = ex;
+                }
+            } while (tryCount < 4);
+
+            if (lastException != null)
+                MessageBox.Show("Exception loading planners: " + lastException.Message);
+        }
+
     }
 }

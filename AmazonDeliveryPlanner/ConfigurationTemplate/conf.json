@@ -8,6 +8,7 @@
     "http://localhost/test_amazonrelay_dp/download.html"
   ],
   "api_base_url": "https://srv.dlg1.app/api",
+  "planner_list_url": "http://167.86.94.125:52031/api/auth2/external/get-all-planners",
   "planning_overview_url": "http://dlg1.app/planning-overview/{user_id}/info",
   "relay_credentials_email": "relay_email_test",
   "relay_credentials_pass": "relay_pass_test",

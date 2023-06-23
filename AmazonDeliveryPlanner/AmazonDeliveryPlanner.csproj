@@ -113,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="API\data\DriverRouteEntity.cs" />
+    <Compile Include="API\PlannersAPI.cs" />
     <Compile Include="API\DriversAPI.cs" />
     <Compile Include="BrowserUserControl.cs">
       <SubType>UserControl</SubType>
@@ -129,6 +130,12 @@
     </Compile>
     <Compile Include="BrowserKeyboardHandler.cs" />
     <Compile Include="BrowserCallbackObjectForJs.cs" />
+    <Compile Include="PlannerSelectorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="PlannerSelectorForm.Designer.cs">
+      <DependentUpon>PlannerSelectorForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="OpenDriverForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -172,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="DriverUserControl.resx">
       <DependentUpon>DriverUserControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="PlannerSelectorForm.resx">
+      <DependentUpon>PlannerSelectorForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="OpenDriverForm.resx">
       <DependentUpon>OpenDriverForm.cs</DependentUpon>
