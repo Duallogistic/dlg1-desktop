@@ -47,9 +47,17 @@ namespace AmazonDeliveryPlanner.API
         public override string ToString()
         {
             if (_ListModeToString)
-                return (string.IsNullOrWhiteSpace(this.last_name) ? "" : this.last_name.Replace(this.first_name != null ? this.first_name.Trim() : "", "")).Replace(this.role_name != null ? this.role_name.Trim() : "", "");
+                return (
+                        (string.IsNullOrWhiteSpace(this.last_name)  ? "" : this.last_name.Trim()) + " " +
+                        (string.IsNullOrWhiteSpace(this.first_name) ? "" : this.first_name.Trim()) + " " +
+                        (string.IsNullOrWhiteSpace(this.role_name)  ? "" : "(" + this.role_name.Trim() + ")")
+                       ).Trim();
             else
-                return (string.IsNullOrWhiteSpace(this.last_name) ? "" : this.last_name.Replace(this.first_name != null ? this.first_name.Trim() : "", "")).Replace(this.role_name != null ? this.role_name.Trim() : "", "");
+                return (
+                        (string.IsNullOrWhiteSpace(this.last_name) ? "" : this.last_name.Trim()) + " " +
+                        (string.IsNullOrWhiteSpace(this.first_name) ? "" : this.first_name.Trim()) + " " +
+                        (string.IsNullOrWhiteSpace(this.role_name) ? "" : "(" + this.role_name.Trim() + ")")
+                       ).Trim();
         }
     }
 
