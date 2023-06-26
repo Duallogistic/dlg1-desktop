@@ -43,6 +43,7 @@
             this.openAddressGoogleMapsButton = new System.Windows.Forms.Button();
             this.addBrowserTabButton = new System.Windows.Forms.Button();
             this.fileDownloadedLabel = new System.Windows.Forms.Label();
+            this.autoDownloadStatusLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -147,7 +148,7 @@
             // 
             this.closeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.closeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.closeButton.Location = new System.Drawing.Point(1142, 3);
+            this.closeButton.Location = new System.Drawing.Point(1140, 3);
             this.closeButton.Name = "closeButton";
             this.closeButton.Size = new System.Drawing.Size(56, 23);
             this.closeButton.TabIndex = 57;
@@ -180,7 +181,7 @@
             // openAddressGoogleMapsButton
             // 
             this.openAddressGoogleMapsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.openAddressGoogleMapsButton.Location = new System.Drawing.Point(901, 3);
+            this.openAddressGoogleMapsButton.Location = new System.Drawing.Point(899, 3);
             this.openAddressGoogleMapsButton.Name = "openAddressGoogleMapsButton";
             this.openAddressGoogleMapsButton.Size = new System.Drawing.Size(96, 23);
             this.openAddressGoogleMapsButton.TabIndex = 65;
@@ -192,7 +193,7 @@
             // 
             this.addBrowserTabButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.addBrowserTabButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.addBrowserTabButton.Location = new System.Drawing.Point(1003, 3);
+            this.addBrowserTabButton.Location = new System.Drawing.Point(1001, 3);
             this.addBrowserTabButton.Name = "addBrowserTabButton";
             this.addBrowserTabButton.Size = new System.Drawing.Size(96, 23);
             this.addBrowserTabButton.TabIndex = 66;
@@ -204,17 +205,29 @@
             // 
             this.fileDownloadedLabel.AutoSize = true;
             this.fileDownloadedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.fileDownloadedLabel.Location = new System.Drawing.Point(465, 4);
+            this.fileDownloadedLabel.Location = new System.Drawing.Point(384, 4);
             this.fileDownloadedLabel.Name = "fileDownloadedLabel";
             this.fileDownloadedLabel.Size = new System.Drawing.Size(17, 18);
             this.fileDownloadedLabel.TabIndex = 67;
             this.fileDownloadedLabel.Text = "_";
+            // 
+            // autoDownloadStatusLabel
+            // 
+            this.autoDownloadStatusLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.autoDownloadStatusLabel.AutoSize = true;
+            this.autoDownloadStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.autoDownloadStatusLabel.Location = new System.Drawing.Point(565, 8);
+            this.autoDownloadStatusLabel.Name = "autoDownloadStatusLabel";
+            this.autoDownloadStatusLabel.Size = new System.Drawing.Size(13, 13);
+            this.autoDownloadStatusLabel.TabIndex = 68;
+            this.autoDownloadStatusLabel.Text = "_";
             // 
             // DriverUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.autoDownloadStatusLabel);
             this.Controls.Add(this.fileDownloadedLabel);
             this.Controls.Add(this.addBrowserTabButton);
             this.Controls.Add(this.openAddressGoogleMapsButton);
@@ -231,8 +244,9 @@
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Name = "DriverUserControl";
-            this.Size = new System.Drawing.Size(1201, 28);
+            this.Size = new System.Drawing.Size(1199, 28);
             this.Load += new System.EventHandler(this.DriverUserControl_Load);
+            this.Resize += new System.EventHandler(this.DriverUserControl_Resize);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -254,5 +268,6 @@
         private System.Windows.Forms.Button openAddressGoogleMapsButton;
         private System.Windows.Forms.Button addBrowserTabButton;
         private System.Windows.Forms.Label fileDownloadedLabel;
+        private System.Windows.Forms.Label autoDownloadStatusLabel;
     }
 }

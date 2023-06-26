@@ -163,6 +163,16 @@ namespace AmazonDeliveryPlanner
 
             fileDownloadedLabel.Text = "";
         }
+
+        public void UpdateAutoDownloadLabel(string text)
+        {
+            autoDownloadStatusLabel.Text = text;
+        }
+
+        private void DriverUserControl_Resize(object sender, EventArgs e)
+        {
+            this.PerformLayout();
+        }
     }
 
     //public class SessionClosedEventArgs : EventArgs

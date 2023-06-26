@@ -366,6 +366,7 @@ namespace AmazonDeliveryPlanner
             // driverUC.Dock = System.Windows.Forms.DockStyle.Fill;
             driverUC.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             driverUC.Location = new System.Drawing.Point(3, 0);
+            driverUC.Width = stp.Width - 10;
             driverUC.Name = "TCSesiune_DriverUC_" + sessionCount;
 
             // driverUC.Tag = selectedDriver;
@@ -373,7 +374,7 @@ namespace AmazonDeliveryPlanner
             driverUC.OpenURL += DriverUC_OpenURL;
 
             driverUC.ResumeLayout();
-
+            
             stp.Controls.Add(driverUC);
 
 
@@ -476,6 +477,7 @@ namespace AmazonDeliveryPlanner
 
                     bUC.Tag = driverUC;
                     bUC.FileUploadFinished += BUC_FileUploadFinished;
+                    bUC.UpdateAutoDownloadStatus += BUC_UpdateAutoDownloadStatus;
                 }
 
                 urlTabPage.ResumeLayout();
@@ -508,6 +510,19 @@ namespace AmazonDeliveryPlanner
             openTabDrivers[selectedDriver.driver_id] = true;
         }
 
+        private void BUC_UpdateAutoDownloadStatus(object sender, BrowserUserControl.UpdateAutoDownloadIntervalStatusEventArgs e)
+        {
+            System.Action sa = (System.Action)(() =>
+            {
+                ((sender as BrowserUserControl).Tag as DriverUserControl).UpdateAutoDownloadLabel(e.Text);
+            });
+
+            if (this.InvokeRequired)
+                this.Invoke(sa);
+            else
+                sa();
+        }
+
         private void BUC_FileUploadFinished(object sender, BrowserUserControl.FileUploadFinishedEventArgs e)
         {
             System.Action sa = (System.Action)(() =>
@@ -518,8 +533,7 @@ namespace AmazonDeliveryPlanner
             if (this.InvokeRequired)
                 this.Invoke(sa);
             else
-                sa();
-            
+                sa();            
         }
 
         private void DriverUC_OpenURL(object sender, OpenURLEventArgs e)
@@ -1293,6 +1307,5 @@ namespace AmazonDeliveryPlanner
                 GlobalContext.Scripts.Add(fileName.Replace(".js", ""), File.ReadAllText(filePath));
             }
         }
-
     }
 }

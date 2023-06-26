@@ -21,6 +21,8 @@ namespace AmazonDeliveryPlanner
         string plannerListURL;
         string relayCredentialsEmail;
         string relayCredentialsPass;
+        int autoDownloadExportFileRandomMinInterval;
+        int autoDownloadExportFileRandomMaxInterval;
         string adminCredentialsEmail;
         string adminCredentialsPass;
         string downloadDirectoryPath;
@@ -42,6 +44,10 @@ namespace AmazonDeliveryPlanner
         public string RelayCredentialsEmail { get => relayCredentialsEmail; set => relayCredentialsEmail = value; }
         [JsonProperty("relay_credentials_pass")]
         public string RelayCredentialsPass { get => relayCredentialsPass; set => relayCredentialsPass = value; }
+        [JsonProperty("auto_download_export_file_random_min_interval")]
+        public int AutoDownloadExportFileRandomMinInterval { get => autoDownloadExportFileRandomMinInterval; set => autoDownloadExportFileRandomMinInterval = value; }
+        [JsonProperty("auto_download_export_file_random_max_interval")]
+        public int AutoDownloadExportFileRandomMaxInterval { get => autoDownloadExportFileRandomMaxInterval; set => autoDownloadExportFileRandomMaxInterval = value; }
         [JsonProperty("admin_credentials_email")]
         public string AdminCredentialsEmail { get => adminCredentialsEmail; set => adminCredentialsEmail = value; }
         [JsonProperty("admin_credentials_pass")]
