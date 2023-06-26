@@ -121,6 +121,9 @@
     <Compile Include="BrowserUserControl.designer.cs">
       <DependentUpon>BrowserUserControl.cs</DependentUpon>
     </Compile>
+    <Content Include="CEF\js\clickExportTripsButton.js">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Compile Include="DownloadHandler.cs" />
     <Compile Include="DriverUserControl.cs">
       <SubType>UserControl</SubType>

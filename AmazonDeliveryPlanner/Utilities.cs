@@ -112,5 +112,34 @@ namespace AmazonDeliveryPlanner
             //log4net.ILog logger = log4net.LogManager.GetLogger("File");
             //logger.Info(header + ": " + message);
         }
+
+        /*
+
+private async Task<System.IO.Stream> Upload(string actionUrl, 
+//string paramString, Stream paramFileStream, 
+byte[] paramFileBytes, string fileName)
+{
+    //HttpContent stringContent = new StringContent(paramString);
+    //HttpContent fileStreamContent = new StreamContent(paramFileStream);
+    HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
+
+    using (var client = new HttpClient())
+    using (var formData = new MultipartFormDataContent())
+    {
+        //formData.Add(stringContent, "param1", "param1");
+        //formData.Add(fileStreamContent, "file1", "file1");
+        formData.Add(bytesContent, "files", fileName);
+
+        var response = await client.PostAsync(actionUrl, formData);
+
+        if (!response.IsSuccessStatusCode)
+        {
+            return null;
+        }
+
+        return await response.Content.ReadAsStreamAsync();
+    }
+}
+*/
     }
 }

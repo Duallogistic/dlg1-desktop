@@ -174,7 +174,7 @@ namespace AmazonDeliveryPlanner
         {
             UpdateDriverList();
 
-            // LoadScripts();
+            LoadScripts();
 
             InitializeCEF();
 
@@ -1148,7 +1148,7 @@ namespace AmazonDeliveryPlanner
         }
 
         private void showDriversBrowserControlDevToolsButton_Click(object sender, EventArgs e)
-        {
+        {            
             driversPanelBrowser.ShowDevTools();
         }
 
@@ -1271,5 +1271,28 @@ namespace AmazonDeliveryPlanner
                     // driverListBox.Refresh();
             }
         }
+
+        void LoadScripts()
+        {
+            //{
+            //    string jsFilePath1 = Path.Combine(Utilities.GetApplicationPath(), @"cef\js\getDropdownPosScript.js");
+
+            //    GlobalContext._GetDropdownPosScript = File.ReadAllText(jsFilePath1);
+            //}
+
+            GlobalContext.Scripts = new Dictionary<string, string>();
+
+            string scriptsDirectory = Path.Combine(Utilities.GetApplicationPath(), @"cef\js\");
+
+            string[] files = Directory.GetFiles(scriptsDirectory, "*.js");
+
+            foreach (string filePath in files)
+            {
+                string fileName = Path.GetFileName(filePath);
+
+                GlobalContext.Scripts.Add(fileName.Replace(".js", ""), File.ReadAllText(filePath));
+            }
+        }
+
     }
 }

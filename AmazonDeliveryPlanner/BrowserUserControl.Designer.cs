@@ -40,6 +40,7 @@ namespace AmazonDeliveryPlanner
             this.goBackButton = new System.Windows.Forms.Button();
             this.goForwardButton = new System.Windows.Forms.Button();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.downloadTripsButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.SuspendLayout();
@@ -61,7 +62,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.refrehPageButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.refrehPageButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refrehPageButton.Location = new System.Drawing.Point(669, -1);
+            this.refrehPageButton.Location = new System.Drawing.Point(632, -1);
             this.refrehPageButton.Margin = new System.Windows.Forms.Padding(0);
             this.refrehPageButton.Name = "refrehPageButton";
             this.refrehPageButton.Size = new System.Drawing.Size(26, 23);
@@ -86,7 +87,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.increaseTextSizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.increaseTextSizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.increaseTextSizeButton.Location = new System.Drawing.Point(753, -1);
+            this.increaseTextSizeButton.Location = new System.Drawing.Point(716, -1);
             this.increaseTextSizeButton.Name = "increaseTextSizeButton";
             this.increaseTextSizeButton.Size = new System.Drawing.Size(20, 23);
             this.increaseTextSizeButton.TabIndex = 33;
@@ -98,7 +99,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.decreaseTextSizeButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.decreaseTextSizeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.decreaseTextSizeButton.Location = new System.Drawing.Point(773, -1);
+            this.decreaseTextSizeButton.Location = new System.Drawing.Point(736, -1);
             this.decreaseTextSizeButton.Name = "decreaseTextSizeButton";
             this.decreaseTextSizeButton.Size = new System.Drawing.Size(20, 23);
             this.decreaseTextSizeButton.TabIndex = 34;
@@ -112,7 +113,7 @@ namespace AmazonDeliveryPlanner
             | System.Windows.Forms.AnchorStyles.Right)));
             this.urlTextBox.Location = new System.Drawing.Point(0, 0);
             this.urlTextBox.Name = "urlTextBox";
-            this.urlTextBox.Size = new System.Drawing.Size(637, 20);
+            this.urlTextBox.Size = new System.Drawing.Size(599, 20);
             this.urlTextBox.TabIndex = 35;
             this.urlTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this.urlTextBox_KeyUp);
             // 
@@ -120,7 +121,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.loadUrlButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.loadUrlButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.loadUrlButton.Location = new System.Drawing.Point(639, -1);
+            this.loadUrlButton.Location = new System.Drawing.Point(602, -1);
             this.loadUrlButton.Name = "loadUrlButton";
             this.loadUrlButton.Size = new System.Drawing.Size(26, 23);
             this.loadUrlButton.TabIndex = 36;
@@ -142,7 +143,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.goBackButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.goBackButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.goBackButton.Location = new System.Drawing.Point(698, 0);
+            this.goBackButton.Location = new System.Drawing.Point(661, 0);
             this.goBackButton.Name = "goBackButton";
             this.goBackButton.Size = new System.Drawing.Size(26, 23);
             this.goBackButton.TabIndex = 38;
@@ -154,7 +155,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.goForwardButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.goForwardButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.goForwardButton.Location = new System.Drawing.Point(724, 0);
+            this.goForwardButton.Location = new System.Drawing.Point(687, 0);
             this.goForwardButton.Name = "goForwardButton";
             this.goForwardButton.Size = new System.Drawing.Size(26, 23);
             this.goForwardButton.TabIndex = 49;
@@ -178,10 +179,23 @@ namespace AmazonDeliveryPlanner
             this.splitContainer1.SplitterDistance = 557;
             this.splitContainer1.TabIndex = 51;
             // 
+            // downloadTripsButton
+            // 
+            this.downloadTripsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.downloadTripsButton.Location = new System.Drawing.Point(770, -1);
+            this.downloadTripsButton.Margin = new System.Windows.Forms.Padding(0);
+            this.downloadTripsButton.Name = "downloadTripsButton";
+            this.downloadTripsButton.Size = new System.Drawing.Size(26, 23);
+            this.downloadTripsButton.TabIndex = 52;
+            this.downloadTripsButton.Text = "📥";
+            this.downloadTripsButton.UseVisualStyleBackColor = true;
+            this.downloadTripsButton.Click += new System.EventHandler(this.downloadTripsButton_Click);
+            // 
             // BrowserUserControl
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.downloadTripsButton);
             this.Controls.Add(this.splitContainer1);
             this.Controls.Add(this.goForwardButton);
             this.Controls.Add(this.goBackButton);
@@ -217,5 +231,6 @@ namespace AmazonDeliveryPlanner
         private System.Windows.Forms.Button goForwardButton;
         
         private System.Windows.Forms.SplitContainer splitContainer1;
+        private System.Windows.Forms.Button downloadTripsButton;
     }
 }

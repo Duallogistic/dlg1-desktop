@@ -61,7 +61,6 @@ namespace AmazonDeliveryPlanner
         private void Browser_KeyUp(object sender, KeyEventArgs e)
         {
             e.SuppressKeyPress = false;
-            // throw new NotImplementedException();
         }
 
         private void Browser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
@@ -145,9 +144,11 @@ namespace AmazonDeliveryPlanner
         {
             if (e.IsComplete)
             {
+                string uploadURL = "";
+
                 try
                 {
-                    string uploadURL = GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
+                    uploadURL = GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
                     // string uploadURL = "http://167.86.94.125:52031/api/auth2/external/upload";
 
                     // uploadURL = "https://qa-srv.dlg1.app/api/auth2/external/upload";
@@ -320,9 +321,8 @@ namespace AmazonDeliveryPlanner
                     //    MessageBox.Show("Exception download file: " + ex.Message + " " + responseString);
                     //}
 
-                    GlobalContext.Log("exception downloading file: " + ex.Message);
-
-                    MessageBox.Show("Exception download file: " + ex.Message);                    
+                    GlobalContext.Log($"Exception uploading the file to ${uploadURL}: ${ex.Message}");
+                    MessageBox.Show($"Exception uploading the file to ${uploadURL}: ${ex.Message}");                    
                 }
             }
         }
@@ -386,10 +386,7 @@ namespace AmazonDeliveryPlanner
 
         private void Browser_IsBrowserInitializedChanged(object sender, EventArgs e)
         {
-            //if (GlobalContext.ShowDevTools)
-            //    browser.ShowDevTools();
-
-            //LoadMFIFCPage();
+            //if (GlobalContext.ShowDevTools)            //    browser.ShowDevTools();
         }
 
 
@@ -424,8 +421,7 @@ namespace AmazonDeliveryPlanner
                         // bool result = (bool)response.Result;
                     }
 
-                    //System.Action sa = (System.Action)(() =>
-                    //{
+                    //System.Action sa = (System.Action)(() =>                    //{
                     //    urlTextBox.Text = e.Url;
                     //    // urlTextBox.Text = 
                     //    if (((TabPage)this.Parent).Text == "_____________")
@@ -464,7 +460,7 @@ namespace AmazonDeliveryPlanner
 
         private void Browser_MouseMove(object sender, MouseEventArgs e)
         {
-            DoMouseClick((uint)e.X, (uint)e.Y);
+            // DoMouseClick((uint)e.X, (uint)e.Y);
         }
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
@@ -556,36 +552,6 @@ namespace AmazonDeliveryPlanner
             browser.Forward();
         }
 
-
-        /*
-        
-        private async Task<System.IO.Stream> Upload(string actionUrl, 
-        //string paramString, Stream paramFileStream, 
-        byte[] paramFileBytes, string fileName)
-        {
-            //HttpContent stringContent = new StringContent(paramString);
-            //HttpContent fileStreamContent = new StreamContent(paramFileStream);
-            HttpContent bytesContent = new ByteArrayContent(paramFileBytes);
-
-            using (var client = new HttpClient())
-            using (var formData = new MultipartFormDataContent())
-            {
-                //formData.Add(stringContent, "param1", "param1");
-                //formData.Add(fileStreamContent, "file1", "file1");
-                formData.Add(bytesContent, "files", fileName);
-
-                var response = await client.PostAsync(actionUrl, formData);
-                
-                if (!response.IsSuccessStatusCode)
-                {
-                    return null;
-                }
-
-                return await response.Content.ReadAsStreamAsync();
-            }
-        }
-        */
-
         void InitPanel2Browser()
         {
             // !
@@ -648,6 +614,25 @@ namespace AmazonDeliveryPlanner
             browser2.Load(panel2URL);
 
             browser2.Dock = DockStyle.Fill;            
+        }
+
+        async void ClickExportTripsFile()
+        {
+            JavascriptResponse response = await browser.GetMainFrame().EvaluateScriptAsync(GlobalContext.Scripts["clickExportTripsButton"]);
+
+            if (response.Result == null)
+                throw new NullReferenceException("response.Result == null");
+            // return;
+
+            bool jsScriptResult = (bool)response.Result;
+
+            if (!jsScriptResult)
+                GlobalContext.Log($"Failed to click on the export button!");
+        }
+
+        private void downloadTripsButton_Click(object sender, EventArgs e)
+        {
+            ClickExportTripsFile();
         }
     }
 }

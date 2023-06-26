@@ -33,6 +33,7 @@ namespace AmazonDeliveryPlanner
         public static SerializedConfiguration SerializedConfiguration { get => serializedConfiguration; set => serializedConfiguration = value; }
         public static string ConfigurationFileName { get => "conf.json"; }
         public static Planner LoggedInPlanner { get => loggedInPlanner; set => loggedInPlanner = value; }
+        public static Dictionary<string, string> Scripts { get => scripts; set => scripts = value; }
 
         public static void Log(string text, params object[] args)
         {
@@ -84,5 +85,7 @@ namespace AmazonDeliveryPlanner
         static SerializedConfiguration serializedConfiguration;
 
         static Planner loggedInPlanner;
+
+        static Dictionary<string, string> scripts;
     }
 }
