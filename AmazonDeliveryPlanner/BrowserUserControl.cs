@@ -21,6 +21,7 @@ using Newtonsoft.Json;
 using System.Net.Http;
 using AmazonDeliveryPlanner.API;
 using CefSharp.DevTools.WebAudio;
+using RestSharp.Extensions;
 
 namespace AmazonDeliveryPlanner
 {
@@ -59,7 +60,8 @@ namespace AmazonDeliveryPlanner
 
         private void Browser_KeyUp(object sender, KeyEventArgs e)
         {
-            throw new NotImplementedException();
+            e.SuppressKeyPress = false;
+            // throw new NotImplementedException();
         }
 
         private void Browser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
