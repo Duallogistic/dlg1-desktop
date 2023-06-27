@@ -1,0 +1,18 @@
+{
+  "admin_url": "http://localhost:8080",
+  "api_base_url": "http://localhost:52031/api",
+  "driver_list_url": "/#/drivers-list",
+  "file_upload_url": "/auth2/external/upload",
+  "planner_list_url": "/auth2/external/get-all-planners",
+  "planning_overview_url": "/#/planning-preview/{user_id}/chat",
+  "relay_credentials_email": "Dual_Amz_Admin@dlg1.co.uk",
+  "relay_credentials_pass": "libertate250Kmh",
+  "admin_credentials_email": "florin@doitdev.ro",
+  "admin_credentials_pass": "5Fl0rin5",
+  "download_directory_path": "c:\\temp\\amazon_download_directory",
+  "default_tabs": [
+    "https://relay.amazon.co.uk/tours/",
+    "freeola.com/webmail/login/"
+  ],
+  "debug": true
+}

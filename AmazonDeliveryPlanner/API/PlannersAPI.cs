@@ -69,7 +69,7 @@ namespace AmazonDeliveryPlanner.API
             {
                 // string getDriversURL = GlobalContext.SerializedConfiguration.ApiBaseURL + "/auth2/external/get-all-planners";                
                 // string getDriversURL = "http://167.86.94.125:52031/api/auth2/external/get-all-planners";
-                string getPlannersURL = GlobalContext.SerializedConfiguration.PlannerListURL;
+                string getPlannersURL = GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.PlannerListURL;
 
                 GlobalContext.Log("Getting planners from  '{0}'", getPlannersURL);
 

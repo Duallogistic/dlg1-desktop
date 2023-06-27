@@ -842,8 +842,7 @@ namespace AmazonDeliveryPlanner
 
             // LoadMFIFCPage();
             
-            /* "https://admin.dlg1.app" */
-            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL + "?token=" + GlobalContext.LoggedInPlanner.token);
+            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL + "/" + GlobalContext.LoggedInPlanner.token);
 
             adminBrowser.Dock = DockStyle.Fill;
 
@@ -1098,8 +1097,9 @@ namespace AmazonDeliveryPlanner
 
             // LoadMFIFCPage();
 
-            /* "https://admin.dlg1.app" */
-            driversPanelBrowser.Load(GlobalContext.SerializedConfiguration.DriverListURL + "?token=" + GlobalContext.LoggedInPlanner.token);
+            string _url = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.DriverListURL + "/" + GlobalContext.LoggedInPlanner.token;
+            driversPanelBrowser.Load(_url);
+            GlobalContext.Log("URL for driver igrame is:  '{0}'", _url);
 
             driversPanelBrowser.Dock = DockStyle.Fill;
 
@@ -1268,8 +1268,11 @@ namespace AmazonDeliveryPlanner
 
                 plannerLabel.Text = "\uA19C" + " " + GlobalContext.LoggedInPlanner.ToString(); // U+1F464 ??  U+A19C ?
 
-                adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL + "?token=" + GlobalContext.LoggedInPlanner.token);
-                driversPanelBrowser.Load(GlobalContext.SerializedConfiguration.DriverListURL + "?token=" + GlobalContext.LoggedInPlanner.token);                
+                string url = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.DriverListURL + "/" + GlobalContext.LoggedInPlanner.token;
+                adminBrowser.Load(url);
+                driversPanelBrowser.Load(url);
+
+                GlobalContext.Log("Drivers list url is:  '{0}'", url);
             }
         }
 

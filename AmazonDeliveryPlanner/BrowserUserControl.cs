@@ -715,8 +715,12 @@ namespace AmazonDeliveryPlanner
             }
             
             // ex.: http://dlg1.app/planning-overview/{user_id}/info
-            string panel2URL = GlobalContext.SerializedConfiguration.PlanningOverviewURL.Replace("{user_id}", driverId.ToString()) + "?token=" + GlobalContext.LoggedInPlanner.token;
+            string panel2URL = GlobalContext.SerializedConfiguration.AdminURL + 
+                
+                GlobalContext.SerializedConfiguration.PlanningOverviewURL.Replace("{user_id}", driverId.ToString()) + "/" + GlobalContext.LoggedInPlanner.token;
             browser2.Load(panel2URL);
+
+            GlobalContext.Log("Planning Overview Url is set to:  '{0}'", panel2URL);
 
             browser2.Dock = DockStyle.Fill;            
         }
