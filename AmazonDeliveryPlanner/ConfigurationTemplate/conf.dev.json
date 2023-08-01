@@ -1,6 +1,6 @@
 {
-  "admin_url": "http://localhost:8080",
-  "api_base_url": "http://localhost:52031/api",
+  "admin_url": "https://admin.dlg1.app/",
+  "api_base_url": "https://srv.dlg1.app/api",
   "driver_list_url": "/#/drivers-list",
   "file_upload_url": "/auth2/external/upload",
   "planner_list_url": "/auth2/external/get-all-planners",
