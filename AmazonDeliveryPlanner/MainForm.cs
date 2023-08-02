@@ -22,6 +22,7 @@ using File = System.IO.File;
 using System.Threading;
 using CefSharp.Handler;
 using System.Web.Configuration;
+using System.Runtime.Caching;
 // using System.Runtime.InteropServices;
 
 namespace AmazonDeliveryPlanner
@@ -111,6 +112,8 @@ namespace AmazonDeliveryPlanner
             // set this to LogSeverity.Disable to avoid logging to 'debug.log' file and generating a big file
             cfsettings.LogSeverity = LogSeverity.Disable;
             // cfsettings.PersistSessionCookies = ;
+            cfsettings.Locale = "en-US";
+            
 
             // CefSharp.Cef.Initialize(cfsettings);
             Cef.Initialize(cfsettings, performDependencyCheck: true, browserProcessHandler: null);
@@ -318,6 +321,20 @@ namespace AmazonDeliveryPlanner
 
         Dictionary<long, bool> openTabDrivers = new Dictionary<long, bool>();
 
+        private MemoryCache cache = MemoryCache.Default;
+
+        public void AddIdToList(int idToAdd)
+        {
+            DbLite db = new DbLite(); 
+            db.AddIdToList(idToAdd);
+        }
+
+        public List<int> GetListOfIds()
+        {
+            DbLite db = new DbLite();
+            return db.GetListOfIds();
+        }
+
         void AddSessionTab()
         {
             if (selectedDriver == null)
@@ -325,6 +342,9 @@ namespace AmazonDeliveryPlanner
                 MessageBox.Show("No driver selected", GlobalContext.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
+
+            AddIdToList((int)selectedDriver.driver_id);
+
 
             foreach (TabPage page in tabControl.TabPages)
             {
@@ -632,6 +652,7 @@ namespace AmazonDeliveryPlanner
         }
         private void DriverUC_SessionClosed(object sender, EventArgs e)
         {
+            DbLite db = new DbLite();
             foreach (TabPage page in tabControl.TabPages)
             {
                 if (page.Controls.Contains((Control)sender))
@@ -642,6 +663,8 @@ namespace AmazonDeliveryPlanner
                     Driver drv = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == ((DriverSessionObject)page.Tag).DriverId).SingleOrDefault();
 
                     openTabDrivers[drv.driver_id] = false;
+
+                    db.DeleteIdFromList((int)drv.driver_id);
 
                     driverListBox.Refresh();
                 }
@@ -666,7 +689,7 @@ namespace AmazonDeliveryPlanner
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-
+          
         }
 
         DriverList _driverList;
@@ -1125,6 +1148,17 @@ namespace AmazonDeliveryPlanner
             // or async            
             //browser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
             //browser.JavascriptObjectRepository.Register("boundAsync", new AsyncBoundObject(), isAsync: true, options: BindingOptions.DefaultBinder);
+
+
+            // MessageBox.Show("Welcome!");
+            List<int> listOfIds = GetListOfIds();
+
+            foreach (int id in listOfIds)
+            {
+                GlobalContext.Log(" ---------------- ID: " + id);
+                OpenDriverWindow(id.ToString(), true);
+                GlobalContext.Log(" ---------------- ID: " + id);
+            }
         }
 
         private void DriversPanelBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
@@ -1166,7 +1200,7 @@ namespace AmazonDeliveryPlanner
             driversPanelBrowser.ShowDevTools();
         }
 
-        public void OpenDriverWindow(string driverId)
+        public void OpenDriverWindow(string driverId, bool forceCall = false)
         {
             int _driverId = 0;
 
@@ -1190,12 +1224,21 @@ namespace AmazonDeliveryPlanner
                 return;
             }
 
-            if (this.InvokeRequired)
-                this.Invoke((MethodInvoker)delegate
-                {
-                    selectedDriver = clickedDriver;
-                    AddSessionTab();
-                });
+            if (forceCall)
+            {
+                selectedDriver = clickedDriver;
+                AddSessionTab();
+            }
+            else
+            {
+
+                if (this.InvokeRequired)
+                    this.Invoke((MethodInvoker)delegate
+                    {
+                        selectedDriver = clickedDriver;
+                        AddSessionTab();
+                    });
+            }
         }
 
         public bool OpenPlannerSelectorForm()
@@ -1273,6 +1316,7 @@ namespace AmazonDeliveryPlanner
                 driversPanelBrowser.Load(url);
 
                 GlobalContext.Log("Drivers list url is:  '{0}'", url);
+                
             }
         }
 

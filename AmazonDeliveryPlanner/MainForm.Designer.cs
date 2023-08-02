@@ -1,4 +1,6 @@
-﻿namespace AmazonDeliveryPlanner
+﻿using System.Windows.Forms;
+
+namespace AmazonDeliveryPlanner
 {
     partial class MainForm
     {
@@ -18,6 +20,16 @@
                 components.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Are you sure you want to exit?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+            {
+                // If the user clicks "No," cancel the form closing event
+                e.Cancel = true;
+            }
+            // If the user clicks "Yes," the form will be closed normally without further action
         }
 
         #region Windows Form Designer generated code
@@ -469,6 +481,7 @@
             this.KeyPreview = true;
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.MainForm_KeyUp);

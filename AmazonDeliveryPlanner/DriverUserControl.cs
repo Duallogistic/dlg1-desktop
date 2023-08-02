@@ -119,8 +119,18 @@ namespace AmazonDeliveryPlanner
         */
         private void closeButton_Click(object sender, EventArgs e)
         {
-            if (SessionClosed != null)
-                SessionClosed(this, new EventArgs());
+            // Show a confirmation dialog to the user
+            DialogResult result = MessageBox.Show("Are you sure you want to close the session?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+            // Check the user's response from the confirmation dialog
+            if (result == DialogResult.Yes)
+            {
+                
+                // Raise the SessionClosed event if the user confirms
+                if (SessionClosed != null)
+                    SessionClosed(this, EventArgs.Empty);
+            }
+            // If the user clicks "No," the action will be canceled and the event won't be raised.
         }
 
         private void openAddressGoogleMapsButton_Click(object sender, EventArgs e)
