@@ -865,7 +865,7 @@ namespace AmazonDeliveryPlanner
 
             // LoadMFIFCPage();
             
-            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL + "/" + GlobalContext.LoggedInPlanner.token);
+            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL); //  + "/" + GlobalContext.LoggedInPlanner.token
 
             adminBrowser.Dock = DockStyle.Fill;
 
