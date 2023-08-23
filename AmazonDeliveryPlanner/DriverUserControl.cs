@@ -1,5 +1,7 @@
 ﻿using AmazonDeliveryPlanner.API;
 using AmazonDeliveryPlanner.API.data;
+using CefSharp.WinForms;
+using CefSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -19,34 +21,45 @@ namespace AmazonDeliveryPlanner
     {
         Driver driver;
 
-        API.data.DriverRouteEntity driverRouteEntity;
+        //. API.data.DriverRouteEntity driverRouteEntity;
 
+        RequestContextSettings requestContextSettings;
         //string plan_note = null;
         //string op_note = null;
 
         public event EventHandler/*<SessionClosedEventArgs>*/ SessionClosed;
         public event EventHandler<OpenURLEventArgs> OpenURL;
 
-        public DriverUserControl(Driver driver)
+        public SplitContainer SplitContainer { get => this.splitContainer1; }
+
+        TabControl _urlsTabControl;
+        public TabControl UrlsTabControl { get => _urlsTabControl; set => _urlsTabControl = value; }
+
+        public DriverUserControl(Driver driver/*, RequestContextSettings requestContextSettings*/)
         {
             InitializeComponent();
-
+            
             this.driver = driver;
+
+            //. this.requestContextSettings = requestContextSettings;
+
+            InitPanel2Browser();
         }
 
-        public Driver Driver { get => driver; }
+        public Driver Driver { get => driver; }        
 
         private void DriverUserControl_Load(object sender, EventArgs e)
         {
             //savedIdLabel.Text = "not saved";
+            // this.BackColor = Color.Red; //xtest
 
             locationLabel.Text = driver.more_info.address.Length > 55 ? driver.more_info.address.Substring(0, 55) + "..." : driver.more_info.address;
-            odometerLabel.Text = driver.more_info.km.ToString() + " km";
-            regPlateLabel.Text = driver.reg_plate;
-            currentJobLabel.Text = "?";
-            nextJobLabel.Text = "?";
+            // odometerLabel.Text = driver.more_info.km.ToString() + " km";
+            // regPlateLabel.Text = driver.reg_plate;
+            // currentJobLabel.Text = "?";
+            // nextJobLabel.Text = "?";
 
-            testLabel.Text = string.Format("{0}  {1} {2}  {3}", driver.driver_id, driver.first_name, driver.last_name, driver.group_name);
+            // testLabel.Text = string.Format("{0}  {1} {2}  {3}", driver.driver_id, driver.first_name, driver.last_name, driver.group_name);
 
             fileDownloadedLabel.Text = "";
             //dayRadioButton.Checked = true;
@@ -182,6 +195,75 @@ namespace AmazonDeliveryPlanner
         private void DriverUserControl_Resize(object sender, EventArgs e)
         {
             this.PerformLayout();
+        }
+
+        void InitPanel2Browser()
+        {
+            // !
+            // System.AccessViolationException: 'Attempted to read or write protected memory. This is often an indication that other memory is corrupt.'
+            //GlobalContext.GlobalCefSettings.CachePath = @"C:\temp\cache_1";
+            // string cachePath = GlobalContext.GlobalCefSettings.CachePath;
+            // requestContextSettings.CachePath
+
+            // string upworkStartUrl = "www.google.com"; // "https://www.upwork.com";
+            // string upworkStartUrl = "https://www.upwork.com";
+
+            ChromiumWebBrowser browser2 = new ChromiumWebBrowser();
+            // browser = new ChromiumWebBrowser(url, requestContextSettings.);
+
+            if (requestContextSettings != null)
+                browser2.RequestContext = new RequestContext(requestContextSettings);
+            // projectSearchTabPage.SuspendLayout();
+
+            // browser2.DownloadHandler = new DownloadHandler();
+
+            // ((DownloadHandler)browser.DownloadHandler).OnDownloadUpdatedFired += BrowserUserControl_OnDownloadUpdatedFired;
+
+            // this.Controls.Add(browser);
+            splitContainer1.Panel2.Controls.Add(browser2);
+
+            browser2.Dock = DockStyle.Fill;
+
+            // projectSearchTabPage.ResumeLayout();
+
+            // projectSearchTabPage.Refresh();
+
+            // browser.LoadingStateChanged += Browser_LoadingStateChanged;
+            // browser2.FrameLoadEnd += Browser_FrameLoadEnd;
+
+            //browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
+
+            // browser.RequestHandler = new CustomRequestHandler();
+
+            //browser.Show();
+            //browser.PerformLayout();
+            this.PerformLayout();
+            this.Invalidate();
+            this.Refresh();
+            //browser.Invalidate();
+            //browser.Refresh();
+
+            // LoadMFIFCPage();
+
+            // string panel2URL = string.Format("https://dlg1.app/planning-overview/{0}/info", driverId);
+
+            if (string.IsNullOrWhiteSpace(GlobalContext.SerializedConfiguration.PlanningOverviewURL))
+            {
+                GlobalContext.Log("Error: planning_overview_url value not set in configuration file.");
+                MessageBox.Show("planning_overview_url value not set in configuration file.", GlobalContext.ApplicationTitle);
+                return;
+            }
+
+            // ex.: http://dlg1.app/planning-overview/{user_id}/info
+            string panel2URL = GlobalContext.SerializedConfiguration.AdminURL
+                + GlobalContext.SerializedConfiguration.PlanningOverviewURL.Replace("{user_id}", driver.driver_id.ToString() /*driverId.ToString()*/)
+                + "/" + GlobalContext.LoggedInPlanner.token;
+
+            browser2.Load(panel2URL);
+
+            GlobalContext.Log("Planning Overview Url is set to:  '{0}'", panel2URL);
+
+            browser2.Dock = DockStyle.Fill;
         }
     }
 

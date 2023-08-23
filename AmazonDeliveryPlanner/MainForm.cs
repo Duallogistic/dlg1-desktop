@@ -23,6 +23,8 @@ using System.Threading;
 using CefSharp.Handler;
 using System.Web.Configuration;
 using System.Runtime.Caching;
+using System.Web.UI.WebControls;
+using ListBox = System.Windows.Forms.ListBox;
 // using System.Runtime.InteropServices;
 
 namespace AmazonDeliveryPlanner
@@ -386,7 +388,8 @@ namespace AmazonDeliveryPlanner
             // driverUC.Dock = System.Windows.Forms.DockStyle.Fill;
             driverUC.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
             driverUC.Location = new System.Drawing.Point(3, 0);
-            driverUC.Width = stp.Width - 10;
+            // driverUC.Width = stp.Width - 10; //?
+            driverUC.Dock = DockStyle.Fill;
             driverUC.Name = "TCSesiune_DriverUC_" + sessionCount;
 
             // driverUC.Tag = selectedDriver;
@@ -397,7 +400,7 @@ namespace AmazonDeliveryPlanner
             
             stp.Controls.Add(driverUC);
 
-
+            driverSessionObject.DriverUC = driverUC;
             //stp.ResumeLayout();
             //stp.Refresh();
             //stp.Invalidate();
@@ -408,109 +411,137 @@ namespace AmazonDeliveryPlanner
             //stp.SuspendLayout();
             //tabControl.SuspendLayout();
 
+            TabControl urlsTabControl = null;
 
-            TabControl urlsTabControl = new System.Windows.Forms.TabControl();
-
-            //urlsTabControl.SuspendLayout();
-            //stp.Controls.Add(urlsTabControl);
-
-            // urlsTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            // urlsTabControl.Dock = System.Windows.Forms.DockStyle.None;
-
-            urlsTabControl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
-            urlsTabControl.Location = new System.Drawing.Point(3, driverUC.Height + 0 + 5);
-            urlsTabControl.Height = stp.Height - driverUC.Height + 0 - 5;
-            urlsTabControl.Width = stp.Width;
-            urlsTabControl.Name = "TCSesiune" + sessionCount;
-
-            // urlsTabControl.Name = "tabControl";
-            // urlsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
-
-
-            // bpipbUC.Name = "x";
-            // this.tabControl1.Size = new System.Drawing.Size(852, 586);
-            // urlsTabControl.TabIndex = 1;
-
-            RequestContextSettings requestContextSettings = new RequestContextSettings();
-
-            requestContextSettings.PersistSessionCookies = !false;
-            requestContextSettings.PersistUserPreferences = !false;
-
-            string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "TCSesiune_" + selectedDriver.driver_id); // "TCSesiune" + sessionCount
-
-            if (!Directory.Exists(cachePath))
-                Directory.CreateDirectory(cachePath);
-
-            requestContextSettings.CachePath = cachePath;
-
-            // if (false)
-            foreach (string url in GlobalContext.SerializedConfiguration.DefaultTabs /*GlobalContext.Urls*/)
+            if (uniqueSharedUrlsTabControl == null)
             {
-                TabPage urlTabPage = new System.Windows.Forms.TabPage();
+                urlsTabControl = new System.Windows.Forms.TabControl();
 
-                // 
-                // tabControl
-                // 
-                urlsTabControl.Controls.Add(urlTabPage);
-                // urlsTabControl.Location = new System.Drawing.Point(4, 41);
-                // urlsTabControl.SelectedIndex = 0;
-                // urlsTabControl.Size = new System.Drawing.Size(1079, 687);
-                // urlsTabControl.TabIndex = 0;
-                // 
-                // tabPage1
-                // 
-                urlTabPage.Location = new System.Drawing.Point(4, 24 /*+ driverUC.Height*/);
-                // urlTabPage.Name = "tabPage1";
-                urlTabPage.Padding = new System.Windows.Forms.Padding(3);
-                urlTabPage.Size = new System.Drawing.Size(1071, 659 /*- driverUC.Height*/);
-                urlTabPage.TabIndex = 0;
-                urlTabPage.Text = GetUrlTabPageName(url);
-                urlTabPage.UseVisualStyleBackColor = true;
+                //urlsTabControl.SuspendLayout();
+                //stp.Controls.Add(urlsTabControl);
 
-                // urlTabPage.BackColor = Color.Green;
+                // urlsTabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+                // urlsTabControl.Dock = System.Windows.Forms.DockStyle.None;
 
-                driverSessionObject.ReqContextSettings = requestContextSettings;
+                urlsTabControl.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Bottom | AnchorStyles.Top;
+                urlsTabControl.Location = new System.Drawing.Point(3, driverUC.Height + 0 + 5);
+                // urlsTabControl.Height = stp.Height - driverUC.Height + 0 - 5;            
+                // urlsTabControl.Width = stp.Width; //?
+                urlsTabControl.Name = "TCSesiune" + sessionCount;
 
-                BrowserUserControl bUC = new BrowserUserControl(url, requestContextSettings, selectedDriver.driver_id);
+                urlsTabControl.Dock = DockStyle.Fill;
 
+                // urlsTabControl.Name = "tabControl";
+                // urlsTabControl.Dock = System.Windows.Forms.DockStyle.Bottom;
+
+
+                // bpipbUC.Name = "x";
+                // this.tabControl1.Size = new System.Drawing.Size(852, 586);
+                // urlsTabControl.TabIndex = 1;
+
+                RequestContextSettings requestContextSettings = new RequestContextSettings();
+
+                requestContextSettings.PersistSessionCookies = !false;
+                requestContextSettings.PersistUserPreferences = !false;
+
+                string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "TCSesiune_" + selectedDriver.driver_id); // "TCSesiune" + sessionCount
+
+                if (!Directory.Exists(cachePath))
+                    Directory.CreateDirectory(cachePath);
+
+                requestContextSettings.CachePath = cachePath;
+
+                // if (false)
+                foreach (string url in GlobalContext.SerializedConfiguration.DefaultTabs /*GlobalContext.Urls*/)
                 {
-                    // mfbUC.Cif = cif;
+                    TabPage urlTabPage = new System.Windows.Forms.TabPage();
 
-                    bUC.SuspendLayout();
+                    // 
+                    // tabControl
+                    // 
+                    urlsTabControl.Controls.Add(urlTabPage);
+                    // urlsTabControl.Location = new System.Drawing.Point(4, 41);
+                    // urlsTabControl.SelectedIndex = 0;
+                    // urlsTabControl.Size = new System.Drawing.Size(1079, 687);
+                    // urlsTabControl.TabIndex = 0;
+                    // 
+                    // tabPage1
+                    // 
+                    urlTabPage.Location = new System.Drawing.Point(4, 24 /*+ driverUC.Height*/);
+                    // urlTabPage.Name = "tabPage1";
+                    urlTabPage.Padding = new System.Windows.Forms.Padding(3);
+                    urlTabPage.Size = new System.Drawing.Size(1071, 659 /*- driverUC.Height*/);
+                    urlTabPage.TabIndex = 0;
+                    urlTabPage.Text = GetUrlTabPageName(url);
+                    urlTabPage.UseVisualStyleBackColor = true;
 
-                    urlTabPage.Controls.Add(bUC);
+                    // urlTabPage.BackColor = Color.Green;
 
-                    urlTabPage.Tag = bUC;
+                    driverSessionObject.ReqContextSettings = requestContextSettings;
 
-                    // bUC.OnFinishedQuery += MFbUC_OnFinishedQuery;
+                    BrowserUserControl bUC = new BrowserUserControl(url, requestContextSettings, selectedDriver.driver_id);
 
-                    bUC.Dock = System.Windows.Forms.DockStyle.Fill;
-                    bUC.Location = new System.Drawing.Point(3, 0);
-                    // bpipbUC.Name = "x";
-                    // this.tabControl1.Size = new System.Drawing.Size(852, 586);
-                    bUC.TabIndex = 1;
-                    bUC.Close += BUC_Close;
+                    {
+                        // mfbUC.Cif = cif;
 
-                    bUC.ResumeLayout(!false);
+                        bUC.SuspendLayout();
 
-                    bUC.PerformLayout();
+                        urlTabPage.Controls.Add(bUC);
 
-                    bUC.Tag = driverUC;
-                    bUC.FileUploadFinished += BUC_FileUploadFinished;
-                    bUC.UpdateAutoDownloadStatus += BUC_UpdateAutoDownloadStatus;
+                        urlTabPage.Tag = bUC;
+
+                        // bUC.OnFinishedQuery += MFbUC_OnFinishedQuery;
+
+                        bUC.Dock = System.Windows.Forms.DockStyle.Fill;
+                        bUC.Location = new System.Drawing.Point(3, 0);
+                        // bpipbUC.Name = "x";
+                        // this.tabControl1.Size = new System.Drawing.Size(852, 586);
+                        bUC.TabIndex = 1;
+                        bUC.Close += BUC_Close;
+
+                        bUC.ResumeLayout(!false);
+
+                        bUC.PerformLayout();
+
+                        bUC.Tag = driverUC;
+                        bUC.FileUploadFinished += BUC_FileUploadFinished;
+                        bUC.UpdateAutoDownloadStatus += BUC_UpdateAutoDownloadStatus;
+                    }
+
+                    urlTabPage.ResumeLayout();
                 }
 
-                urlTabPage.ResumeLayout();
+                urlsTabControl.SelectedIndex = 0;
+
+                urlsTabControl.SuspendLayout();
+
+                urlsTabControl.ResumeLayout(false);
+
+                uniqueSharedUrlsTabControl = urlsTabControl;
+            }
+            else
+            {
+                // TabControl tc = ((DriverSessionObject)tabControl.TabPages[0].Tag).DriverUC.UrlsTabControl;
+                driverUC.SplitContainer.Panel1.Controls.Add(urlsTabControl);
             }
 
-            urlsTabControl.SelectedIndex = 0;
+            // stp.Controls.Add(urlsTabControl);
+            driverUC.SuspendLayout();
+            driverUC.SplitContainer.SuspendLayout();
+            driverUC.SplitContainer.Panel1.Controls.Add(urlsTabControl);
+            // driverUC.SplitContainer.Panel1.BackColor = Color.Yellow; //xtest
+            driverUC.UrlsTabControl = urlsTabControl;
+            driverUC.SplitContainer.ResumeLayout();
+            driverUC.ResumeLayout();
 
-            urlsTabControl.SuspendLayout();
-            stp.Controls.Add(urlsTabControl);
+            stp.Controls.Add(driverUC);
+
 
             stp.ResumeLayout();
 
-            urlsTabControl.ResumeLayout(false);
+            // urlsTabControl.ResumeLayout(false); //xx
+            // urlsTabControl.PerformLayout(); //?
+
             tabControl.ResumeLayout();
 
             tabControl.SelectTab(stp);
@@ -518,6 +549,8 @@ namespace AmazonDeliveryPlanner
             tabControl.Refresh();
             tabControl.Invalidate();
 
+            tabControl.PerformLayout();
+            //tabControl.Dock = DockStyle.Fill;
             // urlsTabControl.Location = new System.Drawing.Point(3, driverUC.Height + 0 + 5);
 
             // urlsTabControl.Location.Y = driverUC.Height + 5;
@@ -558,25 +591,36 @@ namespace AmazonDeliveryPlanner
 
         private void DriverUC_OpenURL(object sender, OpenURLEventArgs e)
         {
-            foreach (TabPage page in tabControl.TabPages)
-            {
-                if (page.Controls.Contains((Control)sender))
-                {
-                    foreach (Control c in page.Controls)
-                        if (c is TabControl)
+            
+            //foreach (TabPage page in tabControl.TabPages)
+            //{
+            //    // if (page.Controls.Contains((Control)sender))
+            //    {
+            //        foreach (Control c in page.Controls)
+            //            if (c is TabControl)
                         {
-                            TabControl urlsTabControl = c as TabControl;
-
+                            // TabControl urlsTabControl = c as TabControl;
+                            // TabControl urlsTabControl = ((AmazonDeliveryPlanner.DriverUserControl)sender).UrlsTabControl;
+                            TabControl urlsTabControl = uniqueSharedUrlsTabControl;
+                            TabPage page = (sender as Control).Parent as TabPage;
 
                             #region GMaps open test
-                            bool isGMapsOpen = false;
+                            // bool isGMapsOpen = false;
 
                             foreach (TabPage tp in urlsTabControl.TabPages) // 
                                 if ((tp.Tag as BrowserUserControl).Url.Contains("google.com/maps"))
-                                    isGMapsOpen = true;
+                                {
+                                    // isGMapsOpen = true;
 
-                            if (isGMapsOpen && e.URL.Contains("google.com/maps"))
-                                break; // if there's one tap page already open with the google maps location, don't open a second one
+                                    if (e.URL.Contains("google.com/maps"))
+                                    {
+                                        urlsTabControl.SelectedTab = tp;
+                                        return; // if there's one tab page already open with the google maps location, don't open a second one
+                                    }
+                                }
+
+                            //if (isGMapsOpen && e.URL.Contains("google.com/maps"))
+                            //    return; // if there's one tab page already open with the google maps location, don't open a second one
                             #endregion
 
                             TabPage urlTabPage = new System.Windows.Forms.TabPage();
@@ -631,28 +675,127 @@ namespace AmazonDeliveryPlanner
 
                             urlsTabControl.SelectedTab = urlTabPage;
                         }
+                // }
+
+                /*
+                 *                 if (page.Controls.Contains((Control)sender))
+                {
+                    foreach (Control c in page.Controls)
+                        if (c is TabControl)
+                        {
+                            TabControl urlsTabControl = c as TabControl;
+
+
+                            #region GMaps open test
+                            bool isGMapsOpen = false;
+
+                            foreach (TabPage tp in urlsTabControl.TabPages) // 
+                                if ((tp.Tag as BrowserUserControl).Url.Contains("google.com/maps"))
+                                    isGMapsOpen = true;
+
+                            if (isGMapsOpen && e.URL.Contains("google.com/maps"))
+                                break; // if there's one tab page already open with the google maps location, don't open a second one
+                            #endregion
+
+                            TabPage urlTabPage = new System.Windows.Forms.TabPage();
+
+                            // 
+                            // tabControl
+                            // 
+                            urlsTabControl.Controls.Add(urlTabPage);
+                            // urlsTabControl.Location = new System.Drawing.Point(4, 41);
+                            // urlsTabControl.SelectedIndex = 0;
+                            // urlsTabControl.Size = new System.Drawing.Size(1079, 687);
+                            // urlsTabControl.TabIndex = 0;
+                            // 
+                            // tabPage1
+                            // 
+                            urlTabPage.Location = new System.Drawing.Point(4, 24 ); //+ driverUC.Height
+                // urlTabPage.Name = "tabPage1";
+                urlTabPage.Padding = new System.Windows.Forms.Padding(3);
+                urlTabPage.Size = new System.Drawing.Size(1071, 659 ); // - driverUC.Height
+                urlTabPage.TabIndex = 0;
+                urlTabPage.Text = GetUrlTabPageName(e.URL);
+                urlTabPage.UseVisualStyleBackColor = true;
+
+                // urlTabPage.BackColor = Color.Green;
+
+                BrowserUserControl bUC = new BrowserUserControl(e.URL, ((DriverSessionObject)page.Tag).ReqContextSettings, ((DriverSessionObject)page.Tag).DriverId);
+
+                {
+                    // mfbUC.Cif = cif;
+
+                    bUC.SuspendLayout();
+
+                    urlTabPage.Controls.Add(bUC);
+
+                    urlTabPage.Tag = bUC;
+
+                    // bUC.OnFinishedQuery += MFbUC_OnFinishedQuery;
+
+                    bUC.Dock = System.Windows.Forms.DockStyle.Fill;
+                    bUC.Location = new System.Drawing.Point(3, 0);
+                    // bpipbUC.Name = "x";
+                    // this.tabControl1.Size = new System.Drawing.Size(852, 586);
+                    bUC.TabIndex = 1;
+                    bUC.Close += BUC_Close;
+
+                    bUC.ResumeLayout(!false);
+
+                    bUC.PerformLayout();
                 }
+
+                urlTabPage.ResumeLayout();
+
+                urlsTabControl.SelectedTab = urlTabPage;
             }
+        }*/
+            // }
         }
 
         private void BUC_Close(object sender, EventArgs e)
         {
+            // TabPage ctp = (sender as BrowserUserControl).Parent as TabPage;
+
+            TabControl tcp = (sender as BrowserUserControl).Parent.Parent as TabControl;
+
             foreach (TabPage page in tabControl.TabPages)
             {
-                foreach (Control c in page.Controls)
-                    if (c is TabControl)
-                    {
-                        TabControl urlsTabControl = c as TabControl;
+                TabControl tc = ((DriverSessionObject)page.Tag).DriverUC.UrlsTabControl;
+                //((DriverSessionObject)page.Tag).DriverUC.SplitContainer.Panel1.Controls.Add(tc);
 
+                    {
+                        TabControl urlsTabControl = tc;
+
+                        if (urlsTabControl != null)
                         foreach (TabPage tp in urlsTabControl.TabPages) // 
                             if ((tp.Tag as BrowserUserControl) == sender)
                                 urlsTabControl.TabPages.Remove(tp);
                     }
+
+                //foreach (Control c in page.Controls)
+                //    if (c is TabControl)
+                //    {
+                //        TabControl urlsTabControl = c as TabControl;
+
+                //        foreach (TabPage tp in urlsTabControl.TabPages) // 
+                //            if ((tp.Tag as BrowserUserControl) == sender)
+                //                urlsTabControl.TabPages.Remove(tp);
+                //    }
             }
         }
         private void DriverUC_SessionClosed(object sender, EventArgs e)
         {
             DbLite db = new DbLite();
+
+            if (tabControl.TabPages.IndexOf((sender as DriverUserControl).Parent as TabPage) == 0)
+                if (tabControl.TabPages.Count > 1)
+                {
+                    // TabControl tc = ((DriverSessionObject)tabControl.TabPages[0].Tag).DriverUC.UrlsTabControl;
+                    ((DriverSessionObject)(tabControl.TabPages[1]).Tag).DriverUC.SplitContainer.Panel1.Controls.Add(uniqueSharedUrlsTabControl);
+                }
+
+
             foreach (TabPage page in tabControl.TabPages)
             {
                 if (page.Controls.Contains((Control)sender))
@@ -669,6 +812,9 @@ namespace AmazonDeliveryPlanner
                     driverListBox.Refresh();
                 }
             }
+
+            if (tabControl.TabPages.Count == 0)
+                uniqueSharedUrlsTabControl = null;
         }
 
         private void openSettingsButton_Click(object sender, EventArgs e)
@@ -1159,6 +1305,8 @@ namespace AmazonDeliveryPlanner
                 OpenDriverWindow(id.ToString(), true);
                 GlobalContext.Log(" ---------------- ID: " + id);
             }
+
+            tabControl.SelectedTab = tabControl.TabPages[0];
         }
 
         private void DriversPanelBrowser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
@@ -1353,6 +1501,26 @@ namespace AmazonDeliveryPlanner
 
                 GlobalContext.Scripts.Add(fileName.Replace(".js", ""), File.ReadAllText(filePath));
             }
+        }
+
+        TabControl uniqueSharedUrlsTabControl;
+
+        private void tabControl_Selecting(object sender, TabControlCancelEventArgs e)
+        {
+            // Driver drv = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == ((DriverSessionObject)page.Tag).DriverId).SingleOrDefault();
+            if (e.TabPageIndex == -1)
+                return;
+
+            // TabControl tc = ((DriverSessionObject)tabControl.TabPages[0].Tag).DriverUC.UrlsTabControl;
+            TabControl tc = uniqueSharedUrlsTabControl;
+            ((DriverSessionObject)e.TabPage.Tag).DriverUC.SplitContainer.Panel1.Controls.Add(tc);
+
+            // uniqueSharedDriverUserControl.Parent = 
+        }
+
+        private void tabControl_TabIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

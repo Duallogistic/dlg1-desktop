@@ -102,6 +102,8 @@ namespace AmazonDeliveryPlanner
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1260, 775);
             this.tabControl.TabIndex = 0;
+            this.tabControl.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Selecting);
+            this.tabControl.TabIndexChanged += new System.EventHandler(this.tabControl_TabIndexChanged);
             // 
             // driverListBox
             // 
@@ -453,7 +455,7 @@ namespace AmazonDeliveryPlanner
             this.plannerLabel.Name = "plannerLabel";
             this.plannerLabel.Size = new System.Drawing.Size(192, 17);
             this.plannerLabel.TabIndex = 6;
-            this.plannerLabel.Text = "_____ loged in planner ____";
+            this.plannerLabel.Text = "_____ logged in planner ____";
             // 
             // changeUserButton
             // 
