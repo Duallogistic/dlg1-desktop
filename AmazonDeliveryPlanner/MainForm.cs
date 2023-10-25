@@ -1249,7 +1249,7 @@ namespace AmazonDeliveryPlanner
             // LoadMFIFCPage();
 
             string _url = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.DriverListURL + "/" + GlobalContext.LoggedInPlanner.token;
-            MessageBox.Show(_url);
+           // MessageBox.Show(_url);
             driversPanelBrowser.Load(_url);
             GlobalContext.Log("URL for driver igrame is:  '{0}'", _url);
 
