@@ -178,24 +178,8 @@ namespace AmazonDeliveryPlanner
         void InitMainFormDataControls()
         {
             UpdateDriverList();
-
             LoadScripts();
-
             InitializeCEF();
-
-            // InitBrowser();
-
-            //GlobalContext.Urls = new List<string>();
-
-            //// test
-            //GlobalContext.Urls = new List<string>()
-            //{
-            //    "https://relay.amazon.com/",
-            //    // "http://localhost",
-            //    // "http://localhost/test_cookie/test_set_cookie.php",
-            //    // "http://localhost/test_cookie/test_show_cookie.php"
-            //};
-
             if (!GlobalContext.SerializedConfiguration.Debug)
                 mainTabControl.TabPages.Remove(loggingTabPage);
         }
@@ -203,8 +187,6 @@ namespace AmazonDeliveryPlanner
         #region logging
 
         int logCounter = 0;
-
-        private bool logToScreen = true;
 
         // Constants for extern calls to various scrollbar functions
         private const int SB_HORZ = 0x0;
@@ -1267,6 +1249,7 @@ namespace AmazonDeliveryPlanner
             // LoadMFIFCPage();
 
             string _url = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.DriverListURL + "/" + GlobalContext.LoggedInPlanner.token;
+            MessageBox.Show(_url);
             driversPanelBrowser.Load(_url);
             GlobalContext.Log("URL for driver igrame is:  '{0}'", _url);
 

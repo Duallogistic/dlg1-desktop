@@ -1,15 +1,14 @@
 {
-  "admin_url": "https://admin.dlg1.app",
-  "driver_list_url": "https://admin.dlg1.app/#/drivers-list",
+  "admin_url": "https://dlg1prod.web.app",
+  "driver_list_url": "https://dlg1prod.web.app/#/drivers-list",
   "file_upload_url": "/auth2/external/upload",
   "default_tabs": [
     "https://relay.amazon.com/",
-    "http://google.com",
-    "http://localhost/test_amazonrelay_dp/download.html"
+    "http://google.com"
   ],
-  "api_base_url": "https://srv.dlg1.app/api",
-  "planner_list_url": "http://167.86.94.125:52031/api/auth2/external/get-all-planners",
-  "planning_overview_url": "http://dlg1.app/planning-overview/{user_id}/info",
+  "api_base_url": "https://dlg1prod.web.app/api",
+  "planner_list_url": "https://dlg1prod.web.app/api/auth2/external/get-all-planners",
+  "planning_overview_url": "https://dlg1prod.web.app/planning-overview/{user_id}/info",
   "relay_credentials_email": "relay_email_test",
   "relay_credentials_pass": "relay_pass_test",
   "auto_download_export_file_random_min_interval": 0,

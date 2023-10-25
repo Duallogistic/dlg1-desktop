@@ -112,31 +112,7 @@ namespace AmazonDeliveryPlanner.API
 
                 // HttpResponseMessage response = await client.PostAsync(Settings.Default.ApiPostEndPoint, content);
 
-                throw new Exception("undefined api endpoint");
-
-                using (HttpResponseMessage response = /*await */client.PostAsync("", content).Result)
-                {
-                    response.EnsureSuccessStatusCode();
-                    
-                    string responseBody = /*await */ response.Content.ReadAsStringAsync().Result;
-
-                    // DriverRouteEntity responseDriverEntity = JsonConvert.DeserializeObject<DriverRouteEntity>(responseBody);
-
-                    dynamic x = JObject.Parse(responseBody);
-                    // JObject v = JObject.Parse(responseBody);
-                    // JToken token = v["planning"];
-                    string planningJSON = JsonConvert.SerializeObject(x.planning);
-
-                    // JsonSerializerSettings settings = new JsonSerializerSettings();
-                    //settings.Error
-
-                    DriverRouteEntity responseDriverEntity = JsonConvert.DeserializeObject<DriverRouteEntity>(planningJSON /*, settings */);
-
-                    return responseDriverEntity;
-                    // JObject x = JObject.Parse(responseBody);
-
-                    // int z = ((int)x["zx"]);
-                }                
+                throw new Exception("undefined api endpoint");         
             }          
         }
     }

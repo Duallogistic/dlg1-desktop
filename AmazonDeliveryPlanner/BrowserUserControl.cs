@@ -241,9 +241,7 @@ namespace AmazonDeliveryPlanner
                     uploadURL = GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
                     // string uploadURL = "http://167.86.94.125:52031/api/auth2/external/upload";
 
-                    // uploadURL = "https://qa-srv.dlg1.app/api/auth2/external/upload";
-
-
+                   
                     GlobalContext.Log("Upload URL=\"{0}\"", uploadURL);
 
                     /*
@@ -325,7 +323,7 @@ namespace AmazonDeliveryPlanner
 
                     request.AlwaysMultipartFormData = true;
                     request.AddHeader("Connection", "keep-alive");
-                    request.AddHeader("host", "srv.dlg1.app");
+                    request.AddHeader("host", "dlg1prod.web.app");
                     request.AddHeader("Accept", @"text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,* / *;q=0.8");
                     request.AddHeader("Accept-Language", "en-US,en;q=0.5");
                     request.AddHeader("Accept-Encoding", "gzip, deflate, br");
@@ -452,7 +450,7 @@ namespace AmazonDeliveryPlanner
                 }
                 catch (Exception ex)
                 {
-
+                    GlobalContext.Log("Exception = " + ex.Message);
                 }
             }
         }
