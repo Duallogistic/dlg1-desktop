@@ -44,6 +44,8 @@ namespace AmazonDeliveryPlanner.API
         public DateTime created_at { get; set; }
         public More_Info more_info { get; set; }
 
+        public string message_id { get; set; }
+
         public override string ToString()
         {
             if (_ListModeToString)
