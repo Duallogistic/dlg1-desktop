@@ -63,7 +63,10 @@ namespace AmazonDeliveryPlanner
                 //// InitializeComponent();
 
                 InitMainFormDataControls();
-                InitAdminBrowser();
+
+                mainTabControl.TabPages.Remove(adminTabPage);
+                // InitAdminBrowser();
+
                 InitDriversPanelBrowser();
             }
             catch (Exception ex)
@@ -80,7 +83,7 @@ namespace AmazonDeliveryPlanner
                 // return;
             }
 
-            driversPanel.Visible = false;
+            driversPanel.Visible = false;            
         }
 
         public static void InitializeCEF()
@@ -173,6 +176,8 @@ namespace AmazonDeliveryPlanner
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
             // Use SecurityProtocolType.Ssl3 if needed for compatibility reasons
             // otherwise we get {"The request was aborted: Could not create SSL/TLS secure channel."}
+
+            LoadAmazonTabs();
         }
 
         void InitMainFormDataControls()
@@ -182,6 +187,49 @@ namespace AmazonDeliveryPlanner
             InitializeCEF();
             if (!GlobalContext.SerializedConfiguration.Debug)
                 mainTabControl.TabPages.Remove(loggingTabPage);
+        }
+
+        async void LoadAmazonTabs()
+        {
+            await Task.Delay(4000);
+
+            // GlobalContext.SerializedConfiguration.TripPageConfigurations.ToArray();
+
+            List<TripPageConfiguration> tpcs = GlobalContext.SerializedConfiguration.TripPageConfigurations;
+
+            TripPageConfiguration upcomingTPC = null;
+            TripPageConfiguration intransitTPC = null;
+            TripPageConfiguration historyTPC = null;
+
+            if (tpcs != null && tpcs.Count > 0)
+            {
+                upcomingTPC = tpcs[0];
+
+                if (tpcs.Count > 1)
+                    intransitTPC = tpcs[1];
+
+                if (tpcs.Count > 2)
+                    historyTPC = tpcs[2];
+            }
+            else
+            {
+
+            }
+
+            if (upcomingTPC != null)
+            {
+                upcomingTabBrowserTimerExportUserControl.GoToURL(upcomingTPC.Url);
+            }
+
+            if (intransitTPC != null)
+            {
+                intransitTabBrowserTimerExportUserControl.GoToURL(intransitTPC.Url);
+            }
+
+            if (historyTPC != null)
+            {
+                historyTabBrowserTimerExportUserControl.GoToURL(historyTPC.Url);
+            }
         }
 
         #region logging

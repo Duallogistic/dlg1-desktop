@@ -71,6 +71,12 @@ namespace AmazonDeliveryPlanner
             this.showOpenDriverFormButton = new System.Windows.Forms.Button();
             this.plannerLabel = new System.Windows.Forms.Label();
             this.changeUserButton = new System.Windows.Forms.Button();
+            this.upcomingTabPage = new System.Windows.Forms.TabPage();
+            this.IntransitTabPage = new System.Windows.Forms.TabPage();
+            this.historyTabPage = new System.Windows.Forms.TabPage();
+            this.upcomingTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
+            this.intransitTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
+            this.historyTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -80,6 +86,9 @@ namespace AmazonDeliveryPlanner
             this.splitContainer1.SuspendLayout();
             this.adminTabPage.SuspendLayout();
             this.loggingTabPage.SuspendLayout();
+            this.upcomingTabPage.SuspendLayout();
+            this.IntransitTabPage.SuspendLayout();
+            this.historyTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // openSettingsButton
@@ -216,6 +225,9 @@ namespace AmazonDeliveryPlanner
             this.mainTabControl.Controls.Add(this.sessionsTabPage);
             this.mainTabControl.Controls.Add(this.adminTabPage);
             this.mainTabControl.Controls.Add(this.loggingTabPage);
+            this.mainTabControl.Controls.Add(this.upcomingTabPage);
+            this.mainTabControl.Controls.Add(this.IntransitTabPage);
+            this.mainTabControl.Controls.Add(this.historyTabPage);
             this.mainTabControl.Location = new System.Drawing.Point(2, -1);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
@@ -469,6 +481,63 @@ namespace AmazonDeliveryPlanner
             this.changeUserButton.UseVisualStyleBackColor = true;
             this.changeUserButton.Click += new System.EventHandler(this.changeUserButton_Click);
             // 
+            // upcomingTabPage
+            // 
+            this.upcomingTabPage.Controls.Add(this.upcomingTabBrowserTimerExportUserControl);
+            this.upcomingTabPage.Location = new System.Drawing.Point(4, 22);
+            this.upcomingTabPage.Name = "upcomingTabPage";
+            this.upcomingTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.upcomingTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.upcomingTabPage.TabIndex = 3;
+            this.upcomingTabPage.Text = "Upcoming";
+            this.upcomingTabPage.UseVisualStyleBackColor = true;
+            // 
+            // IntransitTabPage
+            // 
+            this.IntransitTabPage.Controls.Add(this.intransitTabBrowserTimerExportUserControl);
+            this.IntransitTabPage.Location = new System.Drawing.Point(4, 22);
+            this.IntransitTabPage.Name = "IntransitTabPage";
+            this.IntransitTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.IntransitTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.IntransitTabPage.TabIndex = 4;
+            this.IntransitTabPage.Text = "In-transit";
+            this.IntransitTabPage.UseVisualStyleBackColor = true;
+            // 
+            // historyTabPage
+            // 
+            this.historyTabPage.Controls.Add(this.historyTabBrowserTimerExportUserControl);
+            this.historyTabPage.Location = new System.Drawing.Point(4, 22);
+            this.historyTabPage.Name = "historyTabPage";
+            this.historyTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.historyTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.historyTabPage.TabIndex = 5;
+            this.historyTabPage.Text = "History";
+            this.historyTabPage.UseVisualStyleBackColor = true;
+            // 
+            // upcomingTabBrowserTimerExportUserControl
+            // 
+            this.upcomingTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.upcomingTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
+            this.upcomingTabBrowserTimerExportUserControl.Name = "upcomingTabBrowserTimerExportUserControl";
+            this.upcomingTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.upcomingTabBrowserTimerExportUserControl.TabIndex = 0;
+            // 
+            // intransitTabBrowserTimerExportUserControl
+            // 
+            this.intransitTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.intransitTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
+            this.intransitTabBrowserTimerExportUserControl.Name = "intransitTabBrowserTimerExportUserControl";
+            this.intransitTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.intransitTabBrowserTimerExportUserControl.TabIndex = 1;
+            // 
+            // historyTabBrowserTimerExportUserControl
+            // 
+            this.historyTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
+            this.historyTabBrowserTimerExportUserControl.Name = "historyTabBrowserTimerExportUserControl";
+            this.historyTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.historyTabBrowserTimerExportUserControl.TabIndex = 1;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -500,6 +569,9 @@ namespace AmazonDeliveryPlanner
             this.adminTabPage.PerformLayout();
             this.loggingTabPage.ResumeLayout(false);
             this.loggingTabPage.PerformLayout();
+            this.upcomingTabPage.ResumeLayout(false);
+            this.IntransitTabPage.ResumeLayout(false);
+            this.historyTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -536,5 +608,11 @@ namespace AmazonDeliveryPlanner
         private System.Windows.Forms.Button showDriversBrowserControlDevToolsButton;
         private System.Windows.Forms.Label plannerLabel;
         private System.Windows.Forms.Button changeUserButton;
+        private TabPage upcomingTabPage;
+        private TabPage IntransitTabPage;
+        private TabPage historyTabPage;
+        private BrowserTimerExportUserControl upcomingTabBrowserTimerExportUserControl;
+        private BrowserTimerExportUserControl intransitTabBrowserTimerExportUserControl;
+        private BrowserTimerExportUserControl historyTabBrowserTimerExportUserControl;
     }
 }

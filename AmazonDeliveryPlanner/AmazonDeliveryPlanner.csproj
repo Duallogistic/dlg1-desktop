@@ -133,6 +133,12 @@
     <Compile Include="API\data\DriverRouteEntity.cs" />
     <Compile Include="API\PlannersAPI.cs" />
     <Compile Include="API\DriversAPI.cs" />
+    <Compile Include="BrowserTimerExportUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="BrowserTimerExportUserControl.designer.cs">
+      <DependentUpon>BrowserTimerExportUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="BrowserUserControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -196,6 +202,9 @@
     <Compile Include="KeyboardHandler.cs" />
     <Compile Include="DbLite.cs" />
     <Compile Include="Utilities.cs" />
+    <EmbeddedResource Include="BrowserTimerExportUserControl.resx">
+      <DependentUpon>BrowserTimerExportUserControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="BrowserUserControl.resx">
       <DependentUpon>BrowserUserControl.cs</DependentUpon>
     </EmbeddedResource>

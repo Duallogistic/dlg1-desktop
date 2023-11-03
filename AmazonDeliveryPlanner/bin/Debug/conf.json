@@ -1,4 +1,21 @@
 {
+  "trip_pages": [
+	  {
+		"url": "https://relay.amazon.co.uk/tours/upcoming",
+		"min_random_interval_minutes": 5,
+		"max_random_interval_minutes": 15,
+	  },
+	  {
+		"url": "https://relay.amazon.co.uk/tours/in-transit",
+		"min_random_interval_minutes": 5,
+		"max_random_interval_minutes": 15,
+	  },
+	  {
+		"url": "https://relay.amazon.co.uk/tours/history",
+		"min_random_interval_minutes": 5,
+		"max_random_interval_minutes": 15,
+	  }
+  ],
   "admin_url": "https://dlg1prod.web.app",
   "driver_list_url": "/#/drivers-list",
   "default_tabs": [
@@ -7,8 +24,8 @@
   ],
   "api_base_url": "https://dlg1prod.web.app/api",
   "planner_list_url": "/auth2/external/get-all-planners",
-  "relay_credentials_email": "Dual_Amz_Admin@dlg1.co.uk",
-  "relay_credentials_pass": "libertate250Kmh",
+  "relay_credentials_email": "planners@dlg1.co.uk",
+  "relay_credentials_pass": "Dual2020",
   "auto_download_export_file_random_min_interval": 20,
   "auto_download_export_file_random_max_interval": 55,
   "admin_credentials_email": "florin@doitdev.ro",
