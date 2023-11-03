@@ -1,20 +1,37 @@
 {
+  "trip_pages": [
+    {
+      "url": "https://relay.amazon.co.uk/tours/upcoming",
+      "min_random_interval_minutes": 5,
+      "max_random_interval_minutes": 15
+    },
+    {
+      "url": "https://relay.amazon.co.uk/tours/in-transit",
+      "min_random_interval_minutes": 5,
+      "max_random_interval_minutes": 15
+    },
+    {
+      "url": "https://relay.amazon.co.uk/tours/history",
+      "min_random_interval_minutes": 5,
+      "max_random_interval_minutes": 15
+    }
+  ],
   "admin_url": "https://dlg1prod.web.app",
-  "driver_list_url": "https://dlg1prod.web.app/#/drivers-list",
-  "file_upload_url": "/auth2/external/upload",
+  "driver_list_url": "/#/drivers-list",
   "default_tabs": [
-    "https://relay.amazon.com/",
-    "http://google.com"
+    "https://relay.amazon.co.uk/tours/",
+    "freeola.com/webmail/login/"
   ],
   "api_base_url": "https://dlg1prod.web.app/api",
-  "planner_list_url": "https://dlg1prod.web.app/api/auth2/external/get-all-planners",
-  "planning_overview_url": "https://dlg1prod.web.app/planning-overview/{user_id}/info",
-  "relay_credentials_email": "relay_email_test",
-  "relay_credentials_pass": "relay_pass_test",
-  "auto_download_export_file_random_min_interval": 0,
-  "auto_download_export_file_random_max_interval": 0,
-  "admin_credentials_email": "admin_email_test",
-  "admin_credentials_pass": "admin_pass_test",
+  "planner_list_url": "/auth2/external/get-all-planners",
+  "relay_credentials_email": "planners@dlg1.co.uk",
+  "relay_credentials_pass": "Dual2020",
+  "auto_download_export_file_random_min_interval": 20,
+  "auto_download_export_file_random_max_interval": 55,
+  "admin_credentials_email": "florin@doitdev.ro",
+  "admin_credentials_pass": "5Fl0rin5",
   "download_directory_path": "c:\\temp\\amazon_download_directory",
-  "debug": 1
+  "file_upload_url": "/auth2/external/upload",
+  "debug": true,
+  "planning_overview_url": "/#/planning-preview/{user_id}/chat"
 }
