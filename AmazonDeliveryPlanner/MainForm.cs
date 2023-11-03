@@ -53,7 +53,7 @@ namespace AmazonDeliveryPlanner
                     MessageBox.Show("Could not get planner list - application will now exit!", GlobalContext.ApplicationTitle);
 
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
-                    Application.Exit();                    
+                    Application.Exit();
                     return;
                 }
                 else
@@ -77,7 +77,7 @@ namespace AmazonDeliveryPlanner
                     ex.TargetSite + System.Environment.NewLine +
                     ex.Source + System.Environment.NewLine
                     );
-                
+
                 // Application.Exit();                
                 // System.Diagnostics.Process.GetCurrentProcess().Kill();
                 // return;
@@ -118,7 +118,7 @@ namespace AmazonDeliveryPlanner
             cfsettings.LogSeverity = LogSeverity.Disable;
             // cfsettings.PersistSessionCookies = ;
             cfsettings.Locale = "en-US";
-            
+
 
             // CefSharp.Cef.Initialize(cfsettings);
             Cef.Initialize(cfsettings, performDependencyCheck: true, browserProcessHandler: null);
@@ -343,8 +343,8 @@ namespace AmazonDeliveryPlanner
 
                     }
                 }
-        }
-            
+            }
+
         }
 
         #endregion
@@ -357,7 +357,7 @@ namespace AmazonDeliveryPlanner
 
         public void AddIdToList(int idToAdd)
         {
-            DbLite db = new DbLite(); 
+            DbLite db = new DbLite();
             db.AddIdToList(idToAdd);
         }
 
@@ -381,7 +381,7 @@ namespace AmazonDeliveryPlanner
             foreach (TabPage page in tabControl.TabPages)
             {
                 if (((DriverSessionObject)page.Tag).DriverId == selectedDriver.driver_id)
-                { 
+                {
                     tabControl.SelectedTab = page;
                     return;
                 }
@@ -401,8 +401,9 @@ namespace AmazonDeliveryPlanner
             stp.Name = "PageSesiune" + sessionCount;
             stp.Text = selectedDriver.ToString();
 
-            DriverSessionObject driverSessionObject = new DriverSessionObject() { 
-                DriverId = selectedDriver.driver_id                
+            DriverSessionObject driverSessionObject = new DriverSessionObject()
+            {
+                DriverId = selectedDriver.driver_id
             };
 
             stp.Tag = driverSessionObject; // the object changes on resfreshing data from server as new objects are created for the same entity
@@ -427,7 +428,7 @@ namespace AmazonDeliveryPlanner
             driverUC.OpenURL += DriverUC_OpenURL;
 
             driverUC.ResumeLayout();
-            
+
             stp.Controls.Add(driverUC);
 
             driverSessionObject.DriverUC = driverUC;
@@ -485,6 +486,8 @@ namespace AmazonDeliveryPlanner
                 foreach (string url in GlobalContext.SerializedConfiguration.DefaultTabs /*GlobalContext.Urls*/)
                 {
                     TabPage urlTabPage = new System.Windows.Forms.TabPage();
+
+                    // MessageBox.Show(url);
 
                     // 
                     // tabControl
@@ -616,134 +619,60 @@ namespace AmazonDeliveryPlanner
             if (this.InvokeRequired)
                 this.Invoke(sa);
             else
-                sa();            
+                sa();
         }
 
         private void DriverUC_OpenURL(object sender, OpenURLEventArgs e)
         {
-            
+
             //foreach (TabPage page in tabControl.TabPages)
             //{
             //    // if (page.Controls.Contains((Control)sender))
             //    {
             //        foreach (Control c in page.Controls)
             //            if (c is TabControl)
+            {
+                // TabControl urlsTabControl = c as TabControl;
+                // TabControl urlsTabControl = ((AmazonDeliveryPlanner.DriverUserControl)sender).UrlsTabControl;
+                TabControl urlsTabControl = uniqueSharedUrlsTabControl;
+                TabPage page = (sender as Control).Parent as TabPage;
+
+                #region GMaps open test
+                // bool isGMapsOpen = false;
+
+                foreach (TabPage tp in urlsTabControl.TabPages) // 
+                    if ((tp.Tag as BrowserUserControl).Url.Contains("google.com/maps"))
+                    {
+                        // isGMapsOpen = true;
+
+                        if (e.URL.Contains("google.com/maps"))
                         {
-                            // TabControl urlsTabControl = c as TabControl;
-                            // TabControl urlsTabControl = ((AmazonDeliveryPlanner.DriverUserControl)sender).UrlsTabControl;
-                            TabControl urlsTabControl = uniqueSharedUrlsTabControl;
-                            TabPage page = (sender as Control).Parent as TabPage;
-
-                            #region GMaps open test
-                            // bool isGMapsOpen = false;
-
-                            foreach (TabPage tp in urlsTabControl.TabPages) // 
-                                if ((tp.Tag as BrowserUserControl).Url.Contains("google.com/maps"))
-                                {
-                                    // isGMapsOpen = true;
-
-                                    if (e.URL.Contains("google.com/maps"))
-                                    {
-                                        urlsTabControl.SelectedTab = tp;
-                                        return; // if there's one tab page already open with the google maps location, don't open a second one
-                                    }
-                                }
-
-                            //if (isGMapsOpen && e.URL.Contains("google.com/maps"))
-                            //    return; // if there's one tab page already open with the google maps location, don't open a second one
-                            #endregion
-
-                            TabPage urlTabPage = new System.Windows.Forms.TabPage();
-
-                            // 
-                            // tabControl
-                            // 
-                            urlsTabControl.Controls.Add(urlTabPage);
-                            // urlsTabControl.Location = new System.Drawing.Point(4, 41);
-                            // urlsTabControl.SelectedIndex = 0;
-                            // urlsTabControl.Size = new System.Drawing.Size(1079, 687);
-                            // urlsTabControl.TabIndex = 0;
-                            // 
-                            // tabPage1
-                            // 
-                            urlTabPage.Location = new System.Drawing.Point(4, 24 /*+ driverUC.Height*/);
-                            // urlTabPage.Name = "tabPage1";
-                            urlTabPage.Padding = new System.Windows.Forms.Padding(3);
-                            urlTabPage.Size = new System.Drawing.Size(1071, 659 /*- driverUC.Height*/);
-                            urlTabPage.TabIndex = 0;
-                            urlTabPage.Text = GetUrlTabPageName(e.URL);
-                            urlTabPage.UseVisualStyleBackColor = true;
-
-                            // urlTabPage.BackColor = Color.Green;
-                            
-                            BrowserUserControl bUC = new BrowserUserControl(e.URL, ((DriverSessionObject)page.Tag).ReqContextSettings, ((DriverSessionObject)page.Tag).DriverId);
-
-                            {
-                                // mfbUC.Cif = cif;
-
-                                bUC.SuspendLayout();
-
-                                urlTabPage.Controls.Add(bUC);
-
-                                urlTabPage.Tag = bUC;
-
-                                // bUC.OnFinishedQuery += MFbUC_OnFinishedQuery;
-
-                                bUC.Dock = System.Windows.Forms.DockStyle.Fill;
-                                bUC.Location = new System.Drawing.Point(3, 0);
-                                // bpipbUC.Name = "x";
-                                // this.tabControl1.Size = new System.Drawing.Size(852, 586);
-                                bUC.TabIndex = 1;
-                                bUC.Close += BUC_Close;
-
-                                bUC.ResumeLayout(!false);
-
-                                bUC.PerformLayout();
-                            }
-
-                            urlTabPage.ResumeLayout();
-
-                            urlsTabControl.SelectedTab = urlTabPage;
+                            urlsTabControl.SelectedTab = tp;
+                            return; // if there's one tab page already open with the google maps location, don't open a second one
                         }
-                // }
+                    }
 
-                /*
-                 *                 if (page.Controls.Contains((Control)sender))
-                {
-                    foreach (Control c in page.Controls)
-                        if (c is TabControl)
-                        {
-                            TabControl urlsTabControl = c as TabControl;
+                //if (isGMapsOpen && e.URL.Contains("google.com/maps"))
+                //    return; // if there's one tab page already open with the google maps location, don't open a second one
+                #endregion
 
+                TabPage urlTabPage = new System.Windows.Forms.TabPage();
 
-                            #region GMaps open test
-                            bool isGMapsOpen = false;
-
-                            foreach (TabPage tp in urlsTabControl.TabPages) // 
-                                if ((tp.Tag as BrowserUserControl).Url.Contains("google.com/maps"))
-                                    isGMapsOpen = true;
-
-                            if (isGMapsOpen && e.URL.Contains("google.com/maps"))
-                                break; // if there's one tab page already open with the google maps location, don't open a second one
-                            #endregion
-
-                            TabPage urlTabPage = new System.Windows.Forms.TabPage();
-
-                            // 
-                            // tabControl
-                            // 
-                            urlsTabControl.Controls.Add(urlTabPage);
-                            // urlsTabControl.Location = new System.Drawing.Point(4, 41);
-                            // urlsTabControl.SelectedIndex = 0;
-                            // urlsTabControl.Size = new System.Drawing.Size(1079, 687);
-                            // urlsTabControl.TabIndex = 0;
-                            // 
-                            // tabPage1
-                            // 
-                            urlTabPage.Location = new System.Drawing.Point(4, 24 ); //+ driverUC.Height
+                // 
+                // tabControl
+                // 
+                urlsTabControl.Controls.Add(urlTabPage);
+                // urlsTabControl.Location = new System.Drawing.Point(4, 41);
+                // urlsTabControl.SelectedIndex = 0;
+                // urlsTabControl.Size = new System.Drawing.Size(1079, 687);
+                // urlsTabControl.TabIndex = 0;
+                // 
+                // tabPage1
+                // 
+                urlTabPage.Location = new System.Drawing.Point(4, 24 /*+ driverUC.Height*/);
                 // urlTabPage.Name = "tabPage1";
                 urlTabPage.Padding = new System.Windows.Forms.Padding(3);
-                urlTabPage.Size = new System.Drawing.Size(1071, 659 ); // - driverUC.Height
+                urlTabPage.Size = new System.Drawing.Size(1071, 659 /*- driverUC.Height*/);
                 urlTabPage.TabIndex = 0;
                 urlTabPage.Text = GetUrlTabPageName(e.URL);
                 urlTabPage.UseVisualStyleBackColor = true;
@@ -779,7 +708,81 @@ namespace AmazonDeliveryPlanner
 
                 urlsTabControl.SelectedTab = urlTabPage;
             }
-        }*/
+            // }
+
+            /*
+             *                 if (page.Controls.Contains((Control)sender))
+            {
+                foreach (Control c in page.Controls)
+                    if (c is TabControl)
+                    {
+                        TabControl urlsTabControl = c as TabControl;
+
+
+                        #region GMaps open test
+                        bool isGMapsOpen = false;
+
+                        foreach (TabPage tp in urlsTabControl.TabPages) // 
+                            if ((tp.Tag as BrowserUserControl).Url.Contains("google.com/maps"))
+                                isGMapsOpen = true;
+
+                        if (isGMapsOpen && e.URL.Contains("google.com/maps"))
+                            break; // if there's one tab page already open with the google maps location, don't open a second one
+                        #endregion
+
+                        TabPage urlTabPage = new System.Windows.Forms.TabPage();
+
+                        // 
+                        // tabControl
+                        // 
+                        urlsTabControl.Controls.Add(urlTabPage);
+                        // urlsTabControl.Location = new System.Drawing.Point(4, 41);
+                        // urlsTabControl.SelectedIndex = 0;
+                        // urlsTabControl.Size = new System.Drawing.Size(1079, 687);
+                        // urlsTabControl.TabIndex = 0;
+                        // 
+                        // tabPage1
+                        // 
+                        urlTabPage.Location = new System.Drawing.Point(4, 24 ); //+ driverUC.Height
+            // urlTabPage.Name = "tabPage1";
+            urlTabPage.Padding = new System.Windows.Forms.Padding(3);
+            urlTabPage.Size = new System.Drawing.Size(1071, 659 ); // - driverUC.Height
+            urlTabPage.TabIndex = 0;
+            urlTabPage.Text = GetUrlTabPageName(e.URL);
+            urlTabPage.UseVisualStyleBackColor = true;
+
+            // urlTabPage.BackColor = Color.Green;
+
+            BrowserUserControl bUC = new BrowserUserControl(e.URL, ((DriverSessionObject)page.Tag).ReqContextSettings, ((DriverSessionObject)page.Tag).DriverId);
+
+            {
+                // mfbUC.Cif = cif;
+
+                bUC.SuspendLayout();
+
+                urlTabPage.Controls.Add(bUC);
+
+                urlTabPage.Tag = bUC;
+
+                // bUC.OnFinishedQuery += MFbUC_OnFinishedQuery;
+
+                bUC.Dock = System.Windows.Forms.DockStyle.Fill;
+                bUC.Location = new System.Drawing.Point(3, 0);
+                // bpipbUC.Name = "x";
+                // this.tabControl1.Size = new System.Drawing.Size(852, 586);
+                bUC.TabIndex = 1;
+                bUC.Close += BUC_Close;
+
+                bUC.ResumeLayout(!false);
+
+                bUC.PerformLayout();
+            }
+
+            urlTabPage.ResumeLayout();
+
+            urlsTabControl.SelectedTab = urlTabPage;
+        }
+    }*/
             // }
         }
 
@@ -794,14 +797,14 @@ namespace AmazonDeliveryPlanner
                 TabControl tc = ((DriverSessionObject)page.Tag).DriverUC.UrlsTabControl;
                 //((DriverSessionObject)page.Tag).DriverUC.SplitContainer.Panel1.Controls.Add(tc);
 
-                    {
-                        TabControl urlsTabControl = tc;
+                {
+                    TabControl urlsTabControl = tc;
 
-                        if (urlsTabControl != null)
+                    if (urlsTabControl != null)
                         foreach (TabPage tp in urlsTabControl.TabPages) // 
                             if ((tp.Tag as BrowserUserControl) == sender)
                                 urlsTabControl.TabPages.Remove(tp);
-                    }
+                }
 
                 //foreach (Control c in page.Controls)
                 //    if (c is TabControl)
@@ -865,7 +868,7 @@ namespace AmazonDeliveryPlanner
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-          
+
         }
 
         DriverList _driverList;
@@ -922,7 +925,7 @@ namespace AmazonDeliveryPlanner
                 if (!openTabDrivers.ContainsKey(dr.driver_id))
                     openTabDrivers.Add(dr.driver_id, false);
         }
-        
+
         private void refreshDriversButton_Click(object sender, EventArgs e)
         {
             UpdateDriverList();
@@ -953,7 +956,7 @@ namespace AmazonDeliveryPlanner
             e.DrawBackground();
 
             Graphics g = e.Graphics;
-            
+
             if (openTabDrivers.ElementAt(e.Index).Value)
                 g.FillRectangle(new SolidBrush(Color.LightBlue), e.Bounds);
             else
@@ -996,11 +999,11 @@ namespace AmazonDeliveryPlanner
             adminBrowser = new ChromiumWebBrowser();
             // browser = new ChromiumWebBrowser(url, requestContextSettings.);
 
-            
+
             RequestContextSettings requestContextSettings = new RequestContextSettings();
 
             requestContextSettings.PersistSessionCookies = !false;
-            requestContextSettings.PersistUserPreferences = !false;            
+            requestContextSettings.PersistUserPreferences = !false;
 
             /*string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "sesiune_admin");
 
@@ -1040,7 +1043,7 @@ namespace AmazonDeliveryPlanner
             //browser.Refresh();
 
             // LoadMFIFCPage();
-            
+
             adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL); //  + "/" + GlobalContext.LoggedInPlanner.token
 
             adminBrowser.Dock = DockStyle.Fill;
@@ -1141,7 +1144,7 @@ namespace AmazonDeliveryPlanner
                 //    this.Invoke(sa);
                 //else
                 //    sa();
-                
+
                 this.Invoke((MethodInvoker)delegate { urlTextBox.Text = e.Url; });
 
                 // https://www.amazon.com/ap/signin?openid.return_to=https://relay.amazon.com/&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.assoc_handle=amzn_relay_desktop_us&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.ns=http://specs.openid.net/auth/2.0&pageId=amzn_relay_desktop_us
@@ -1236,7 +1239,7 @@ namespace AmazonDeliveryPlanner
         {
             adminBrowser.Forward();
         }
-        
+
         void InitDriversPanelBrowser()
         {
             // !
@@ -1297,7 +1300,7 @@ namespace AmazonDeliveryPlanner
             // LoadMFIFCPage();
 
             string _url = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.DriverListURL + "/" + GlobalContext.LoggedInPlanner.token;
-           // MessageBox.Show(_url);
+            // MessageBox.Show(_url);
             driversPanelBrowser.Load(_url);
             GlobalContext.Log("URL for driver igrame is:  '{0}'", _url);
 
@@ -1316,7 +1319,7 @@ namespace AmazonDeliveryPlanner
             driversPanelBrowser.KeyboardHandler = new BrowserKeyboardHandler();
 
             var browserCallbackObjectForJs = new BrowserCallbackObjectForJs();
-            
+
             // driversPanelBrowser.RegisterAsyncJsObject("driverCallbackObj", browserCallbackObjectForJs);
             CefSharpSettings.WcfEnabled = true;
             driversPanelBrowser.JavascriptObjectRepository.Settings.LegacyBindingEnabled = true;
@@ -1347,7 +1350,7 @@ namespace AmazonDeliveryPlanner
 
         private void refreshDriverListBrowserButton_Click(object sender, EventArgs e)
         {
-            driversPanelBrowser.Reload(true);            
+            driversPanelBrowser.Reload(true);
         }
 
         bool displayOnlyDriverGroupNameInDriversForm = false;
@@ -1375,16 +1378,27 @@ namespace AmazonDeliveryPlanner
         }
 
         private void showDriversBrowserControlDevToolsButton_Click(object sender, EventArgs e)
-        {            
+        {
             driversPanelBrowser.ShowDevTools();
         }
 
-        public void OpenDriverWindow(string driverId, bool forceCall = false)
+        public void OpenDriverWindow(string driverHash, bool forceCall = false)
         {
             int _driverId = 0;
+            string driverId = driverHash;
+            string messageId = "";
+            bool containsUnderscore = driverHash.Contains("_");
+            if (containsUnderscore)
+            {
+                string[] substrings = driverHash.Split('_');
+                // Split the string by underscore
+                driverId = substrings[0];
+                messageId = substrings[1];
+            }
 
             try
             {
+
                 _driverId = Convert.ToInt32(driverId);
             }
             catch (Exception ex)
@@ -1395,6 +1409,7 @@ namespace AmazonDeliveryPlanner
             }
 
             Driver clickedDriver = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == _driverId).FirstOrDefault();
+            clickedDriver.message_id = messageId;
 
             if (clickedDriver == null)
             {
@@ -1495,20 +1510,20 @@ namespace AmazonDeliveryPlanner
                 driversPanelBrowser.Load(url);
 
                 GlobalContext.Log("Drivers list url is:  '{0}'", url);
-                
+
             }
         }
 
         void ClosePreviousPlannerTabs()
-        {            
+        {
             foreach (TabPage page in tabControl.TabPages)
             {
-                    tabControl.TabPages.Remove(page);
+                tabControl.TabPages.Remove(page);
 
-                    Driver drv = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == ((DriverSessionObject)page.Tag).DriverId).SingleOrDefault();
+                Driver drv = GlobalContext.LastDriverList.drivers.Where(dr => dr.driver_id == ((DriverSessionObject)page.Tag).DriverId).SingleOrDefault();
 
-                    openTabDrivers[drv.driver_id] = false;
-                    // driverListBox.Refresh();
+                openTabDrivers[drv.driver_id] = false;
+                // driverListBox.Refresh();
             }
         }
 
