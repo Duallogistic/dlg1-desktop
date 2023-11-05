@@ -67,16 +67,17 @@ namespace AmazonDeliveryPlanner
             this.loggingTabPage = new System.Windows.Forms.TabPage();
             this.autoScrollCheckBox = new System.Windows.Forms.CheckBox();
             this.logTextBox = new System.Windows.Forms.TextBox();
+            this.upcomingTabPage = new System.Windows.Forms.TabPage();
+            this.upcomingTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
+            this.IntransitTabPage = new System.Windows.Forms.TabPage();
+            this.intransitTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
+            this.historyTabPage = new System.Windows.Forms.TabPage();
+            this.historyTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
             this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
             this.showOpenDriverFormButton = new System.Windows.Forms.Button();
             this.plannerLabel = new System.Windows.Forms.Label();
             this.changeUserButton = new System.Windows.Forms.Button();
-            this.upcomingTabPage = new System.Windows.Forms.TabPage();
-            this.IntransitTabPage = new System.Windows.Forms.TabPage();
-            this.historyTabPage = new System.Windows.Forms.TabPage();
-            this.upcomingTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
-            this.intransitTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
-            this.historyTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
+            this.exportFileAutoDownloadEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -437,6 +438,63 @@ namespace AmazonDeliveryPlanner
             this.logTextBox.Size = new System.Drawing.Size(1551, 775);
             this.logTextBox.TabIndex = 0;
             // 
+            // upcomingTabPage
+            // 
+            this.upcomingTabPage.Controls.Add(this.upcomingTabBrowserTimerExportUserControl);
+            this.upcomingTabPage.Location = new System.Drawing.Point(4, 22);
+            this.upcomingTabPage.Name = "upcomingTabPage";
+            this.upcomingTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.upcomingTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.upcomingTabPage.TabIndex = 3;
+            this.upcomingTabPage.Text = "Upcoming";
+            this.upcomingTabPage.UseVisualStyleBackColor = true;
+            // 
+            // upcomingTabBrowserTimerExportUserControl
+            // 
+            this.upcomingTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.upcomingTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
+            this.upcomingTabBrowserTimerExportUserControl.Name = "upcomingTabBrowserTimerExportUserControl";
+            this.upcomingTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.upcomingTabBrowserTimerExportUserControl.TabIndex = 0;
+            // 
+            // IntransitTabPage
+            // 
+            this.IntransitTabPage.Controls.Add(this.intransitTabBrowserTimerExportUserControl);
+            this.IntransitTabPage.Location = new System.Drawing.Point(4, 22);
+            this.IntransitTabPage.Name = "IntransitTabPage";
+            this.IntransitTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.IntransitTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.IntransitTabPage.TabIndex = 4;
+            this.IntransitTabPage.Text = "In-transit";
+            this.IntransitTabPage.UseVisualStyleBackColor = true;
+            // 
+            // intransitTabBrowserTimerExportUserControl
+            // 
+            this.intransitTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.intransitTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
+            this.intransitTabBrowserTimerExportUserControl.Name = "intransitTabBrowserTimerExportUserControl";
+            this.intransitTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.intransitTabBrowserTimerExportUserControl.TabIndex = 1;
+            // 
+            // historyTabPage
+            // 
+            this.historyTabPage.Controls.Add(this.historyTabBrowserTimerExportUserControl);
+            this.historyTabPage.Location = new System.Drawing.Point(4, 22);
+            this.historyTabPage.Name = "historyTabPage";
+            this.historyTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.historyTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.historyTabPage.TabIndex = 5;
+            this.historyTabPage.Text = "History";
+            this.historyTabPage.UseVisualStyleBackColor = true;
+            // 
+            // historyTabBrowserTimerExportUserControl
+            // 
+            this.historyTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.historyTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
+            this.historyTabBrowserTimerExportUserControl.Name = "historyTabBrowserTimerExportUserControl";
+            this.historyTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.historyTabBrowserTimerExportUserControl.TabIndex = 1;
+            // 
             // toggleLeftPanelVisibilityButton
             // 
             this.toggleLeftPanelVisibilityButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -481,68 +539,25 @@ namespace AmazonDeliveryPlanner
             this.changeUserButton.UseVisualStyleBackColor = true;
             this.changeUserButton.Click += new System.EventHandler(this.changeUserButton_Click);
             // 
-            // upcomingTabPage
+            // exportFileAutoDownloadEnabledCheckBox
             // 
-            this.upcomingTabPage.Controls.Add(this.upcomingTabBrowserTimerExportUserControl);
-            this.upcomingTabPage.Location = new System.Drawing.Point(4, 22);
-            this.upcomingTabPage.Name = "upcomingTabPage";
-            this.upcomingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.upcomingTabPage.Size = new System.Drawing.Size(1557, 781);
-            this.upcomingTabPage.TabIndex = 3;
-            this.upcomingTabPage.Text = "Upcoming";
-            this.upcomingTabPage.UseVisualStyleBackColor = true;
-            // 
-            // IntransitTabPage
-            // 
-            this.IntransitTabPage.Controls.Add(this.intransitTabBrowserTimerExportUserControl);
-            this.IntransitTabPage.Location = new System.Drawing.Point(4, 22);
-            this.IntransitTabPage.Name = "IntransitTabPage";
-            this.IntransitTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.IntransitTabPage.Size = new System.Drawing.Size(1557, 781);
-            this.IntransitTabPage.TabIndex = 4;
-            this.IntransitTabPage.Text = "In-transit";
-            this.IntransitTabPage.UseVisualStyleBackColor = true;
-            // 
-            // historyTabPage
-            // 
-            this.historyTabPage.Controls.Add(this.historyTabBrowserTimerExportUserControl);
-            this.historyTabPage.Location = new System.Drawing.Point(4, 22);
-            this.historyTabPage.Name = "historyTabPage";
-            this.historyTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.historyTabPage.Size = new System.Drawing.Size(1557, 781);
-            this.historyTabPage.TabIndex = 5;
-            this.historyTabPage.Text = "History";
-            this.historyTabPage.UseVisualStyleBackColor = true;
-            // 
-            // upcomingTabBrowserTimerExportUserControl
-            // 
-            this.upcomingTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.upcomingTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
-            this.upcomingTabBrowserTimerExportUserControl.Name = "upcomingTabBrowserTimerExportUserControl";
-            this.upcomingTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
-            this.upcomingTabBrowserTimerExportUserControl.TabIndex = 0;
-            // 
-            // intransitTabBrowserTimerExportUserControl
-            // 
-            this.intransitTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.intransitTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
-            this.intransitTabBrowserTimerExportUserControl.Name = "intransitTabBrowserTimerExportUserControl";
-            this.intransitTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
-            this.intransitTabBrowserTimerExportUserControl.TabIndex = 1;
-            // 
-            // historyTabBrowserTimerExportUserControl
-            // 
-            this.historyTabBrowserTimerExportUserControl.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.historyTabBrowserTimerExportUserControl.Location = new System.Drawing.Point(3, 3);
-            this.historyTabBrowserTimerExportUserControl.Name = "historyTabBrowserTimerExportUserControl";
-            this.historyTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
-            this.historyTabBrowserTimerExportUserControl.TabIndex = 1;
+            this.exportFileAutoDownloadEnabledCheckBox.AutoSize = true;
+            this.exportFileAutoDownloadEnabledCheckBox.Checked = true;
+            this.exportFileAutoDownloadEnabledCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.exportFileAutoDownloadEnabledCheckBox.Location = new System.Drawing.Point(954, 3);
+            this.exportFileAutoDownloadEnabledCheckBox.Name = "exportFileAutoDownloadEnabledCheckBox";
+            this.exportFileAutoDownloadEnabledCheckBox.Size = new System.Drawing.Size(160, 17);
+            this.exportFileAutoDownloadEnabledCheckBox.TabIndex = 9;
+            this.exportFileAutoDownloadEnabledCheckBox.Text = "Auto download export (timer)";
+            this.exportFileAutoDownloadEnabledCheckBox.UseVisualStyleBackColor = true;
+            this.exportFileAutoDownloadEnabledCheckBox.CheckedChanged += new System.EventHandler(this.exportFileAutoDownloadEnabledCheckBox_CheckedChanged);
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1565, 807);
+            this.Controls.Add(this.exportFileAutoDownloadEnabledCheckBox);
             this.Controls.Add(this.changeUserButton);
             this.Controls.Add(this.plannerLabel);
             this.Controls.Add(this.showOpenDriverFormButton);
@@ -573,6 +588,7 @@ namespace AmazonDeliveryPlanner
             this.IntransitTabPage.ResumeLayout(false);
             this.historyTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -614,5 +630,6 @@ namespace AmazonDeliveryPlanner
         private BrowserTimerExportUserControl upcomingTabBrowserTimerExportUserControl;
         private BrowserTimerExportUserControl intransitTabBrowserTimerExportUserControl;
         private BrowserTimerExportUserControl historyTabBrowserTimerExportUserControl;
+        private CheckBox exportFileAutoDownloadEnabledCheckBox;
     }
 }

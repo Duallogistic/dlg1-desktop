@@ -217,17 +217,26 @@ namespace AmazonDeliveryPlanner
             }
 
             if (upcomingTPC != null)
-            {
+            {                
+                upcomingTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = upcomingTPC.MinRandomIntervalMinutes;
+                upcomingTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = upcomingTPC.MaxRandomIntervalMinutes;
+                upcomingTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
                 upcomingTabBrowserTimerExportUserControl.GoToURL(upcomingTPC.Url);
             }
 
             if (intransitTPC != null)
-            {
+            {                
+                intransitTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = intransitTPC.MinRandomIntervalMinutes;
+                intransitTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = intransitTPC.MaxRandomIntervalMinutes;
+                intransitTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
                 intransitTabBrowserTimerExportUserControl.GoToURL(intransitTPC.Url);
             }
 
             if (historyTPC != null)
-            {
+            {                
+                historyTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = historyTPC.MinRandomIntervalMinutes;
+                historyTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = historyTPC.MaxRandomIntervalMinutes;
+                historyTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
                 historyTabBrowserTimerExportUserControl.GoToURL(historyTPC.Url);
             }
         }
@@ -1567,6 +1576,13 @@ namespace AmazonDeliveryPlanner
         private void tabControl_TabIndexChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void exportFileAutoDownloadEnabledCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            upcomingTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
+            intransitTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
+            historyTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
         }
     }
 }

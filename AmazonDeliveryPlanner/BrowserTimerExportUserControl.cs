@@ -18,7 +18,7 @@ using System.Net;
 using CefSharp.DevTools.Network;
 using RestSharp;
 using Newtonsoft.Json;
-using System.Net.Http;
+using System.Net.Http;  
 using AmazonDeliveryPlanner.API;
 using CefSharp.DevTools.WebAudio;
 using RestSharp.Extensions;
@@ -43,6 +43,11 @@ namespace AmazonDeliveryPlanner
 
         //long driverId;
 
+        int minRandomIntervalMinutes;
+        int maxRandomIntervalMinutes;
+
+        bool exportFileAutoDownloadEnabled;
+
         public BrowserTimerExportUserControl() : this("", null)
         {
         }
@@ -64,13 +69,37 @@ namespace AmazonDeliveryPlanner
             browser.KeyUp += Browser_KeyUp;
             browser.KeyboardHandler = new BrowserKeyboardHandler();
 
-            // urlTextBox.Text = url;            
+            // urlTextBox.Text = url;
+            // 
+            // StartExportDownloadThread();
         }
 
         public void GoToURL(string url)
         {
             browser.Load(url);
+            InitAutoDownloadTimer(url);
         }
+
+        //void StartExportDownloadThread()
+        //{
+        //    new Task(() => { // a zis Andreea, sefa, buna da nebuna
+        //        int minRandomInterval = minRandomIntervalMinutes * 60 * 1000;
+        //        int maxRandomInterval = maxRandomIntervalMinutes * 60 * 1000;
+
+        //        int delayBase = minRandomInterval;
+        //        int addedRandom = maxRandomInterval - minRandomInterval;
+
+        //        int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
+
+        //        TimeSpan waitPeriod = TimeSpan.FromSeconds(waitPeriodSec);
+
+        //        GlobalContext.Log("Auto download with random interval - waiting {0} s", waitPeriod.TotalSeconds);
+        //        Thread.Sleep(waitPeriod);
+
+
+        //        ClickExportTripsFile();
+        //    }).Start();
+        //}
 
         private void Browser_KeyUp(object sender, KeyEventArgs e)
         {
@@ -159,12 +188,17 @@ namespace AmazonDeliveryPlanner
         void InitAutoDownloadTimer(string loadedUrl)
         {
             // https://relay.amazon.co.uk/tours/in-transit
-            if (loadedUrl.IndexOf("in-transit", StringComparison.OrdinalIgnoreCase) >= 0 &&
+            
+            //--?
+            if (((loadedUrl.IndexOf("in-transit", StringComparison.OrdinalIgnoreCase) >= 0) ||
+                (loadedUrl.IndexOf("history", StringComparison.OrdinalIgnoreCase) >= 0) ||
+                (loadedUrl.IndexOf("upcoming", StringComparison.OrdinalIgnoreCase) >= 0)
+                 ) &&
                 loadedUrl.IndexOf("relay.amazon", StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                if (GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval > 0 &&
-                    GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval > 0 &&
-                    GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval < GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval)
+                if (minRandomIntervalMinutes > 0 &&
+                    maxRandomIntervalMinutes > 0 &&
+                    minRandomIntervalMinutes < maxRandomIntervalMinutes)
                 {
                     if (autoDownloadIntervalTask != null)
                     {
@@ -176,7 +210,7 @@ namespace AmazonDeliveryPlanner
 
                     autoDownloadIntervalTask = Task.Run(() =>
                         {
-                            GlobalContext.Log("Started auto download with random interval between {0} and {1} seconds", GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval, GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval);
+                            GlobalContext.Log("Started auto download with random interval between {0} and {1} minutes", minRandomIntervalMinutes, maxRandomIntervalMinutes);
                             StartAutoDownloadInterval(true);
                         },
                         ts.Token
@@ -184,7 +218,7 @@ namespace AmazonDeliveryPlanner
                 }
                 else
                 {
-                    GlobalContext.Log("Auto download with random interval not started because of the configured values - interval between {0} and {1} seconds", GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval, GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval);
+                    GlobalContext.Log("Auto download with random interval not started because of the configured values - interval between {0} and {1} minutes", minRandomIntervalMinutes, maxRandomIntervalMinutes);
                 }
             }
         }
@@ -196,8 +230,11 @@ namespace AmazonDeliveryPlanner
         {
             if (first)
             {
-                int delayBase = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
-                int addedRandom = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval - GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
+                int minRandomInterval = minRandomIntervalMinutes * 60 * 1000;
+                int maxRandomInterval = maxRandomIntervalMinutes * 60 * 1000;
+
+                int delayBase = minRandomInterval;
+                int addedRandom = maxRandomInterval - minRandomInterval;
 
                 int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
 
@@ -219,8 +256,11 @@ namespace AmazonDeliveryPlanner
                     ClickExportTripsFile();
                 });
 
-                int delayBase = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
-                int addedRandom = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval - GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
+                int minRandomInterval = minRandomIntervalMinutes * 60 * 1000;
+                int maxRandomInterval = maxRandomIntervalMinutes * 60 * 1000;
+
+                int delayBase = minRandomInterval;
+                int addedRandom = maxRandomInterval - minRandomInterval;
 
                 int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
 
@@ -314,7 +354,8 @@ namespace AmazonDeliveryPlanner
 
                         FileUploadFinished?.Invoke(this, new FileUploadFinishedEventArgs(fileName));
 
-                        new Thread(() => MessageBox.Show("Fisierul " + fileName + " a fost descarcat", GlobalContext.ApplicationTitle)).Start();                        
+                        // new Thread(() => MessageBox.Show("Fisierul " + fileName + " a fost descarcat", GlobalContext.ApplicationTitle)).Start();
+                        GlobalContext.Log("Fisierul " + fileName + " a fost descarcat");
                     }
 
                     // responseStream.RunSynchronously();                  
@@ -574,6 +615,13 @@ namespace AmazonDeliveryPlanner
         private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
         public string Url { get => url; /*set => url = value;*/ }
+        public int MinRandomIntervalMinutes { get => minRandomIntervalMinutes; set => minRandomIntervalMinutes = value; }
+        public int MaxRandomIntervalMinutes { get => maxRandomIntervalMinutes; set => maxRandomIntervalMinutes = value; }
+        public bool ExportFileAutoDownloadEnabled 
+        { 
+            get => exportFileAutoDownloadEnabled; 
+            set => exportFileAutoDownloadEnabled = value; 
+        }
 
         public void DoMouseClick(uint X, uint Y)
         {

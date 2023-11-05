@@ -239,6 +239,7 @@
     <EmbeddedResource Include="SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="ConfigurationTemplate\conf.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
