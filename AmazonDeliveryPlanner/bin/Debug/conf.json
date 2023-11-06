@@ -2,18 +2,18 @@
   "trip_pages": [
 	  {
 		"url": "https://relay.amazon.co.uk/tours/upcoming",
-		"min_random_interval_minutes": 5,
-		"max_random_interval_minutes": 15,
+		"min_random_interval_minutes": 1,
+		"max_random_interval_minutes": 2,
 	  },
 	  {
 		"url": "https://relay.amazon.co.uk/tours/in-transit",
-		"min_random_interval_minutes": 5,
-		"max_random_interval_minutes": 15,
+		"min_random_interval_minutes": 1,
+		"max_random_interval_minutes": 2,
 	  },
 	  {
 		"url": "https://relay.amazon.co.uk/tours/history",
-		"min_random_interval_minutes": 5,
-		"max_random_interval_minutes": 15,
+		"min_random_interval_minutes": 1,
+		"max_random_interval_minutes": 2,
 	  }
   ],
   "admin_url": "https://dlg1prod.web.app",

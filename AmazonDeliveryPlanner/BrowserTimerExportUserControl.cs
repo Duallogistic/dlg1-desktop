@@ -82,7 +82,7 @@ namespace AmazonDeliveryPlanner
 
         //void StartExportDownloadThread()
         //{
-        //    new Task(() => { // a zis Andreea, sefa, buna da nebuna
+        //    new Task(() => {
         //        int minRandomInterval = minRandomIntervalMinutes * 60 * 1000;
         //        int maxRandomInterval = maxRandomIntervalMinutes * 60 * 1000;
 
@@ -91,7 +91,7 @@ namespace AmazonDeliveryPlanner
 
         //        int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
 
-        //        TimeSpan waitPeriod = TimeSpan.FromSeconds(waitPeriodSec);
+        //        TimeSpan waitPeriod = TimeSpan.FromMilliseconds(waitPeriodSec);
 
         //        GlobalContext.Log("Auto download with random interval - waiting {0} s", waitPeriod.TotalSeconds);
         //        Thread.Sleep(waitPeriod);
@@ -148,6 +148,7 @@ namespace AmazonDeliveryPlanner
 
             browser.DownloadHandler = new DownloadHandler();
 
+            ((DownloadHandler)browser.DownloadHandler).OnBeforeDownloadFired += BrowserTimerExportUserControl_OnBeforeDownloadFired;
             ((DownloadHandler)browser.DownloadHandler).OnDownloadUpdatedFired += BrowserUserControl_OnDownloadUpdatedFired;
 
             // this.Controls.Add(browser);
@@ -183,6 +184,14 @@ namespace AmazonDeliveryPlanner
             browser.TitleChanged += Browser_TitleChanged;
 
             InitAutoDownloadTimer(url);
+        }
+
+        private void BrowserTimerExportUserControl_OnBeforeDownloadFired(object sender, DownloadItem e)
+        {
+            string fileSuffix = DateTime.Now.ToString("_yyyyMMdd_hhmmss_fff") + ".csv";
+            
+            e.FullPath = e.FullPath.Replace(".csv", fileSuffix);            
+            e.SuggestedFileName = e.SuggestedFileName.Replace(".csv", fileSuffix);
         }
 
         void InitAutoDownloadTimer(string loadedUrl)
@@ -238,7 +247,7 @@ namespace AmazonDeliveryPlanner
 
                 int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
 
-                TimeSpan waitPeriod = TimeSpan.FromSeconds(waitPeriodSec);
+                TimeSpan waitPeriod = TimeSpan.FromMilliseconds(waitPeriodSec);
 
                 if (UpdateAutoDownloadStatus != null)
                     UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Waiting {0:00} seconds before downloading export file.", waitPeriod.TotalSeconds)));
@@ -262,9 +271,9 @@ namespace AmazonDeliveryPlanner
                 int delayBase = minRandomInterval;
                 int addedRandom = maxRandomInterval - minRandomInterval;
 
-                int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
+                int waitPeriodMilliSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
 
-                TimeSpan waitPeriod = TimeSpan.FromSeconds(waitPeriodSec);
+                TimeSpan waitPeriod = TimeSpan.FromMilliseconds(waitPeriodMilliSec);
 
                 if (ts.IsCancellationRequested)
                     return;
@@ -305,12 +314,16 @@ namespace AmazonDeliveryPlanner
                         responseText = System.Text.Encoding.ASCII.GetString(rawResponse);
                     }
                     */
+                    
+                    // e.FullPath = e.FullPath.Replace(".csv", DateTime.Now.ToString("_yyyyMMdd_hhmmss_fff") + ".csv");
 
                     string fileName = e.SuggestedFileName;
 
-                    if (string.IsNullOrEmpty(fileName))
+                    // if (string.IsNullOrEmpty(fileName))
                         fileName = Path.GetFileName(e.FullPath);
 
+                    
+                    
                     // Task<Stream> responseStream = Upload(uploadURL, File.ReadAllBytes(e.FullPath), fileName);
 
                     string responseText = null;
@@ -354,8 +367,8 @@ namespace AmazonDeliveryPlanner
 
                         FileUploadFinished?.Invoke(this, new FileUploadFinishedEventArgs(fileName));
 
-                        // new Thread(() => MessageBox.Show("Fisierul " + fileName + " a fost descarcat", GlobalContext.ApplicationTitle)).Start();
-                        GlobalContext.Log("Fisierul " + fileName + " a fost descarcat");
+                        // new Thread(() => MessageBox.Show("File '" + fileName + "' was downloaded.", GlobalContext.ApplicationTitle)).Start();
+                        GlobalContext.Log("File '" + fileName + "' was downloaded.");
                     }
 
                     // responseStream.RunSynchronously();                  

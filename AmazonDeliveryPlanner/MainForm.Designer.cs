@@ -223,12 +223,12 @@ namespace AmazonDeliveryPlanner
             this.mainTabControl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.mainTabControl.Controls.Add(this.sessionsTabPage);
-            this.mainTabControl.Controls.Add(this.adminTabPage);
-            this.mainTabControl.Controls.Add(this.loggingTabPage);
+            this.mainTabControl.Controls.Add(this.sessionsTabPage);            
             this.mainTabControl.Controls.Add(this.upcomingTabPage);
             this.mainTabControl.Controls.Add(this.IntransitTabPage);
             this.mainTabControl.Controls.Add(this.historyTabPage);
+            this.mainTabControl.Controls.Add(this.loggingTabPage);
+            this.mainTabControl.Controls.Add(this.adminTabPage);
             this.mainTabControl.Location = new System.Drawing.Point(2, -1);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;

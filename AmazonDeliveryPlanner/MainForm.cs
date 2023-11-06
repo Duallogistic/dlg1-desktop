@@ -280,9 +280,10 @@ namespace AmazonDeliveryPlanner
             if (this.logTextBox.InvokeRequired)
             {
                 SetTextCallback stc = new SetTextCallback(Output);
+
                 try
                 {
-                    if (!this.IsDisposed)
+                    if (!this.IsDisposed && this.IsHandleCreated)
                         this.Invoke(stc, new object[] { text });
                 }
                 catch (ObjectDisposedException)
