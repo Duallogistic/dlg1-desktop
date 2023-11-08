@@ -1,9 +1,7 @@
 ﻿using AmazonDeliveryPlanner.API;
+using AmazonDeliveryPlanner.API.data;
 using CefSharp.WinForms;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace AmazonDeliveryPlanner
 {
@@ -26,20 +24,22 @@ namespace AmazonDeliveryPlanner
         }
 
         public static CefSettings GlobalCefSettings { get => globalCefSettings; set => globalCefSettings = value; }
-        
+
         // public static string UserAgent { get => userAgent; set => userAgent = value; }
         // public static List<string> Urls { get => urls; set => urls = value; }
         public static DriverList LastDriverList { get => lastDriverList; set => lastDriverList = value; }
         public static SerializedConfiguration SerializedConfiguration { get => serializedConfiguration; set => serializedConfiguration = value; }
         public static string ConfigurationFileName { get => "conf.json"; }
-        public static Planner LoggedInPlanner { get => loggedInPlanner; set => loggedInPlanner = value; }
+        public static PlannerEntity LoggedInPlanner { get => loggedInPlanner; set => loggedInPlanner = value; }
         public static Dictionary<string, string> Scripts { get => scripts; set => scripts = value; }
+
+        public static ApiConfig ApiConfig { get; set; }
 
         public static void Log(string text, params object[] args)
         {
             // string msg = string.Format(text, args);
 
-            gLogger.Log(0, string.Format(text, args));            
+            gLogger.Log(0, string.Format(text, args));
         }
 
         public static void LogWithLevel(int level, string text, params object[] args)
@@ -84,7 +84,7 @@ namespace AmazonDeliveryPlanner
 
         static SerializedConfiguration serializedConfiguration;
 
-        static Planner loggedInPlanner;
+        static PlannerEntity loggedInPlanner;
 
         static Dictionary<string, string> scripts;
     }

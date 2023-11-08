@@ -1,30 +1,15 @@
 ﻿// using CamioaneAmazon.CEF;
 using CefSharp;
 using CefSharp.WinForms;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+using System.IO;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Web.UI.WebControls;
-using System.Net;
-using CefSharp.DevTools.Network;
-using RestSharp;
-using Newtonsoft.Json;
-using System.Net.Http;
-using AmazonDeliveryPlanner.API;
-using CefSharp.DevTools.WebAudio;
-using RestSharp.Extensions;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace AmazonDeliveryPlanner
 {
@@ -49,7 +34,7 @@ namespace AmazonDeliveryPlanner
             this.url = url;
             this.requestContextSettings = requestContextSettings;
 
-            InitializeComponent();            
+            InitializeComponent();
 
             InitBrowser();
             //. InitPanel2Browser();
@@ -60,7 +45,7 @@ namespace AmazonDeliveryPlanner
             browser.KeyUp += Browser_KeyUp;
             browser.KeyboardHandler = new BrowserKeyboardHandler();
 
-            urlTextBox.Text = url;            
+            urlTextBox.Text = url;
         }
 
         private void Browser_KeyUp(object sender, KeyEventArgs e)
@@ -175,7 +160,7 @@ namespace AmazonDeliveryPlanner
                 }
                 else
                 {
-                    GlobalContext.Log("Auto download with random interval not started because of the configured values - interval between {0} and {1} seconds", GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval, GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval);
+                    GlobalContext.Log("Auto download with random interval not started because of the configured values 1 - interval between {0} and {1} seconds", GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval, GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval);
                 }
             }
         }
@@ -202,7 +187,7 @@ namespace AmazonDeliveryPlanner
             }
 
             {
-                if (ts.IsCancellationRequested)                        
+                if (ts.IsCancellationRequested)
                     return;
 
                 this.Invoke((MethodInvoker)delegate
@@ -238,10 +223,8 @@ namespace AmazonDeliveryPlanner
 
                 try
                 {
-                    uploadURL = GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
-                    // string uploadURL = "http://167.86.94.125:52031/api/auth2/external/upload";
+                    uploadURL = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
 
-                   
                     GlobalContext.Log("Upload URL=\"{0}\"", uploadURL);
 
                     /*
@@ -266,7 +249,7 @@ namespace AmazonDeliveryPlanner
 
                     string responseText = null;
 
-                    string csvFileContents = File.ReadAllText(e.FullPath);                    
+                    string csvFileContents = File.ReadAllText(e.FullPath);
                     csvFileContents = csvFileContents.Replace(",Operator ID,Spot Work", ",Operator ID,Spot Work,ColBC,COlBD");
 
                     // niggere, hai sa puscam o bere, lasa prostiile ca oricum nu stii ce faci acolo
@@ -289,7 +272,7 @@ namespace AmazonDeliveryPlanner
 
                         if (!response.IsSuccessStatusCode)
                         {
-                            
+
                         }
 
                         Task<Stream> tsk = response.Content.ReadAsStreamAsync();
@@ -305,7 +288,7 @@ namespace AmazonDeliveryPlanner
 
                         FileUploadFinished?.Invoke(this, new FileUploadFinishedEventArgs(fileName));
 
-                        new Thread(() => MessageBox.Show("Fisierul " + fileName + " a fost descarcat", GlobalContext.ApplicationTitle)).Start();                        
+                        new Thread(() => MessageBox.Show("Fisierul " + fileName + " a fost descarcat", GlobalContext.ApplicationTitle)).Start();
                     }
 
                     // responseStream.RunSynchronously();                  
@@ -494,8 +477,8 @@ namespace AmazonDeliveryPlanner
                     if ((e.Url.IndexOf("amazon.com/ap/signin") >= 0) ||
                         (e.Url.IndexOf("amazon.co.uk/ap/signin") >= 0))
                     {
-                        string email = GlobalContext.SerializedConfiguration.RelayCredentialsEmail;
-                        string pass = GlobalContext.SerializedConfiguration.RelayCredentialsPass;
+                        string email = GlobalContext.ApiConfig.relayAuth.username;
+                        string pass = GlobalContext.ApiConfig.relayAuth.password;
 
                         string jsSource1 = string.Format(
                             "(function () {{ document.getElementById('ap_email').value = '{0}'; document.getElementById('ap_password').value = '{1}'; }} )(); ",
@@ -522,7 +505,8 @@ namespace AmazonDeliveryPlanner
                     //else
                     //    sa();
 
-                    this.Invoke((MethodInvoker)delegate {
+                    this.Invoke((MethodInvoker)delegate
+                    {
                         urlTextBox.Text = e.Url;
                         // urlTextBox.Text = 
                         if (((TabPage)this.Parent).Text == "_____________")
@@ -543,7 +527,7 @@ namespace AmazonDeliveryPlanner
 
         private void Browser_BrowserInitialized(object sender, EventArgs e)
         {
-            
+
             // (sender as CefSharp.OffScreen.ChromiumWebBrowser).Load("");
         }
 
@@ -601,7 +585,7 @@ namespace AmazonDeliveryPlanner
         }
 
         private void increaseTextSizeButton_Click(object sender, EventArgs e)
-        {            
+        {
             browser.SetZoomLevel(browser.GetZoomLevelAsync().Result + 0.1);
         }
 
@@ -636,7 +620,7 @@ namespace AmazonDeliveryPlanner
             {
                 FileName = fileName;
             }
-            
+
             public string FileName { get; set; }
         }
 
@@ -711,7 +695,7 @@ namespace AmazonDeliveryPlanner
         //        MessageBox.Show("planning_overview_url value not set in configuration file.", GlobalContext.ApplicationTitle);
         //        return;
         //    }
-            
+
         //    // ex.: http://dlg1.app/planning-overview/{user_id}/info
         //    string panel2URL = GlobalContext.SerializedConfiguration.AdminURL 
         //        + GlobalContext.SerializedConfiguration.PlanningOverviewURL.Replace("{user_id}", driverId.ToString()) 

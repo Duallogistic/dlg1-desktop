@@ -1,37 +1,34 @@
-﻿using AmazonDeliveryPlanner.API;
+﻿using AmazonDeliveryPlanner.API.data;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AmazonDeliveryPlanner
 {
     public partial class PlannerSelectorForm : Form
     {
-        Planner[] planners;
-        IEnumerable<Planner> filteredPlanners;
-        Planner selectedPlanner;
+        PlannerEntity[] planners;
+        IEnumerable<PlannerEntity> filteredPlanners;
+        PlannerEntity selectedPlanner;
         bool displayOnlyPlannerGroupName;
 
-        public Planner[] Planners { get => planners; /*set => planners = value;*/ }
-        public Planner SelectedPlanner { get => selectedPlanner; set => selectedPlanner = value; }
+        public PlannerEntity[] Planners { get => planners; /*set => planners = value;*/ }
+        public PlannerEntity SelectedPlanner { get => selectedPlanner; set => selectedPlanner = value; }
         public bool DisplayOnlyPlannerGroupName { get => displayOnlyPlannerGroupName; set => displayOnlyPlannerGroupName = value; }
 
-        public PlannerSelectorForm(Planner[] planners)
+        public PlannerSelectorForm(PlannerEntity[] planners)
         {
             InitializeComponent();
 
             this.planners = planners;
             this.filteredPlanners = planners.ToArray();
             // this.planners.CopyTo(this.filteredDrivers, 0);
-            
-            Planner._ListModeToString = true;
+
+            PlannerEntity._ListModeToString = true;
         }
 
         private void saveButton_Click(object sender, EventArgs e)
@@ -40,7 +37,7 @@ namespace AmazonDeliveryPlanner
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
-        {            
+        {
             this.DialogResult = DialogResult.Cancel;
             Close();
         }
@@ -96,15 +93,16 @@ namespace AmazonDeliveryPlanner
 
         private void filteredDriversListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            staffPasswordField.Enabled = filteredDriversListBox.SelectedIndex >= 0;
+            staffPasswordField.Focus();
         }
 
-        Planner GetSelectedPlanner()
+        PlannerEntity GetSelectedPlanner()
         {
             if (filteredDriversListBox.SelectedIndex < 0)
                 return null;
             else
-                return (Planner)filteredDriversListBox.SelectedItem;
+                return (PlannerEntity)filteredDriversListBox.SelectedItem;
         }
 
         private void filteredDriversListBox_Click(object sender, EventArgs e)
@@ -119,7 +117,13 @@ namespace AmazonDeliveryPlanner
 
         private void OpenPlanner()
         {
-            Planner selectedPlanner = GetSelectedPlanner();
+            PlannerEntity selectedPlanner = GetSelectedPlanner();
+
+            string userPass = GetSHA1HashData(staffPasswordField.Text);
+            if (selectedPlanner.password != userPass) {
+                MessageBox.Show("Wrong password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             if (selectedPlanner != null)
             {
@@ -184,14 +188,26 @@ namespace AmazonDeliveryPlanner
 
         private void OpenDriverForm_FormClosed(object sender, FormClosedEventArgs e)
         {
-            Planner._ListModeToString = false;
+            PlannerEntity._ListModeToString = false;
         }
 
         private void displayOnlyDriverGroupNameCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Planner._ListModeToString = !displayOnlyPlannerGroupNameCheckBox.Checked;
+            PlannerEntity._ListModeToString = !displayOnlyPlannerGroupNameCheckBox.Checked;
             displayOnlyPlannerGroupName = displayOnlyPlannerGroupNameCheckBox.Checked;
             RefreshFilteredDriverList();
         }
+
+        private void textBox1_KeyDown(object sender, KeyEventArgs e)
+        {
+            saveButton.Enabled = staffPasswordField.Text.Length > 0;
+        }
+
+        private string GetSHA1HashData(string input)
+        {
+            var hash = new SHA1Managed().ComputeHash(Encoding.UTF8.GetBytes(input));
+            return string.Concat(hash.Select(b => b.ToString("x2")));
+        }
+
     }
 }

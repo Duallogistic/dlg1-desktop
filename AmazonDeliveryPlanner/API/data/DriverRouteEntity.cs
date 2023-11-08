@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AmazonDeliveryPlanner.API.data
 {
@@ -19,6 +15,6 @@ namespace AmazonDeliveryPlanner.API.data
         public char shift;
         public DateTime pick_up_date;
         public DateTime created_at;
-        public DateTime updated_at;        
+        public DateTime updated_at;
     }
 }

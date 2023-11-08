@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-
-namespace AmazonDeliveryPlanner
+﻿namespace AmazonDeliveryPlanner
 {
     // http://windowsapptutorials.com/wpf/call-c-sharp-javascript-using-cefsharp-wpf-app/
     // adapted from https://stackoverflow.com/a/66148896

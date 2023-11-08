@@ -1,12 +1,31 @@
 
 $scriptDirectory = $PSScriptRoot
 
+
+# Check if the correct number of arguments is provided
+if ($args.Length -ne 1) {
+    Write-Host "Usage: .\archive-desktop.ps1 <environment>"
+    exit 1
+}
+
+# Get the target database name from the command-line argument
+$environment = $args[0]
+
+
+
 $deliverPath = "C:\Users\achebv\Dropbox\planner-app"
 
 $sourceFolder = Join-Path $scriptDirectory "AmazonDeliveryPlanner\bin\Debug"
-$archiveFolder = Join-Path $deliverPath "planner.zip"
 
-$configFileSource = Join-Path $scriptDirectory "AmazonDeliveryPlanner\\ConfigurationTemplate\conf.prod.json"
+$archiveFileName = if ($environment -eq "prod") {
+    "planner.zip"
+} else {
+    "planner-$environment.zip"
+}
+
+$archiveFolder = Join-Path $deliverPath $archiveFileName
+
+$configFileSource = Join-Path $scriptDirectory "AmazonDeliveryPlanner\\ConfigurationTemplate\conf.${environment}.json"
 $configFileDestination = Join-Path $sourceFolder "conf.json"
 
 $installFileSrc = Join-Path $scriptDirectory "install-desktop.ps1"

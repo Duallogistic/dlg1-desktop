@@ -1,13 +1,8 @@
 ﻿using AmazonDeliveryPlanner.API;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AmazonDeliveryPlanner
@@ -30,7 +25,7 @@ namespace AmazonDeliveryPlanner
             this.drivers = drivers;
             this.filteredDrivers = drivers.ToArray();
             // this.drivers.CopyTo(this.filteredDrivers, 0);
-            
+
             Driver._ListModeToString = true;
         }
 
@@ -96,7 +91,7 @@ namespace AmazonDeliveryPlanner
 
         private void filteredDriversListBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+
         }
 
         Driver GetSelectedDriver()

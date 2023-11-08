@@ -35,6 +35,9 @@
             this.filterDriversTextBox = new System.Windows.Forms.TextBox();
             this.filteredDriversListBox = new System.Windows.Forms.ListBox();
             this.displayOnlyPlannerGroupNameCheckBox = new System.Windows.Forms.CheckBox();
+            this.staffPasswordField = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -49,6 +52,7 @@
             // saveButton
             // 
             this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.saveButton.Enabled = false;
             this.saveButton.Location = new System.Drawing.Point(198, 419);
             this.saveButton.Name = "saveButton";
             this.saveButton.Size = new System.Drawing.Size(75, 23);
@@ -74,9 +78,9 @@
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(13, 54);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(43, 13);
+            this.label2.Size = new System.Drawing.Size(233, 13);
             this.label2.TabIndex = 4;
-            this.label2.Text = "Drivers:";
+            this.label2.Text = "Select your account and then fill your password.";
             // 
             // filterDriversTextBox
             // 
@@ -96,7 +100,7 @@
             this.filteredDriversListBox.FormattingEnabled = true;
             this.filteredDriversListBox.Location = new System.Drawing.Point(16, 72);
             this.filteredDriversListBox.Name = "filteredDriversListBox";
-            this.filteredDriversListBox.Size = new System.Drawing.Size(537, 342);
+            this.filteredDriversListBox.Size = new System.Drawing.Size(537, 316);
             this.filteredDriversListBox.TabIndex = 6;
             this.filteredDriversListBox.Click += new System.EventHandler(this.filteredDriversListBox_Click);
             this.filteredDriversListBox.SelectedIndexChanged += new System.EventHandler(this.filteredDriversListBox_SelectedIndexChanged);
@@ -115,12 +119,45 @@
             this.displayOnlyPlannerGroupNameCheckBox.Visible = false;
             this.displayOnlyPlannerGroupNameCheckBox.CheckedChanged += new System.EventHandler(this.displayOnlyDriverGroupNameCheckBox_CheckedChanged);
             // 
+            // staffPasswordField
+            // 
+            this.staffPasswordField.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.staffPasswordField.Enabled = false;
+            this.staffPasswordField.Location = new System.Drawing.Point(72, 393);
+            this.staffPasswordField.Name = "staffPasswordField";
+            this.staffPasswordField.Size = new System.Drawing.Size(201, 20);
+            this.staffPasswordField.TabIndex = 8;
+            this.staffPasswordField.UseSystemPasswordChar = true;
+            this.staffPasswordField.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(14, 398);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(53, 13);
+            this.label3.TabIndex = 9;
+            this.label3.Text = "Password";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(279, 398);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(189, 13);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Ask your admin if you have any issues.";
+            // 
             // PlannerSelectorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
             this.ClientSize = new System.Drawing.Size(565, 456);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.staffPasswordField);
             this.Controls.Add(this.displayOnlyPlannerGroupNameCheckBox);
             this.Controls.Add(this.filteredDriversListBox);
             this.Controls.Add(this.filterDriversTextBox);
@@ -135,7 +172,6 @@
             this.Text = "Log in planner";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OpenDriverForm_FormClosed);
             this.Load += new System.EventHandler(this.EditPlanningNotesForm_Load);
-            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.OpenDriverForm_KeyPress);
             this.KeyUp += new System.Windows.Forms.KeyEventHandler(this.OpenDriverForm_KeyUp);
             this.PreviewKeyDown += new System.Windows.Forms.PreviewKeyDownEventHandler(this.OpenDriverForm_PreviewKeyDown);
             this.ResumeLayout(false);
@@ -152,5 +188,8 @@
         private System.Windows.Forms.TextBox filterDriversTextBox;
         private System.Windows.Forms.ListBox filteredDriversListBox;
         private System.Windows.Forms.CheckBox displayOnlyPlannerGroupNameCheckBox;
+        private System.Windows.Forms.TextBox staffPasswordField;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label label4;
     }
 }

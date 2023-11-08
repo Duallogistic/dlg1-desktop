@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace AmazonDeliveryPlanner
@@ -45,7 +38,7 @@ namespace AmazonDeliveryPlanner
             urlListBox.Items.Clear();
 
             // urlListBox.Items.AddRange(GlobalContext.Urls.ToArray());
-            
+
             urlListBox.Items.AddRange(urls.ToArray());
         }
 

@@ -1,19 +1,9 @@
 ﻿using AmazonDeliveryPlanner.API;
-using AmazonDeliveryPlanner.API.data;
-using CefSharp.WinForms;
 using CefSharp;
+using CefSharp.WinForms;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
 using System.Web;
 using System.Windows.Forms;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AmazonDeliveryPlanner
 {
@@ -23,7 +13,7 @@ namespace AmazonDeliveryPlanner
 
         //. API.data.DriverRouteEntity driverRouteEntity;
 
-        RequestContextSettings requestContextSettings;
+        RequestContextSettings requestContextSettings = null;
         //string plan_note = null;
         //string op_note = null;
 
@@ -38,7 +28,7 @@ namespace AmazonDeliveryPlanner
         public DriverUserControl(Driver driver/*, RequestContextSettings requestContextSettings*/)
         {
             InitializeComponent();
-            
+
             this.driver = driver;
 
             //. this.requestContextSettings = requestContextSettings;
@@ -46,7 +36,7 @@ namespace AmazonDeliveryPlanner
             InitPanel2Browser();
         }
 
-        public Driver Driver { get => driver; }        
+        public Driver Driver { get => driver; }
 
         private void DriverUserControl_Load(object sender, EventArgs e)
         {
@@ -138,7 +128,7 @@ namespace AmazonDeliveryPlanner
             // Check the user's response from the confirmation dialog
             if (result == DialogResult.Yes)
             {
-                
+
                 // Raise the SessionClosed event if the user confirms
                 if (SessionClosed != null)
                     SessionClosed(this, EventArgs.Empty);
@@ -176,7 +166,7 @@ namespace AmazonDeliveryPlanner
 
             t.Interval = 14000;
             t.Tick += T_Tick;
-            t.Enabled = true;            
+            t.Enabled = true;
         }
 
         private void T_Tick(object sender, EventArgs e)

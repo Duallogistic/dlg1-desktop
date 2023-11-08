@@ -1,29 +1,22 @@
+using AmazonDeliveryPlanner.API;
+using AmazonDeliveryPlanner.API.data;
 using CefSharp;
 using CefSharp.WinForms;
-using System.Runtime.ConstrainedExecution;
-using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.IO;
-using AmazonDeliveryPlanner.Properties;
-using AmazonDeliveryPlanner.API;
+using System.Linq;
 using System.Net;
-using System.Security.Policy;
-using static System.Net.WebRequestMethods;
-using Newtonsoft.Json;
-using File = System.IO.File;
-using System.Threading;
-using CefSharp.Handler;
-using System.Web.Configuration;
 using System.Runtime.Caching;
-using System.Web.UI.WebControls;
+using System.Runtime.InteropServices;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Web.Security;
+using System.Windows.Forms;
+using File = System.IO.File;
 using ListBox = System.Windows.Forms.ListBox;
 // using System.Runtime.InteropServices;
 
@@ -34,6 +27,8 @@ namespace AmazonDeliveryPlanner
         ChromiumWebBrowser adminBrowser;
         ChromiumWebBrowser driversPanelBrowser;
         static string configurationFilePath;
+
+        InitAppApi _initApp;
 
         public MainForm()
         {
@@ -46,27 +41,31 @@ namespace AmazonDeliveryPlanner
             try
             {
                 Init();
-
-                //this.Hide();
                 if (!OpenPlannerSelectorForm())
                 {
                     MessageBox.Show("Could not get planner list - application will now exit!", GlobalContext.ApplicationTitle);
-
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                     Application.Exit();
                     return;
                 }
                 else
+                {
+                    // set planner name
                     plannerLabel.Text = "\uA19C" + " " + GlobalContext.LoggedInPlanner.ToString(); // U+1F464 ??  U+A19C ?
-                //this.Show();
-
-                //// InitializeComponent();
-
+                    string[] roles = GlobalContext.LoggedInPlanner.roles;
+                    if (roles.Contains("pm") || roles.Contains("admin"))
+                    {
+                        exportFileAutoDownloadEnabledCheckBox.Checked = true;
+                        exportFileAutoDownloadEnabledCheckBox.Show();
+                    }
+                    else
+                    {
+                        exportFileAutoDownloadEnabledCheckBox.Checked = false;
+                        exportFileAutoDownloadEnabledCheckBox.Hide();
+                    }
+                }
                 InitMainFormDataControls();
-
                 mainTabControl.TabPages.Remove(adminTabPage);
-                // InitAdminBrowser();
-
                 InitDriversPanelBrowser();
             }
             catch (Exception ex)
@@ -83,7 +82,7 @@ namespace AmazonDeliveryPlanner
                 // return;
             }
 
-            driversPanel.Visible = false;            
+            driversPanel.Visible = false;
         }
 
         public static void InitializeCEF()
@@ -155,9 +154,7 @@ namespace AmazonDeliveryPlanner
             {
                 // SerializedConfiguration conf = SerializedConfiguration.GetDefaultOptions();
                 SerializedConfiguration conf = new SerializedConfiguration();
-
                 GlobalContext.SerializedConfiguration = conf;
-
                 SaveConfiguration();
                 // Utilities.SaveXML(configurationFilePath, GlobalContext.SerializedConfiguration);
             }
@@ -192,10 +189,10 @@ namespace AmazonDeliveryPlanner
         async void LoadAmazonTabs()
         {
             await Task.Delay(4000);
-
             // GlobalContext.SerializedConfiguration.TripPageConfigurations.ToArray();
+            List<TripPageConfiguration> tpcs = GlobalContext.ApiConfig.tripPages;
 
-            List<TripPageConfiguration> tpcs = GlobalContext.SerializedConfiguration.TripPageConfigurations;
+            
 
             TripPageConfiguration upcomingTPC = null;
             TripPageConfiguration intransitTPC = null;
@@ -204,20 +201,15 @@ namespace AmazonDeliveryPlanner
             if (tpcs != null && tpcs.Count > 0)
             {
                 upcomingTPC = tpcs[0];
-
                 if (tpcs.Count > 1)
                     intransitTPC = tpcs[1];
 
                 if (tpcs.Count > 2)
                     historyTPC = tpcs[2];
             }
-            else
-            {
-
-            }
 
             if (upcomingTPC != null)
-            {                
+            {
                 upcomingTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = upcomingTPC.MinRandomIntervalMinutes;
                 upcomingTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = upcomingTPC.MaxRandomIntervalMinutes;
                 upcomingTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
@@ -225,7 +217,7 @@ namespace AmazonDeliveryPlanner
             }
 
             if (intransitTPC != null)
-            {                
+            {
                 intransitTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = intransitTPC.MinRandomIntervalMinutes;
                 intransitTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = intransitTPC.MaxRandomIntervalMinutes;
                 intransitTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
@@ -233,7 +225,7 @@ namespace AmazonDeliveryPlanner
             }
 
             if (historyTPC != null)
-            {                
+            {
                 historyTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = historyTPC.MinRandomIntervalMinutes;
                 historyTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = historyTPC.MaxRandomIntervalMinutes;
                 historyTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
@@ -995,80 +987,6 @@ namespace AmazonDeliveryPlanner
                 return string.IsNullOrEmpty(url) ? "_____________" : (url.Length >= 20) ? url.Substring(0, 20) : url;
         }
 
-        void InitAdminBrowser()
-        {
-            // !
-            // System.AccessViolationException: 'Attempted to read or write protected memory. This is often an indication that other memory is corrupt.'
-            //GlobalContext.GlobalCefSettings.CachePath = @"C:\temp\cache_1";
-            // string cachePath = GlobalContext.GlobalCefSettings.CachePath;
-            // requestContextSettings.CachePath
-
-            // string upworkStartUrl = "www.google.com"; // "https://www.upwork.com";
-            // string upworkStartUrl = "https://www.upwork.com";
-
-            adminBrowser = new ChromiumWebBrowser();
-            // browser = new ChromiumWebBrowser(url, requestContextSettings.);
-
-
-            RequestContextSettings requestContextSettings = new RequestContextSettings();
-
-            requestContextSettings.PersistSessionCookies = !false;
-            requestContextSettings.PersistUserPreferences = !false;
-
-            /*string cachePath = Path.Combine(Utilities.GetApplicationPath(), "cachedirs", "sesiune_admin");
-
-            if (!Directory.Exists(cachePath))
-                Directory.CreateDirectory(cachePath);
-
-            requestContextSettings.CachePath = cachePath;
-            */
-
-            if (requestContextSettings != null)
-                adminBrowser.RequestContext = new RequestContext(requestContextSettings);
-
-
-            // projectSearchTabPage.SuspendLayout();
-
-            // this.adminTabPage.Controls.Add(adminBrowser);
-            adminBrowserPanel.Controls.Add(adminBrowser);
-            adminBrowser.Dock = DockStyle.Fill;
-
-            // projectSearchTabPage.ResumeLayout();
-
-            // projectSearchTabPage.Refresh();
-
-            //browser.LoadingStateChanged += Browser_LoadingStateChanged;
-            adminBrowser.FrameLoadEnd += AdminBrowser_FrameLoadEnd;
-
-            //browser.IsBrowserInitializedChanged += Browser_IsBrowserInitializedChanged;
-
-            // browser.RequestHandler = new CustomRequestHandler();
-
-            //browser.Show();
-            //browser.PerformLayout();
-            this.PerformLayout();
-            this.Invalidate();
-            this.Refresh();
-            //browser.Invalidate();
-            //browser.Refresh();
-
-            // LoadMFIFCPage();
-
-            adminBrowser.Load(GlobalContext.SerializedConfiguration.AdminURL); //  + "/" + GlobalContext.LoggedInPlanner.token
-
-            adminBrowser.Dock = DockStyle.Fill;
-
-            adminBrowser.PreviewKeyDown += Browser_PreviewKeyDown;
-            adminBrowser.KeyboardHandler = new BrowserKeyboardHandler();
-
-            //adminBrowser.KeyUp += AdminBrowser_KeyUp;
-            //adminBrowser.PreviewKeyDown += AdminBrowser_PreviewKeyDown;
-
-            // adminBrowser.KeyboardHandler.OnKeyEvent(adminBrowser, adminBrowser)
-            // adminBrowser.KeyboardHandler = new KeyboardHandler();
-            // adminBrowser.KeyboardHandler.
-        }
-
         private void Browser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
             if ((e.Control || e.KeyCode == Keys.ControlKey) && (e.KeyCode == Keys.F))
@@ -1076,25 +994,6 @@ namespace AmazonDeliveryPlanner
                 // mainTabControl.SelectedTab = sessionsTabPage;
                 OpenSearchDriverForm();
             }
-        }
-
-        //private void AdminBrowser_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //private void AdminBrowser_KeyUp(object sender, KeyEventArgs e)
-        //{            
-        //    if (e.Control && (e.KeyCode == Keys.NumPad1 || e.KeyCode == Keys.D1))
-        //        e.Handled = false; // MainForm_KeyUp(sender, e);
-        //    else
-        //    if (e.Control && (e.KeyCode == Keys.NumPad2 || e.KeyCode == Keys.D2))
-        //        e.Handled = false; // MainForm_KeyUp(sender, e);
-        //}
-
-        private void MainForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-
         }
 
         private void MainForm_KeyUp(object sender, KeyEventArgs e)
@@ -1160,8 +1059,8 @@ namespace AmazonDeliveryPlanner
                 // https://www.amazon.com/ap/signin?openid.return_to=https://relay.amazon.com/&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.assoc_handle=amzn_relay_desktop_us&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.ns=http://specs.openid.net/auth/2.0&pageId=amzn_relay_desktop_us
                 // if (e.Url.IndexOf("login") >= 0)
                 {
-                    string email = GlobalContext.SerializedConfiguration.AdminCredentialsEmail;
-                    string pass = GlobalContext.SerializedConfiguration.AdminCredentialsPass;
+                    string email = _initApp.configuration.adminAuth.username;
+                    string pass = _initApp.configuration.adminAuth.password;
 
                     string email_input_element_type = "email";
                     string pass_input_element_type = "<undefined>";
@@ -1447,12 +1346,12 @@ namespace AmazonDeliveryPlanner
 
         public bool OpenPlannerSelectorForm()
         {
-            UpdatePlannerList();
+            UpdateAppInit();
 
-            if (_plannerList == null || _plannerList.planners == null || _plannerList.planners.Length == 0)
+            if (_initApp == null || _initApp.planners == null || _initApp.planners.Length == 0)
                 return false;
 
-            PlannerSelectorForm plannerSelectorForm = new PlannerSelectorForm(_plannerList.planners);
+            PlannerSelectorForm plannerSelectorForm = new PlannerSelectorForm(_initApp.planners);
 
             plannerSelectorForm.DisplayOnlyPlannerGroupName = false;
             plannerSelectorForm.StartPosition = FormStartPosition.CenterScreen;
@@ -1468,9 +1367,8 @@ namespace AmazonDeliveryPlanner
             return false;
         }
 
-        PlannerList _plannerList;
 
-        void UpdatePlannerList()
+        void UpdateAppInit()
         {
             int tryCount = 0;
             Exception lastException = null;
@@ -1481,11 +1379,11 @@ namespace AmazonDeliveryPlanner
                 {
                     tryCount++;
 
-                    PlannerList plannerList = PlannersAPI.GetPlanners();
+                    InitAppApi initAppConfig = InitAppApi.GetAppInit();
 
                     // GlobalContext.LastDriverList = driverList;
 
-                    _plannerList = plannerList;
+                    _initApp = initAppConfig;
 
                     // UpdateDriverListControl();
 
@@ -1512,15 +1410,27 @@ namespace AmazonDeliveryPlanner
             else
             {
                 ClosePreviousPlannerTabs();
-
+                // set planner name
                 plannerLabel.Text = "\uA19C" + " " + GlobalContext.LoggedInPlanner.ToString(); // U+1F464 ??  U+A19C ?
-
+                mainTabControl.TabPages.Remove(adminTabPage);
                 string url = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.DriverListURL + "/" + GlobalContext.LoggedInPlanner.token;
-                adminBrowser.Load(url);
+                if (adminBrowser != null)
+                {
+                    adminBrowser.Load(url);
+                }
                 driversPanelBrowser.Load(url);
-
                 GlobalContext.Log("Drivers list url is:  '{0}'", url);
-
+                string[] roles = GlobalContext.LoggedInPlanner.roles;
+                if (roles.Contains("pm") || roles.Contains("admin"))
+                {
+                    exportFileAutoDownloadEnabledCheckBox.Checked = true;
+                    exportFileAutoDownloadEnabledCheckBox.Show();
+                }
+                else
+                {
+                    exportFileAutoDownloadEnabledCheckBox.Checked = false;
+                    exportFileAutoDownloadEnabledCheckBox.Hide();
+                }
             }
         }
 
@@ -1581,9 +1491,16 @@ namespace AmazonDeliveryPlanner
 
         private void exportFileAutoDownloadEnabledCheckBox_CheckedChanged(object sender, EventArgs e)
         {
+            LoadAmazonTabs();
+            /*if (exportFileAutoDownloadEnabledCheckBox.Checked)
+            {
+                upcomingTabPage.Show();
+                IntransitTabPage.Show();
+                historyTabPage.Show();
+            }
             upcomingTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
             intransitTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
-            historyTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
+            historyTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;*/
         }
     }
 }

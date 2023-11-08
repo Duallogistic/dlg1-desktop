@@ -1,16 +1,9 @@
 ﻿using AmazonDeliveryPlanner.API.data;
-using AmazonDeliveryPlanner.Properties;
-using CefSharp.Web;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace AmazonDeliveryPlanner.API
 {
@@ -23,7 +16,7 @@ namespace AmazonDeliveryPlanner.API
     //{
     //    public List<Driver> drivers { get; set; }
     //}
-    
+
     public class Driver
     {
         public static bool _ListModeToString = false;
@@ -68,16 +61,10 @@ namespace AmazonDeliveryPlanner.API
         {
             using (WebClient wc = new WebClient())
             {
-                string getDriversURL = GlobalContext.SerializedConfiguration.ApiBaseURL + "/auth2/external/drivers";
-                // string getDriversURL = "http://167.86.94.125:52031/api/auth2/external/drivers";
-
+                string getDriversURL = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.ApiBaseURL + "/auth2/external/drivers";
                 GlobalContext.Log("Getting drivers from  '{0}'", getDriversURL);
-
                 var jsonResponse = wc.DownloadString(getDriversURL);
-
-                
                 DriverList driverList = JsonConvert.DeserializeObject<DriverList>(jsonResponse);
-
                 return driverList;
             }
         }
@@ -114,8 +101,8 @@ namespace AmazonDeliveryPlanner.API
 
                 // HttpResponseMessage response = await client.PostAsync(Settings.Default.ApiPostEndPoint, content);
 
-                throw new Exception("undefined api endpoint");         
-            }          
+                throw new Exception("undefined api endpoint");
+            }
         }
     }
 }

@@ -1,13 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.IO;
 using System.Xml.Serialization;
-using System.ComponentModel;
-using System.Threading;
-using System.Net;
-using System.Windows.Forms;
 
 namespace AmazonDeliveryPlanner
 {
@@ -15,7 +8,7 @@ namespace AmazonDeliveryPlanner
     {
         string GetApplicationPathEx()
         {
-            throw new NotImplementedException();            
+            throw new NotImplementedException();
         }
 
         public static string GetApplicationPath()
@@ -49,7 +42,7 @@ namespace AmazonDeliveryPlanner
         }
 
         static Type[] types = new Type[] { /*typeof()*/ };
-            
+
         public static bool SaveXML(string filePath, object objectToSerialize)
         {
             FileStream writer = null;

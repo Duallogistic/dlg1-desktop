@@ -1,30 +1,15 @@
 ﻿// using CamioaneAmazon.CEF;
 using CefSharp;
 using CefSharp.WinForms;
+using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
+using System.IO;
+using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
-using System.Web.UI.WebControls;
-using System.Net;
-using CefSharp.DevTools.Network;
-using RestSharp;
-using Newtonsoft.Json;
-using System.Net.Http;  
-using AmazonDeliveryPlanner.API;
-using CefSharp.DevTools.WebAudio;
-using RestSharp.Extensions;
-using System.Xml.Linq;
-using static System.Net.Mime.MediaTypeNames;
-using System.Runtime.InteropServices.ComTypes;
 
 namespace AmazonDeliveryPlanner
 {
@@ -58,7 +43,7 @@ namespace AmazonDeliveryPlanner
             this.url = url;
             this.requestContextSettings = requestContextSettings;
 
-            InitializeComponent();            
+            InitializeComponent();
 
             InitBrowser();
             //. InitPanel2Browser();
@@ -189,22 +174,24 @@ namespace AmazonDeliveryPlanner
         private void BrowserTimerExportUserControl_OnBeforeDownloadFired(object sender, DownloadItem e)
         {
             string fileSuffix = DateTime.Now.ToString("_yyyyMMdd_hhmmss_fff") + ".csv";
-            
-            e.FullPath = e.FullPath.Replace(".csv", fileSuffix);            
+
+            e.FullPath = e.FullPath.Replace(".csv", fileSuffix);
             e.SuggestedFileName = e.SuggestedFileName.Replace(".csv", fileSuffix);
         }
 
         void InitAutoDownloadTimer(string loadedUrl)
         {
             // https://relay.amazon.co.uk/tours/in-transit
-            
+            //
             //--?
+            // GlobalContext.Log("InitAutoDownloadTimer" + loadedUrl, minRandomIntervalMinutes, maxRandomIntervalMinutes);
             if (((loadedUrl.IndexOf("in-transit", StringComparison.OrdinalIgnoreCase) >= 0) ||
                 (loadedUrl.IndexOf("history", StringComparison.OrdinalIgnoreCase) >= 0) ||
                 (loadedUrl.IndexOf("upcoming", StringComparison.OrdinalIgnoreCase) >= 0)
                  ) &&
                 loadedUrl.IndexOf("relay.amazon", StringComparison.OrdinalIgnoreCase) >= 0)
             {
+                GlobalContext.Log("InitAutoDownloadTimer for: " + loadedUrl);
                 if (minRandomIntervalMinutes > 0 &&
                     maxRandomIntervalMinutes > 0 &&
                     minRandomIntervalMinutes < maxRandomIntervalMinutes)
@@ -227,7 +214,7 @@ namespace AmazonDeliveryPlanner
                 }
                 else
                 {
-                    GlobalContext.Log("Auto download with random interval not started because of the configured values - interval between {0} and {1} minutes", minRandomIntervalMinutes, maxRandomIntervalMinutes);
+                    GlobalContext.Log("Auto download with random interval not started because of the configured values 2 - interval between {0} and {1} minutes", minRandomIntervalMinutes, maxRandomIntervalMinutes);
                 }
             }
         }
@@ -257,7 +244,7 @@ namespace AmazonDeliveryPlanner
             }
 
             {
-                if (ts.IsCancellationRequested)                        
+                if (ts.IsCancellationRequested)
                     return;
 
                 this.Invoke((MethodInvoker)delegate
@@ -296,9 +283,7 @@ namespace AmazonDeliveryPlanner
 
                 try
                 {
-                    uploadURL = GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
-                    // string uploadURL = "http://167.86.94.125:52031/api/auth2/external/upload";
-
+                    uploadURL = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
                    
                     GlobalContext.Log("Upload URL=\"{0}\"", uploadURL);
 
@@ -314,21 +299,21 @@ namespace AmazonDeliveryPlanner
                         responseText = System.Text.Encoding.ASCII.GetString(rawResponse);
                     }
                     */
-                    
+
                     // e.FullPath = e.FullPath.Replace(".csv", DateTime.Now.ToString("_yyyyMMdd_hhmmss_fff") + ".csv");
 
                     string fileName = e.SuggestedFileName;
 
                     // if (string.IsNullOrEmpty(fileName))
-                        fileName = Path.GetFileName(e.FullPath);
+                    fileName = Path.GetFileName(e.FullPath);
 
-                    
-                    
+
+
                     // Task<Stream> responseStream = Upload(uploadURL, File.ReadAllBytes(e.FullPath), fileName);
 
                     string responseText = null;
 
-                    string csvFileContents = File.ReadAllText(e.FullPath);                    
+                    string csvFileContents = File.ReadAllText(e.FullPath);
                     csvFileContents = csvFileContents.Replace(",Operator ID,Spot Work", ",Operator ID,Spot Work,ColBC,COlBD");
 
                     // niggere, hai sa puscam o bere, lasa prostiile ca oricum nu stii ce faci acolo
@@ -351,7 +336,7 @@ namespace AmazonDeliveryPlanner
 
                         if (!response.IsSuccessStatusCode)
                         {
-                            
+
                         }
 
                         Task<Stream> tsk = response.Content.ReadAsStreamAsync();
@@ -559,8 +544,8 @@ namespace AmazonDeliveryPlanner
                     if ((e.Url.IndexOf("amazon.com/ap/signin") >= 0) ||
                         (e.Url.IndexOf("amazon.co.uk/ap/signin") >= 0))
                     {
-                        string email = GlobalContext.SerializedConfiguration.RelayCredentialsEmail;
-                        string pass = GlobalContext.SerializedConfiguration.RelayCredentialsPass;
+                        string email = GlobalContext.ApiConfig.relayAuth.username;
+                        string pass = GlobalContext.ApiConfig.relayAuth.password;
 
                         string jsSource1 = string.Format(
                             "(function () {{ document.getElementById('ap_email').value = '{0}'; document.getElementById('ap_password').value = '{1}'; }} )(); ",
@@ -610,7 +595,7 @@ namespace AmazonDeliveryPlanner
 
         private void Browser_BrowserInitialized(object sender, EventArgs e)
         {
-            
+
             // (sender as CefSharp.OffScreen.ChromiumWebBrowser).Load("");
         }
 
@@ -630,10 +615,10 @@ namespace AmazonDeliveryPlanner
         public string Url { get => url; /*set => url = value;*/ }
         public int MinRandomIntervalMinutes { get => minRandomIntervalMinutes; set => minRandomIntervalMinutes = value; }
         public int MaxRandomIntervalMinutes { get => maxRandomIntervalMinutes; set => maxRandomIntervalMinutes = value; }
-        public bool ExportFileAutoDownloadEnabled 
-        { 
-            get => exportFileAutoDownloadEnabled; 
-            set => exportFileAutoDownloadEnabled = value; 
+        public bool ExportFileAutoDownloadEnabled
+        {
+            get => exportFileAutoDownloadEnabled;
+            set => exportFileAutoDownloadEnabled = value;
         }
 
         public void DoMouseClick(uint X, uint Y)
@@ -675,7 +660,7 @@ namespace AmazonDeliveryPlanner
         }
 
         private void increaseTextSizeButton_Click(object sender, EventArgs e)
-        {            
+        {
             browser.SetZoomLevel(browser.GetZoomLevelAsync().Result + 0.1);
         }
 
@@ -701,7 +686,7 @@ namespace AmazonDeliveryPlanner
             {
                 FileName = fileName;
             }
-            
+
             public string FileName { get; set; }
         }
 
@@ -776,7 +761,7 @@ namespace AmazonDeliveryPlanner
         //        MessageBox.Show("planning_overview_url value not set in configuration file.", GlobalContext.ApplicationTitle);
         //        return;
         //    }
-            
+
         //    // ex.: http://dlg1.app/planning-overview/{user_id}/info
         //    string panel2URL = GlobalContext.SerializedConfiguration.AdminURL 
         //        + GlobalContext.SerializedConfiguration.PlanningOverviewURL.Replace("{user_id}", driverId.ToString()) 

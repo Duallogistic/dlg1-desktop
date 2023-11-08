@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 
 namespace AmazonDeliveryPlanner
 {
@@ -13,7 +10,7 @@ namespace AmazonDeliveryPlanner
         StreamWriter logSw;
 
         public string LogFilePath { get => logFilePath; set => logFilePath = value; }
-
+        
         public void InitLogger()
         {
             // 2015-08-12 02:16:30,734 [10] : Application start
