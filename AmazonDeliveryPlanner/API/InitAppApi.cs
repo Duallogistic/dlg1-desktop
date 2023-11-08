@@ -1,6 +1,7 @@
 ﻿using AmazonDeliveryPlanner.API.data;
 using Newtonsoft.Json;
 using System.Net;
+using System.Windows.Forms;
 
 namespace AmazonDeliveryPlanner.API
 {
@@ -15,6 +16,7 @@ namespace AmazonDeliveryPlanner.API
             using (WebClient wc = new WebClient())
             {
                 string getPlannersURL = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.PlannerListURL;
+                // MessageBox.Show(getPlannersURL);
                 GlobalContext.Log("Getting planners from  '{0}'", getPlannersURL);
                 var jsonResponse = wc.DownloadString(getPlannersURL);
                 InitAppApi initAppConfig = JsonConvert.DeserializeObject<InitAppApi>(jsonResponse);

@@ -6,7 +6,7 @@
     "http://google.com",
     "http://localhost/test_amazonrelay_dp/download.html"
   ],
-  "api_base_url": "https://dlg1prod.web.app/api",
+  "api_base_url": "/api",
   "relay_credentials_email": "relay_email_test",
   "relay_credentials_pass": "relay_pass_test",
   "admin_credentials_email": "admin_email_test",

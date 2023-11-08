@@ -24,9 +24,9 @@
         {
                 return (
                         (string.IsNullOrWhiteSpace(this.last_name) ? "" : this.last_name.Trim()) + " " +
-                        (string.IsNullOrWhiteSpace(this.first_name) ? "" : this.first_name.Trim()) + " " +
-                        (string.IsNullOrWhiteSpace(this.email) ? "" : this.email.Trim()) + " (" +
-                        (this.roles != null ? "" + string.Join(", ", this.roles) : "") + ")"
+                        (string.IsNullOrWhiteSpace(this.first_name) ? "" : this.first_name.Trim()) + " " + "(" +
+                        (this.roles != null ? "" + string.Join(", ", this.roles) : "") + ") - " +
+                        (string.IsNullOrWhiteSpace(this.email) ? "" : this.email.Trim())
                        ).Trim();
            
         }
