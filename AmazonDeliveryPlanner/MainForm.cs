@@ -82,7 +82,7 @@ namespace AmazonDeliveryPlanner
                 // return;
             }
 
-            driversPanel.Visible = false;
+            driversPanel.Visible = false;            
         }
 
         public static void InitializeCEF()
@@ -186,7 +186,7 @@ namespace AmazonDeliveryPlanner
                 mainTabControl.TabPages.Remove(loggingTabPage);
         }
 
-        async void LoadAmazonTabs()
+        async void LoadAmazonTabs(bool reloadConfiguration = false)
         {
             await Task.Delay(4000);
             // GlobalContext.SerializedConfiguration.TripPageConfigurations.ToArray();
@@ -213,7 +213,11 @@ namespace AmazonDeliveryPlanner
                 upcomingTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = upcomingTPC.MinRandomIntervalMinutes;
                 upcomingTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = upcomingTPC.MaxRandomIntervalMinutes;
                 upcomingTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
-                upcomingTabBrowserTimerExportUserControl.GoToURL(upcomingTPC.Url);
+
+                if (reloadConfiguration)
+                    upcomingTabBrowserTimerExportUserControl.RestartTimers();
+                else
+                    upcomingTabBrowserTimerExportUserControl.GoToURL(upcomingTPC.Url);
             }
 
             if (intransitTPC != null)
@@ -221,7 +225,11 @@ namespace AmazonDeliveryPlanner
                 intransitTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = intransitTPC.MinRandomIntervalMinutes;
                 intransitTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = intransitTPC.MaxRandomIntervalMinutes;
                 intransitTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
-                intransitTabBrowserTimerExportUserControl.GoToURL(intransitTPC.Url);
+
+                if (reloadConfiguration)
+                    intransitTabBrowserTimerExportUserControl.RestartTimers();
+                else
+                    intransitTabBrowserTimerExportUserControl.GoToURL(intransitTPC.Url);
             }
 
             if (historyTPC != null)
@@ -229,7 +237,11 @@ namespace AmazonDeliveryPlanner
                 historyTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = historyTPC.MinRandomIntervalMinutes;
                 historyTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = historyTPC.MaxRandomIntervalMinutes;
                 historyTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
-                historyTabBrowserTimerExportUserControl.GoToURL(historyTPC.Url);
+
+                if (reloadConfiguration)
+                    historyTabBrowserTimerExportUserControl.RestartTimers();
+                else
+                    historyTabBrowserTimerExportUserControl.GoToURL(historyTPC.Url);
             }
         }
 
@@ -1507,7 +1519,11 @@ namespace AmazonDeliveryPlanner
 
         private void reloadConfigurationButton_Click(object sender, EventArgs e)
         {
-
+            this.Invoke((MethodInvoker)delegate
+            {                
+                UpdateAppInit();
+                LoadAmazonTabs(true);
+            });
         }
     }
 }

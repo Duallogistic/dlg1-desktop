@@ -20,7 +20,7 @@ namespace AmazonDeliveryPlanner.API
                 GlobalContext.Log("Getting planners from  '{0}'", getPlannersURL);
                 var jsonResponse = wc.DownloadString(getPlannersURL);
                 InitAppApi initAppConfig = JsonConvert.DeserializeObject<InitAppApi>(jsonResponse);
-                GlobalContext.ApiConfig = initAppConfig.configuration;
+                // GlobalContext.ApiConfig = initAppConfig.configuration;
                 return initAppConfig;
             }
         }

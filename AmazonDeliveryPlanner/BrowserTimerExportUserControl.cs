@@ -32,6 +32,7 @@ namespace AmazonDeliveryPlanner
         int maxRandomIntervalMinutes;
 
         bool exportFileAutoDownloadEnabled;
+        string pageType = "unknown";
 
         public BrowserTimerExportUserControl() : this("", null)
         {
@@ -63,6 +64,20 @@ namespace AmazonDeliveryPlanner
         {
             browser.Load(url);
             InitAutoDownloadTimer(url);
+
+            if (!string.IsNullOrWhiteSpace(url))
+                SetPageType(url);
+        }
+
+        public void RestartTimers()
+        {
+            GlobalContext.Log("Restart timers for '{0}'", browser.Address);
+
+            browser.Load(browser.Address); // reload current address
+            InitAutoDownloadTimer(browser.Address);
+
+            if (!string.IsNullOrWhiteSpace(browser.Address))
+                SetPageType(browser.Address);
         }
 
         //void StartExportDownloadThread()
@@ -169,11 +184,30 @@ namespace AmazonDeliveryPlanner
             browser.TitleChanged += Browser_TitleChanged;
 
             InitAutoDownloadTimer(url);
+
+            if (!string.IsNullOrWhiteSpace(url))
+                SetPageType(url);
         }
 
-        private void BrowserTimerExportUserControl_OnBeforeDownloadFired(object sender, DownloadItem e)
+        void SetPageType(string loadedUrl)
         {
-            string fileSuffix = DateTime.Now.ToString("_yyyyMMdd_hhmmss_fff") + ".csv";
+            if (loadedUrl.IndexOf("relay.amazon", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                pageType = (loadedUrl.IndexOf("in-transit", StringComparison.OrdinalIgnoreCase) >= 0) ? "intransit" : pageType;
+                pageType = (loadedUrl.IndexOf("history", StringComparison.OrdinalIgnoreCase) >= 0) ? "history" : pageType;
+                pageType = (loadedUrl.IndexOf("upcoming", StringComparison.OrdinalIgnoreCase) >= 0) ? "upcoming" : pageType;
+            }
+            else
+            {
+                pageType = "unknown";
+                GlobalContext.Log("");
+                GlobalContext.Log("    Warning - unknown page type");
+            }
+        }
+
+            private void BrowserTimerExportUserControl_OnBeforeDownloadFired(object sender, DownloadItem e)
+        {
+            string fileSuffix = "_" + pageType + DateTime.Now.ToString("yyyyMMdd_hhmmss_fff") + ".csv";
 
             e.FullPath = e.FullPath.Replace(".csv", fileSuffix);
             e.SuggestedFileName = e.SuggestedFileName.Replace(".csv", fileSuffix);
@@ -272,6 +306,9 @@ namespace AmazonDeliveryPlanner
                 Thread.Sleep(waitPeriod);
 
                 StartAutoDownloadInterval(false);
+
+                if (ts.IsCancellationRequested)
+                    return;
             }
         }
 

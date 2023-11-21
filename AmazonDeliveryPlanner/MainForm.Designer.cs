@@ -40,6 +40,7 @@ namespace AmazonDeliveryPlanner
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.openSettingsButton = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.driverListBox = new System.Windows.Forms.ListBox();
@@ -78,6 +79,8 @@ namespace AmazonDeliveryPlanner
             this.plannerLabel = new System.Windows.Forms.Label();
             this.changeUserButton = new System.Windows.Forms.Button();
             this.exportFileAutoDownloadEnabledCheckBox = new System.Windows.Forms.CheckBox();
+            this.reloadConfigurationButton = new System.Windows.Forms.Button();
+            this.buttonToolTip = new System.Windows.Forms.ToolTip(this.components);
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -101,6 +104,7 @@ namespace AmazonDeliveryPlanner
             this.openSettingsButton.Size = new System.Drawing.Size(86, 20);
             this.openSettingsButton.TabIndex = 2;
             this.openSettingsButton.Text = "Configuratie";
+            this.buttonToolTip.SetToolTip(this.openSettingsButton, "Settings");
             this.openSettingsButton.UseVisualStyleBackColor = true;
             this.openSettingsButton.Click += new System.EventHandler(this.openSettingsButton_Click);
             // 
@@ -513,6 +517,7 @@ namespace AmazonDeliveryPlanner
             this.toggleLeftPanelVisibilityButton.Size = new System.Drawing.Size(42, 20);
             this.toggleLeftPanelVisibilityButton.TabIndex = 6;
             this.toggleLeftPanelVisibilityButton.Text = "| █";
+            this.buttonToolTip.SetToolTip(this.toggleLeftPanelVisibilityButton, "Toggle drivers panel on/off");
             this.toggleLeftPanelVisibilityButton.UseVisualStyleBackColor = true;
             this.toggleLeftPanelVisibilityButton.Click += new System.EventHandler(this.toggleLeftPanelVisibilityButton_Click);
             // 
@@ -525,6 +530,7 @@ namespace AmazonDeliveryPlanner
             this.showOpenDriverFormButton.Size = new System.Drawing.Size(42, 20);
             this.showOpenDriverFormButton.TabIndex = 7;
             this.showOpenDriverFormButton.Text = "🔎";
+            this.buttonToolTip.SetToolTip(this.showOpenDriverFormButton, "Search for driver");
             this.showOpenDriverFormButton.UseVisualStyleBackColor = true;
             this.showOpenDriverFormButton.Click += new System.EventHandler(this.showOpenDriverFormButton_Click);
             // 
@@ -545,6 +551,7 @@ namespace AmazonDeliveryPlanner
             this.changeUserButton.Size = new System.Drawing.Size(42, 20);
             this.changeUserButton.TabIndex = 8;
             this.changeUserButton.Text = "👤";
+            this.buttonToolTip.SetToolTip(this.changeUserButton, "Change user");
             this.changeUserButton.UseVisualStyleBackColor = true;
             this.changeUserButton.Visible = false;
             this.changeUserButton.Click += new System.EventHandler(this.changeUserButton_Click);
@@ -557,14 +564,33 @@ namespace AmazonDeliveryPlanner
             this.exportFileAutoDownloadEnabledCheckBox.Size = new System.Drawing.Size(102, 17);
             this.exportFileAutoDownloadEnabledCheckBox.TabIndex = 9;
             this.exportFileAutoDownloadEnabledCheckBox.Text = "AMZ Trips Sync";
+            this.buttonToolTip.SetToolTip(this.exportFileAutoDownloadEnabledCheckBox, "Auto download on/off for exported file");
             this.exportFileAutoDownloadEnabledCheckBox.UseVisualStyleBackColor = true;
             this.exportFileAutoDownloadEnabledCheckBox.CheckedChanged += new System.EventHandler(this.exportFileAutoDownloadEnabledCheckBox_CheckedChanged);
+            // 
+            // reloadConfigurationButton
+            // 
+            this.reloadConfigurationButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.reloadConfigurationButton.Location = new System.Drawing.Point(1092, 1);
+            this.reloadConfigurationButton.Margin = new System.Windows.Forms.Padding(0);
+            this.reloadConfigurationButton.Name = "reloadConfigurationButton";
+            this.reloadConfigurationButton.Size = new System.Drawing.Size(42, 20);
+            this.reloadConfigurationButton.TabIndex = 10;
+            this.reloadConfigurationButton.Text = "⟳⚙";
+            this.buttonToolTip.SetToolTip(this.reloadConfigurationButton, "Reload configuration from server");
+            this.reloadConfigurationButton.UseVisualStyleBackColor = true;
+            this.reloadConfigurationButton.Click += new System.EventHandler(this.reloadConfigurationButton_Click);
+            // 
+            // buttonToolTip
+            // 
+            this.buttonToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1565, 807);
+            this.Controls.Add(this.reloadConfigurationButton);
             this.Controls.Add(this.exportFileAutoDownloadEnabledCheckBox);
             this.Controls.Add(this.changeUserButton);
             this.Controls.Add(this.plannerLabel);
@@ -638,5 +664,7 @@ namespace AmazonDeliveryPlanner
         private BrowserTimerExportUserControl intransitTabBrowserTimerExportUserControl;
         private BrowserTimerExportUserControl historyTabBrowserTimerExportUserControl;
         private CheckBox exportFileAutoDownloadEnabledCheckBox;
+        private Button reloadConfigurationButton;
+        private ToolTip buttonToolTip;
     }
 }

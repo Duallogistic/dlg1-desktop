@@ -1,5 +1,5 @@
 {
-  "admin_url": "http://localhost:8085",
+  "admin_url": "https://dlg1prod.web.app",
   "driver_list_url": "/#/drivers-list",
   "default_tabs": [
     "https://relay.amazon.co.uk/tours/",
