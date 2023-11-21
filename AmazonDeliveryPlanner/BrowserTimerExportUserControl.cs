@@ -9,6 +9,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows.Forms;
 
 namespace AmazonDeliveryPlanner
@@ -205,7 +206,7 @@ namespace AmazonDeliveryPlanner
             }
         }
 
-            private void BrowserTimerExportUserControl_OnBeforeDownloadFired(object sender, DownloadItem e)
+        private void BrowserTimerExportUserControl_OnBeforeDownloadFired(object sender, DownloadItem e)
         {
             string fileSuffix = "_" + pageType + DateTime.Now.ToString("yyyyMMdd_hhmmss_fff") + ".csv";
 
@@ -258,6 +259,8 @@ namespace AmazonDeliveryPlanner
 
         void StartAutoDownloadInterval(bool first)
         {
+            System.Windows.Forms.Timer refreshTimer = new System.Windows.Forms.Timer();
+
             if (first)
             {
                 int minRandomInterval = minRandomIntervalMinutes * 60 * 1000;
@@ -266,14 +269,16 @@ namespace AmazonDeliveryPlanner
                 int delayBase = minRandomInterval;
                 int addedRandom = maxRandomInterval - minRandomInterval;
 
-                int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
+                int waitPeriodMillisec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
 
-                TimeSpan waitPeriod = TimeSpan.FromMilliseconds(waitPeriodSec);
+                TimeSpan waitPeriod = TimeSpan.FromMilliseconds(waitPeriodMillisec);
+
+                StartRefreshTimer(refreshTimer, (int)Math.Round(waitPeriod.TotalMilliseconds));
 
                 if (UpdateAutoDownloadStatus != null)
-                    UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Waiting {0:00} seconds before downloading export file.", waitPeriod.TotalSeconds)));
+                    UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Waiting {0} before downloading export file.", waitPeriod.ToHumanReadableString())));
 
-                GlobalContext.Log("Auto download with random interval - waiting {0} s", waitPeriod.TotalSeconds);
+                GlobalContext.Log("Auto download with random interval - waiting {0}", waitPeriod.ToHumanReadableString());
                 Thread.Sleep(waitPeriod);
             }
 
@@ -296,20 +301,51 @@ namespace AmazonDeliveryPlanner
 
                 TimeSpan waitPeriod = TimeSpan.FromMilliseconds(waitPeriodMilliSec);
 
+                StartRefreshTimer(refreshTimer, waitPeriodMilliSec);
+
                 if (ts.IsCancellationRequested)
+                {
+                    refreshTimer.Stop();
                     return;
+                }
 
                 if (UpdateAutoDownloadStatus != null)
-                    UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Last export made at {0}. Expoting again at {1},  in {2:00} s", DateTime.Now.ToString("HH:mm:ss"), DateTime.Now.Add(waitPeriod).ToString("HH:mm:ss"), waitPeriod.TotalSeconds)));
+                    UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Last export made at {0}. Expoting again at {1},  in {2}", DateTime.Now.ToString("HH:mm:ss"), DateTime.Now.Add(waitPeriod).ToString("HH:mm:ss"), waitPeriod.ToHumanReadableString()))); // in {2:00} s
 
-                GlobalContext.Log("Auto download with random interval - waiting {0} s", waitPeriod.TotalSeconds);
+                GlobalContext.Log("Auto download with random interval - waiting {0}", waitPeriod.ToHumanReadableString());
                 Thread.Sleep(waitPeriod);
 
                 StartAutoDownloadInterval(false);
 
                 if (ts.IsCancellationRequested)
+                {
+                    // refreshTimer.Stop();
                     return;
+                }
             }
+
+            refreshTimer.Stop();
+        }
+
+        void StartRefreshTimer(System.Windows.Forms.Timer refreshTimer, int waitPeriodMilliSec)
+        {
+                int randomROT = (int)(new Random(DateTime.Now.Millisecond)).Next(0, 15);
+                int refreshOverTimeMs = (int)Math.Round(waitPeriodMilliSec * (0.80 + (randomROT / 10)));
+
+                if (refreshOverTimeMs < 25 * 1000)
+                    refreshOverTimeMs = (int)Math.Round(waitPeriodMilliSec * (0.50 + (randomROT / 10)));
+
+
+                refreshTimer.Tick += RefreshTimer_Tick;
+                refreshTimer.Interval = refreshOverTimeMs;
+                refreshTimer.Start();
+                GlobalContext.Log("Refreshing page in {0}", TimeSpan.FromMilliseconds(refreshTimer.Interval).ToHumanReadableString());
+        }
+
+        private void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            browser.Reload(); // browser.Reload(true); // ignores the cache
+            GlobalContext.Log("Reloaded page '{0}'", browser.Address);
         }
 
         private void BrowserUserControl_OnDownloadUpdatedFired(object sender, DownloadItem e)
@@ -321,7 +357,7 @@ namespace AmazonDeliveryPlanner
                 try
                 {
                     uploadURL = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
-                   
+
                     GlobalContext.Log("Upload URL=\"{0}\"", uploadURL);
 
                     /*

@@ -164,6 +164,7 @@
     <Content Include="CEF\js\clickExportTripsButton.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Compile Include="TimespanExtensions.cs" />
     <Compile Include="DownloadHandler.cs" />
     <Compile Include="DriverUserControl.cs">
       <SubType>UserControl</SubType>

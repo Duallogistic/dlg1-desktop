@@ -82,7 +82,7 @@ namespace AmazonDeliveryPlanner
                 // return;
             }
 
-            driversPanel.Visible = false;            
+            driversPanel.Visible = false;
         }
 
         public static void InitializeCEF()
@@ -191,9 +191,7 @@ namespace AmazonDeliveryPlanner
             await Task.Delay(4000);
             // GlobalContext.SerializedConfiguration.TripPageConfigurations.ToArray();
             List<TripPageConfiguration> tpcs = GlobalContext.ApiConfig.tripPages;
-
-            
-
+ 
             TripPageConfiguration upcomingTPC = null;
             TripPageConfiguration intransitTPC = null;
             TripPageConfiguration historyTPC = null;
