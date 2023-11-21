@@ -1381,6 +1381,8 @@ namespace AmazonDeliveryPlanner
 
                     InitAppApi initAppConfig = InitAppApi.GetAppInit();
 
+                    GlobalContext.ApiConfig = initAppConfig.configuration;
+
                     // GlobalContext.LastDriverList = driverList;
 
                     _initApp = initAppConfig;
@@ -1391,13 +1393,13 @@ namespace AmazonDeliveryPlanner
                 }
                 catch (Exception ex)
                 {
-                    GlobalContext.Log("Exception getting planners from web service: '{0}'", ex.Message);
+                    GlobalContext.Log("Exception getting planners(and configuration) from web service: '{0}'", ex.Message);
                     lastException = ex;
                 }
             } while (tryCount < 4);
 
             if (lastException != null)
-                MessageBox.Show("Exception loading planners: " + lastException.Message);
+                MessageBox.Show("Exception loading planners(and configuration): " + lastException.Message);
         }
 
         private void changeUserButton_Click(object sender, EventArgs e)
@@ -1501,6 +1503,11 @@ namespace AmazonDeliveryPlanner
             upcomingTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
             intransitTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
             historyTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;*/
+        }
+
+        private void reloadConfigurationButton_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
