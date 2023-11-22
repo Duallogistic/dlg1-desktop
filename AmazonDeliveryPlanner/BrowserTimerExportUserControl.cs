@@ -194,7 +194,7 @@ namespace AmazonDeliveryPlanner
         {
             if (loadedUrl.IndexOf("relay.amazon", StringComparison.OrdinalIgnoreCase) >= 0)
             {
-                pageType = (loadedUrl.IndexOf("in-transit", StringComparison.OrdinalIgnoreCase) >= 0) ? "intransit" : pageType;
+                pageType = (loadedUrl.IndexOf("in-transit", StringComparison.OrdinalIgnoreCase) >= 0) ? "transit" : pageType;
                 pageType = (loadedUrl.IndexOf("history", StringComparison.OrdinalIgnoreCase) >= 0) ? "history" : pageType;
                 pageType = (loadedUrl.IndexOf("upcoming", StringComparison.OrdinalIgnoreCase) >= 0) ? "upcoming" : pageType;
             }
@@ -208,10 +208,9 @@ namespace AmazonDeliveryPlanner
 
         private void BrowserTimerExportUserControl_OnBeforeDownloadFired(object sender, DownloadItem e)
         {
-            string fileSuffix = "_" + pageType + DateTime.Now.ToString("yyyyMMdd_hhmmss_fff") + ".csv";
-
+            string fileSuffix = pageType + ".csv";
             e.FullPath = e.FullPath.Replace(".csv", fileSuffix);
-            e.SuggestedFileName = e.SuggestedFileName.Replace(".csv", fileSuffix);
+            e.SuggestedFileName = fileSuffix; //  e.SuggestedFileName.Replace(".csv", fileSuffix);
         }
 
         void InitAutoDownloadTimer(string loadedUrl)
