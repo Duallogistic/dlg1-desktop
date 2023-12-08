@@ -91,7 +91,7 @@ namespace AmazonDeliveryPlanner
             PlannerEntity selectedPlanner = GetSelectedPlanner();
 
             string userPass = GetSHA1HashData(staffPasswordField.Text);
-            userPass = GetSHA1HashData("test1234");
+            //userPass = GetSHA1HashData("test1234");
 
             if (selectedPlanner.password != userPass) {
                 MessageBox.Show("Wrong password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
