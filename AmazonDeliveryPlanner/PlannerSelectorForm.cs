@@ -118,12 +118,7 @@ namespace AmazonDeliveryPlanner
         {
             this.filteredDriversListBox.Items.Clear();
             this.filteredDriversListBox.Items.AddRange(filteredPlanners.ToArray());
-        }
-
-        private void OpenDriverForm_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-        }
+        }       
 
         private void OpenDriverForm_KeyUp(object sender, KeyEventArgs e)
         {

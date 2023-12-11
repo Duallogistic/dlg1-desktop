@@ -4,13 +4,9 @@ using CefSharp.WinForms;
 using Newtonsoft.Json;
 using System;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 using System.Windows.Forms;
 
 namespace AmazonDeliveryPlanner
@@ -34,6 +30,10 @@ namespace AmazonDeliveryPlanner
 
         int minRandomIntervalMinutes;
         int maxRandomIntervalMinutes;
+        private System.Windows.Forms.Timer timer;
+
+        int nextDownload = -1;
+        int nextRefresh = -1;
 
         bool exportFileAutoDownloadEnabled;
         string pageType = "unknown";
@@ -64,21 +64,16 @@ namespace AmazonDeliveryPlanner
         public void GoToURL(string url)
         {
             browser.Load(url);
-            InitAutoDownloadTimer(url);
 
             if (!string.IsNullOrWhiteSpace(url))
                 SetPageType(url);
         }
 
-        public void RestartTimers()
+        public void ResetTimers()
         {
             GlobalContext.Log("Restart timers for '{0}'", browser.Address);
-
-            browser.Load(browser.Address); // reload current address
-            InitAutoDownloadTimer(browser.Address);
-
-            if (!string.IsNullOrWhiteSpace(browser.Address))
-                SetPageType(browser.Address);
+            nextDownload = 0;
+            nextRefresh = 0;
         }
 
        
@@ -123,15 +118,67 @@ namespace AmazonDeliveryPlanner
             this.Invalidate();
             this.Refresh();
 
+            nextDownload = getRandomBetween(minRandomIntervalMinutes, maxRandomIntervalMinutes);
+            nextRefresh = getRandomBetween(2, 5);
+
             browser.Load(url);
 
             browser.Dock = DockStyle.Fill;
 
-            InitAutoDownloadTimer(url);
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = 1000;
+            timer.Tick += new EventHandler(Timer_Tick);
 
             if (!string.IsNullOrWhiteSpace(url))
                 SetPageType(url);
         }
+
+
+        private int getRandomBetween(int min, int max)
+        {
+            Random random = new Random();
+            return random.Next(min * 60, max * 60);
+        }
+
+      
+
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+
+
+            Int32 now = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+
+            if (now > nextDownload)
+            {
+                nextDownload = now + getRandomBetween(minRandomIntervalMinutes, maxRandomIntervalMinutes);
+                this.Invoke((MethodInvoker)delegate
+                {
+                    ClickExportTripsFile();
+                });
+            }
+
+            if (now > nextRefresh)
+            {
+                nextRefresh = now + getRandomBetween(5, 7);
+                GlobalContext.Log("Reloaded page '{0}'", browser.Address);
+                this.Invoke((MethodInvoker)delegate
+                {
+                    browser.Reload();
+                });
+            }
+
+
+
+        }
+
+
+        private void refresh()
+        {
+            browser.Reload();
+        }
+
+
 
         void SetPageType(string loadedUrl)
         {
@@ -156,133 +203,7 @@ namespace AmazonDeliveryPlanner
             e.SuggestedFileName = fileSuffix; 
         }
 
-        void InitAutoDownloadTimer(string loadedUrl)
-        {
-          
-            string[] accepted = {
-                "https://relay.amazon.co.uk/tours/history",
-                "https://relay.amazon.co.uk/tours/in-transit",
-                "https://relay.amazon.co.uk/tours/upcoming"
-                };
-            if (!accepted.Contains(loadedUrl)) return;
-            if (minRandomIntervalMinutes == 0 || maxRandomIntervalMinutes == 0) {
-                GlobalContext.Log("Auto download with random interval not started because of the configured values 2 - interval between {0} and {1} minutes", minRandomIntervalMinutes, maxRandomIntervalMinutes);
-                return;
-            }
-
-            GlobalContext.Log("InitAutoDownloadTimer for: " + loadedUrl);
-                
-            if (autoDownloadIntervalTask != null)
-            {
-                ts.Cancel();
-            }
-
-            ts = new CancellationTokenSource();
-
-            autoDownloadIntervalTask = Task.Run(() =>
-                {
-                    GlobalContext.Log("Started auto download with random interval between {0} and {1} minutes", minRandomIntervalMinutes, maxRandomIntervalMinutes);
-                    StartAutoDownloadInterval(true);
-                },
-                ts.Token
-            );
-            
-        }
-
-        Task autoDownloadIntervalTask = null;
-        CancellationTokenSource ts;
-
-        void StartAutoDownloadInterval(bool first)
-        {
-            System.Windows.Forms.Timer refreshTimer = new System.Windows.Forms.Timer();
-
-            if (first)
-            {
-                int minRandomInterval = minRandomIntervalMinutes * 60 * 1000;
-                int maxRandomInterval = maxRandomIntervalMinutes * 60 * 1000;
-
-                int delayBase = minRandomInterval;
-                int addedRandom = maxRandomInterval - minRandomInterval;
-
-                int waitPeriodMillisec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
-
-                TimeSpan waitPeriod = TimeSpan.FromMilliseconds(waitPeriodMillisec);
-
-                StartRefreshTimer(refreshTimer, (int)Math.Round(waitPeriod.TotalMilliseconds));
-
-                if (UpdateAutoDownloadStatus != null)
-                    UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Waiting {0} before downloading export file.", waitPeriod.ToHumanReadableString())));
-
-                GlobalContext.Log("Auto download with random interval - waiting {0}", waitPeriod.ToHumanReadableString());
-                Thread.Sleep(waitPeriod);
-            }
-
-            {
-                if (ts.IsCancellationRequested)
-                    return;
-
-                this.Invoke((MethodInvoker)delegate
-                {
-                    ClickExportTripsFile();
-                });
-
-                int minRandomInterval = minRandomIntervalMinutes * 60 * 1000;
-                int maxRandomInterval = maxRandomIntervalMinutes * 60 * 1000;
-
-                int delayBase = minRandomInterval;
-                int addedRandom = maxRandomInterval - minRandomInterval;
-
-                int waitPeriodMilliSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
-
-                TimeSpan waitPeriod = TimeSpan.FromMilliseconds(waitPeriodMilliSec);
-
-                StartRefreshTimer(refreshTimer, waitPeriodMilliSec);
-
-                if (ts.IsCancellationRequested)
-                {
-                    refreshTimer.Stop();
-                    return;
-                }
-
-                if (UpdateAutoDownloadStatus != null)
-                    UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Last export made at {0}. Expoting again at {1},  in {2}", DateTime.Now.ToString("HH:mm:ss"), DateTime.Now.Add(waitPeriod).ToString("HH:mm:ss"), waitPeriod.ToHumanReadableString()))); // in {2:00} s
-
-                GlobalContext.Log("Auto download with random interval - waiting {0}", waitPeriod.ToHumanReadableString());
-                Thread.Sleep(waitPeriod);
-
-                StartAutoDownloadInterval(false);
-
-                if (ts.IsCancellationRequested)
-                {
-                    // refreshTimer.Stop();
-                    return;
-                }
-            }
-
-            refreshTimer.Stop();
-        }
-
-        void StartRefreshTimer(System.Windows.Forms.Timer refreshTimer, int waitPeriodMilliSec)
-        {
-                int randomROT = (int)(new Random(DateTime.Now.Millisecond)).Next(0, 15);
-                int refreshOverTimeMs = (int)Math.Round(waitPeriodMilliSec * (0.80 + (randomROT / 10)));
-
-                if (refreshOverTimeMs < 25 * 1000)
-                    refreshOverTimeMs = (int)Math.Round(waitPeriodMilliSec * (0.50 + (randomROT / 10)));
-
-
-                refreshTimer.Tick += RefreshTimer_Tick;
-                refreshTimer.Interval = refreshOverTimeMs;
-                refreshTimer.Start();
-                GlobalContext.Log("Refreshing page in {0}", TimeSpan.FromMilliseconds(refreshTimer.Interval).ToHumanReadableString());
-        }
-
-        private void RefreshTimer_Tick(object sender, EventArgs e)
-        {
-            browser.Reload(); // browser.Reload(true); // ignores the cache
-            GlobalContext.Log("Reloaded page '{0}'", browser.Address);
-        }
-
+        
         private async void BrowserUserControl_OnDownloadUpdatedFired(object sender, DownloadItem e)
         {
             if (!e.IsComplete) return;
@@ -400,29 +321,31 @@ namespace AmazonDeliveryPlanner
             {
                 GlobalContext.Log("Browser_FrameLoadEnd url={0} frame={1}", e.Url, e.Frame.Name);
 
-                if (e.Frame.IsMain)
+                if (!e.Frame.IsMain) return;
+
+                if (exportFileAutoDownloadEnabled)
                 {
-                    // var watch = System.Diagnostics.Stopwatch.StartNew();
-                    // string html = await browser.GetSourceAsync();
+                    timer.Start();
+                }
 
-                    // https://www.amazon.com/ap/signin?openid.return_to=https://relay.amazon.com/&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.assoc_handle=amzn_relay_desktop_us&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.ns=http://specs.openid.net/auth/2.0&pageId=amzn_relay_desktop_us
-                    if ((e.Url.IndexOf("amazon.com/ap/signin") >= 0) ||
-                        (e.Url.IndexOf("amazon.co.uk/ap/signin") >= 0))
-                    {
-                        string email = GlobalContext.ApiConfig.relayAuth.username;
-                        string pass = GlobalContext.ApiConfig.relayAuth.password;
+                // https://www.amazon.com/ap/signin?openid.return_to=https://relay.amazon.com/&openid.identity=http://specs.openid.net/auth/2.0/identifier_select&openid.assoc_handle=amzn_relay_desktop_us&openid.mode=checkid_setup&openid.claimed_id=http://specs.openid.net/auth/2.0/identifier_select&openid.ns=http://specs.openid.net/auth/2.0&pageId=amzn_relay_desktop_us
+                if ((e.Url.IndexOf("amazon.com/ap/signin") >= 0) ||
+                    (e.Url.IndexOf("amazon.co.uk/ap/signin") >= 0))
+                {
+                    string email = GlobalContext.ApiConfig.relayAuth.username;
+                    string pass = GlobalContext.ApiConfig.relayAuth.password;
 
-                        string jsSource1 = string.Format(
-                            "(function () {{ document.getElementById('ap_email').value = '{0}'; document.getElementById('ap_password').value = '{1}'; }} )(); ",
-                            email,
-                            pass
-                        );
+                    string jsSource1 = string.Format(
+                        "(function () {{ document.getElementById('ap_email').value = '{0}'; document.getElementById('ap_password').value = '{1}'; }} )(); ",
+                        email,
+                        pass
+                    );
 
-                        JavascriptResponse response = await browser.GetMainFrame().EvaluateScriptAsync(jsSource1);
-                    }
+                    JavascriptResponse response = await browser.GetMainFrame().EvaluateScriptAsync(jsSource1);
+                }
 
                  
-                }
+               
             }
             catch (Exception ex)
             {
@@ -433,11 +356,6 @@ namespace AmazonDeliveryPlanner
 
         [DllImport("user32.dll", CharSet = CharSet.Auto, CallingConvention = CallingConvention.StdCall)]
         public static extern void mouse_event(uint dwFlags, uint dx, uint dy, uint cButtons, uint dwExtraInfo);
-        // Mouse actions
-        private const int MOUSEEVENTF_LEFTDOWN = 0x02;
-        private const int MOUSEEVENTF_LEFTUP = 0x04;
-        private const int MOUSEEVENTF_RIGHTDOWN = 0x08;
-        private const int MOUSEEVENTF_RIGHTUP = 0x10;
 
         public string Url { get => url; /*set => url = value;*/ }
         public int MinRandomIntervalMinutes { get => minRandomIntervalMinutes; set => minRandomIntervalMinutes = value; }
@@ -445,10 +363,24 @@ namespace AmazonDeliveryPlanner
         public bool ExportFileAutoDownloadEnabled
         {
             get => exportFileAutoDownloadEnabled;
-            set => exportFileAutoDownloadEnabled = value;
+            set => SetExportFileAutoDownloadEnabled(value);
         }
 
-     
+        public void SetExportFileAutoDownloadEnabled(bool value)
+        {
+            exportFileAutoDownloadEnabled = value;
+            if (value && browser.IsBrowserInitialized)
+            {
+                browser.Reload();
+            }
+
+            if (!value)
+            {
+                timer.Stop();
+            }
+            
+        }
+
         private void showDevToolsButton_Click(object sender, EventArgs e)
         {
             browser.ShowDevTools();
@@ -513,7 +445,7 @@ namespace AmazonDeliveryPlanner
         {
             try
             {
-                GlobalContext.Log("Clicking on the export button...");
+                GlobalContext.Log("Clicking on the export button... {0}",browser.Address);
 
                 JavascriptResponse response = await browser.GetMainFrame().EvaluateScriptAsync(GlobalContext.Scripts["clickExportTripsButton"]);
 
@@ -539,6 +471,11 @@ namespace AmazonDeliveryPlanner
         private void downloadTripsButton_Click(object sender, EventArgs e)
         {
             ClickExportTripsFile();
+        }
+
+        private void BrowserTimerExportUserControl_Layout(object sender, LayoutEventArgs e)
+        {
+           
         }
     }
 }
