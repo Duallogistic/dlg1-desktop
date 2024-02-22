@@ -165,7 +165,7 @@ namespace AmazonDeliveryPlanner
             this.Controls.Add(this.panel1);
             this.Name = "BrowserTimerExportUserControl";
             this.Size = new System.Drawing.Size(848, 434);
-            this.Load += new System.EventHandler(this.UserControl1_Load);
+            this.Layout += new System.Windows.Forms.LayoutEventHandler(this.BrowserTimerExportUserControl_Layout);
             this.ResumeLayout(false);
 
         }

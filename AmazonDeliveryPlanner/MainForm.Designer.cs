@@ -58,6 +58,7 @@ namespace AmazonDeliveryPlanner
             this.upcomingTabPage = new System.Windows.Forms.TabPage();
             this.upcomingTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
             this.IntransitTabPage = new System.Windows.Forms.TabPage();
+            this.button1 = new System.Windows.Forms.Button();
             this.intransitTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
             this.historyTabPage = new System.Windows.Forms.TabPage();
             this.historyTabBrowserTimerExportUserControl = new AmazonDeliveryPlanner.BrowserTimerExportUserControl();
@@ -81,6 +82,9 @@ namespace AmazonDeliveryPlanner
             this.exportFileAutoDownloadEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.reloadConfigurationButton = new System.Windows.Forms.Button();
             this.buttonToolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.btn_dload_History = new System.Windows.Forms.Button();
+            this.btn_dload_Transit = new System.Windows.Forms.Button();
+            this.btn_dload_Upcomming = new System.Windows.Forms.Button();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -114,7 +118,7 @@ namespace AmazonDeliveryPlanner
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(1260, 775);
+            this.tabControl.Size = new System.Drawing.Size(859, 770);
             this.tabControl.TabIndex = 0;
             this.tabControl.Selecting += new System.Windows.Forms.TabControlCancelEventHandler(this.tabControl_Selecting);
             this.tabControl.TabIndexChanged += new System.EventHandler(this.tabControl_TabIndexChanged);
@@ -129,7 +133,7 @@ namespace AmazonDeliveryPlanner
             this.driverListBox.FormattingEnabled = true;
             this.driverListBox.Location = new System.Drawing.Point(0, 53);
             this.driverListBox.Name = "driverListBox";
-            this.driverListBox.Size = new System.Drawing.Size(281, 719);
+            this.driverListBox.Size = new System.Drawing.Size(882, 1590);
             this.driverListBox.TabIndex = 3;
             this.driverListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.driverListBox_DrawItem);
             this.driverListBox.SelectedIndexChanged += new System.EventHandler(this.driverListBox_SelectedIndexChanged);
@@ -172,7 +176,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.refreshDriversButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.refreshDriversButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshDriversButton.Location = new System.Drawing.Point(252, 739);
+            this.refreshDriversButton.Location = new System.Drawing.Point(853, 1633);
             this.refreshDriversButton.Name = "refreshDriversButton";
             this.refreshDriversButton.Size = new System.Drawing.Size(28, 31);
             this.refreshDriversButton.TabIndex = 7;
@@ -206,14 +210,14 @@ namespace AmazonDeliveryPlanner
             this.driversPanel.Controls.Add(this.driverListBox);
             this.driversPanel.Location = new System.Drawing.Point(3, 3);
             this.driversPanel.Name = "driversPanel";
-            this.driversPanel.Size = new System.Drawing.Size(284, 2051);
+            this.driversPanel.Size = new System.Drawing.Size(601, 2945);
             this.driversPanel.TabIndex = 4;
             // 
             // showDriversBrowserControlDevToolsButton
             // 
             this.showDriversBrowserControlDevToolsButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.showDriversBrowserControlDevToolsButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.showDriversBrowserControlDevToolsButton.Location = new System.Drawing.Point(28, 752);
+            this.showDriversBrowserControlDevToolsButton.Location = new System.Drawing.Point(28, 1646);
             this.showDriversBrowserControlDevToolsButton.Margin = new System.Windows.Forms.Padding(0);
             this.showDriversBrowserControlDevToolsButton.Name = "showDriversBrowserControlDevToolsButton";
             this.showDriversBrowserControlDevToolsButton.Size = new System.Drawing.Size(26, 23);
@@ -233,10 +237,10 @@ namespace AmazonDeliveryPlanner
             this.mainTabControl.Controls.Add(this.historyTabPage);
             this.mainTabControl.Controls.Add(this.loggingTabPage);
             this.mainTabControl.Controls.Add(this.adminTabPage);
-            this.mainTabControl.Location = new System.Drawing.Point(2, -1);
+            this.mainTabControl.Location = new System.Drawing.Point(2, 4);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
-            this.mainTabControl.Size = new System.Drawing.Size(1565, 807);
+            this.mainTabControl.Size = new System.Drawing.Size(1565, 802);
             this.mainTabControl.TabIndex = 5;
             // 
             // sessionsTabPage
@@ -245,7 +249,7 @@ namespace AmazonDeliveryPlanner
             this.sessionsTabPage.Location = new System.Drawing.Point(4, 22);
             this.sessionsTabPage.Name = "sessionsTabPage";
             this.sessionsTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.sessionsTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.sessionsTabPage.Size = new System.Drawing.Size(1557, 776);
             this.sessionsTabPage.TabIndex = 0;
             this.sessionsTabPage.Text = "Sessions";
             this.sessionsTabPage.UseVisualStyleBackColor = true;
@@ -266,15 +270,15 @@ namespace AmazonDeliveryPlanner
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.tabControl);
-            this.splitContainer1.Size = new System.Drawing.Size(1551, 775);
-            this.splitContainer1.SplitterDistance = 287;
+            this.splitContainer1.Size = new System.Drawing.Size(1551, 770);
+            this.splitContainer1.SplitterDistance = 688;
             this.splitContainer1.TabIndex = 5;
             // 
             // refreshDriverListBrowserButton
             // 
             this.refreshDriverListBrowserButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.refreshDriverListBrowserButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.refreshDriverListBrowserButton.Location = new System.Drawing.Point(0, 752);
+            this.refreshDriverListBrowserButton.Location = new System.Drawing.Point(0, 1646);
             this.refreshDriverListBrowserButton.Margin = new System.Windows.Forms.Padding(0);
             this.refreshDriverListBrowserButton.Name = "refreshDriverListBrowserButton";
             this.refreshDriverListBrowserButton.Size = new System.Drawing.Size(26, 23);
@@ -289,7 +293,7 @@ namespace AmazonDeliveryPlanner
             this.upcomingTabPage.Location = new System.Drawing.Point(4, 22);
             this.upcomingTabPage.Name = "upcomingTabPage";
             this.upcomingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.upcomingTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.upcomingTabPage.Size = new System.Drawing.Size(1557, 776);
             this.upcomingTabPage.TabIndex = 3;
             this.upcomingTabPage.Text = "Upcoming";
             this.upcomingTabPage.UseVisualStyleBackColor = true;
@@ -302,19 +306,29 @@ namespace AmazonDeliveryPlanner
             this.upcomingTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = 0;
             this.upcomingTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = 0;
             this.upcomingTabBrowserTimerExportUserControl.Name = "upcomingTabBrowserTimerExportUserControl";
-            this.upcomingTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.upcomingTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 770);
             this.upcomingTabBrowserTimerExportUserControl.TabIndex = 0;
             // 
             // IntransitTabPage
             // 
+            this.IntransitTabPage.Controls.Add(this.button1);
             this.IntransitTabPage.Controls.Add(this.intransitTabBrowserTimerExportUserControl);
             this.IntransitTabPage.Location = new System.Drawing.Point(4, 22);
             this.IntransitTabPage.Name = "IntransitTabPage";
             this.IntransitTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.IntransitTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.IntransitTabPage.Size = new System.Drawing.Size(1557, 776);
             this.IntransitTabPage.TabIndex = 4;
             this.IntransitTabPage.Text = "In-transit";
             this.IntransitTabPage.UseVisualStyleBackColor = true;
+            // 
+            // button1
+            // 
+            this.button1.Location = new System.Drawing.Point(813, -17);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 14);
+            this.button1.TabIndex = 2;
+            this.button1.Text = "button1";
+            this.button1.UseVisualStyleBackColor = true;
             // 
             // intransitTabBrowserTimerExportUserControl
             // 
@@ -324,7 +338,7 @@ namespace AmazonDeliveryPlanner
             this.intransitTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = 0;
             this.intransitTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = 0;
             this.intransitTabBrowserTimerExportUserControl.Name = "intransitTabBrowserTimerExportUserControl";
-            this.intransitTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.intransitTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 770);
             this.intransitTabBrowserTimerExportUserControl.TabIndex = 1;
             // 
             // historyTabPage
@@ -333,7 +347,7 @@ namespace AmazonDeliveryPlanner
             this.historyTabPage.Location = new System.Drawing.Point(4, 22);
             this.historyTabPage.Name = "historyTabPage";
             this.historyTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.historyTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.historyTabPage.Size = new System.Drawing.Size(1557, 776);
             this.historyTabPage.TabIndex = 5;
             this.historyTabPage.Text = "History";
             this.historyTabPage.UseVisualStyleBackColor = true;
@@ -346,7 +360,7 @@ namespace AmazonDeliveryPlanner
             this.historyTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = 0;
             this.historyTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = 0;
             this.historyTabBrowserTimerExportUserControl.Name = "historyTabBrowserTimerExportUserControl";
-            this.historyTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 775);
+            this.historyTabBrowserTimerExportUserControl.Size = new System.Drawing.Size(1551, 770);
             this.historyTabBrowserTimerExportUserControl.TabIndex = 1;
             // 
             // loggingTabPage
@@ -356,7 +370,7 @@ namespace AmazonDeliveryPlanner
             this.loggingTabPage.Location = new System.Drawing.Point(4, 22);
             this.loggingTabPage.Name = "loggingTabPage";
             this.loggingTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.loggingTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.loggingTabPage.Size = new System.Drawing.Size(1557, 776);
             this.loggingTabPage.TabIndex = 2;
             this.loggingTabPage.Text = "Log";
             this.loggingTabPage.UseVisualStyleBackColor = true;
@@ -365,7 +379,7 @@ namespace AmazonDeliveryPlanner
             // 
             this.autoScrollCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.autoScrollCheckBox.AutoSize = true;
-            this.autoScrollCheckBox.Location = new System.Drawing.Point(1458, 758);
+            this.autoScrollCheckBox.Location = new System.Drawing.Point(1458, 756);
             this.autoScrollCheckBox.Name = "autoScrollCheckBox";
             this.autoScrollCheckBox.Size = new System.Drawing.Size(75, 17);
             this.autoScrollCheckBox.TabIndex = 1;
@@ -381,7 +395,7 @@ namespace AmazonDeliveryPlanner
             this.logTextBox.Multiline = true;
             this.logTextBox.Name = "logTextBox";
             this.logTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.logTextBox.Size = new System.Drawing.Size(1551, 775);
+            this.logTextBox.Size = new System.Drawing.Size(1551, 773);
             this.logTextBox.TabIndex = 0;
             // 
             // adminTabPage
@@ -398,7 +412,7 @@ namespace AmazonDeliveryPlanner
             this.adminTabPage.Location = new System.Drawing.Point(4, 22);
             this.adminTabPage.Name = "adminTabPage";
             this.adminTabPage.Padding = new System.Windows.Forms.Padding(3);
-            this.adminTabPage.Size = new System.Drawing.Size(1557, 781);
+            this.adminTabPage.Size = new System.Drawing.Size(1557, 776);
             this.adminTabPage.TabIndex = 1;
             this.adminTabPage.Text = "Admin";
             this.adminTabPage.UseVisualStyleBackColor = true;
@@ -422,7 +436,7 @@ namespace AmazonDeliveryPlanner
             | System.Windows.Forms.AnchorStyles.Right)));
             this.adminBrowserPanel.Location = new System.Drawing.Point(3, 23);
             this.adminBrowserPanel.Name = "adminBrowserPanel";
-            this.adminBrowserPanel.Size = new System.Drawing.Size(1552, 758);
+            this.adminBrowserPanel.Size = new System.Drawing.Size(1552, 756);
             this.adminBrowserPanel.TabIndex = 47;
             // 
             // goBackButton
@@ -585,11 +599,47 @@ namespace AmazonDeliveryPlanner
             // 
             this.buttonToolTip.ToolTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             // 
+            // btn_dload_History
+            // 
+            this.btn_dload_History.Location = new System.Drawing.Point(806, 2);
+            this.btn_dload_History.Name = "btn_dload_History";
+            this.btn_dload_History.Size = new System.Drawing.Size(21, 23);
+            this.btn_dload_History.TabIndex = 11;
+            this.btn_dload_History.Text = "H";
+            this.buttonToolTip.SetToolTip(this.btn_dload_History, "Download History CSV");
+            this.btn_dload_History.UseVisualStyleBackColor = true;
+            this.btn_dload_History.Click += new System.EventHandler(this.btn_dload_History_Click);
+            // 
+            // btn_dload_Transit
+            // 
+            this.btn_dload_Transit.Location = new System.Drawing.Point(833, 2);
+            this.btn_dload_Transit.Name = "btn_dload_Transit";
+            this.btn_dload_Transit.Size = new System.Drawing.Size(21, 23);
+            this.btn_dload_Transit.TabIndex = 12;
+            this.btn_dload_Transit.Text = "T";
+            this.buttonToolTip.SetToolTip(this.btn_dload_Transit, "Download Transit CSV");
+            this.btn_dload_Transit.UseVisualStyleBackColor = true;
+            this.btn_dload_Transit.Click += new System.EventHandler(this.btn_dload_Transit_Click);
+            // 
+            // btn_dload_Upcomming
+            // 
+            this.btn_dload_Upcomming.Location = new System.Drawing.Point(860, 2);
+            this.btn_dload_Upcomming.Name = "btn_dload_Upcomming";
+            this.btn_dload_Upcomming.Size = new System.Drawing.Size(21, 23);
+            this.btn_dload_Upcomming.TabIndex = 13;
+            this.btn_dload_Upcomming.Text = "U";
+            this.buttonToolTip.SetToolTip(this.btn_dload_Upcomming, "Download Upcomming  CSV");
+            this.btn_dload_Upcomming.UseVisualStyleBackColor = true;
+            this.btn_dload_Upcomming.Click += new System.EventHandler(this.btn_dload_Upcomming_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1565, 807);
+            this.Controls.Add(this.btn_dload_Upcomming);
+            this.Controls.Add(this.btn_dload_Transit);
+            this.Controls.Add(this.btn_dload_History);
             this.Controls.Add(this.reloadConfigurationButton);
             this.Controls.Add(this.exportFileAutoDownloadEnabledCheckBox);
             this.Controls.Add(this.changeUserButton);
@@ -666,5 +716,9 @@ namespace AmazonDeliveryPlanner
         private CheckBox exportFileAutoDownloadEnabledCheckBox;
         private Button reloadConfigurationButton;
         private ToolTip buttonToolTip;
+        private Button button1;
+        private Button btn_dload_History;
+        private Button btn_dload_Transit;
+        private Button btn_dload_Upcomming;
     }
 }

@@ -22,6 +22,14 @@
             return true;
         }
 
+        var xpath_b3 = "//*[@id='application']/div/div[2]/div[1]/div[2]/div[2]/button"; // trips button on tab 3
+        var export_trips_button_3 = getElementByXpath(xpath_b3);
+        console.log(export_trips_button_3);
+        if (export_trips_button_3) {
+            export_trips_button_3.click();
+            return true;
+        }
+
         return false;        
     }
 )();

@@ -59,36 +59,7 @@ namespace AmazonDeliveryPlanner
 
         private void OpenDriverForm_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
         {
-            //if (e.KeyCode == Keys.Escape)
-            //{
-            //    if (!string.IsNullOrWhiteSpace(filterDriversTextBox.Text))
-            //        filterDriversTextBox.Text = "";
-            //    else
-            //        Close();
-            //}
-
-            //if (filteredDriversListBox.Items.Count > 0)
-            //{
-            //    if (e.KeyCode == Keys.Down)
-            //    {
-            //        this.ActiveControl = filteredDriversListBox;
-            //        filteredDriversListBox.Focus();
-
-            //        filteredDriversListBox.SelectedIndex = 0;
-            //    }
-            //    else
-            //    if (e.KeyCode == Keys.Up)
-            //    {
-            //        this.ActiveControl = filteredDriversListBox;
-            //        filteredDriversListBox.Focus();
-
-            //        filteredDriversListBox.SelectedIndex = filteredDriversListBox.Items.Count - 1;
-            //    }
-            //}
-
-            //if (e.KeyCode == Keys.Enter)
-            //    OpenDriver();
-            //// Save();
+           
         }
 
         private void filteredDriversListBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -120,6 +91,8 @@ namespace AmazonDeliveryPlanner
             PlannerEntity selectedPlanner = GetSelectedPlanner();
 
             string userPass = GetSHA1HashData(staffPasswordField.Text);
+            //userPass = GetSHA1HashData("test1234");
+
             if (selectedPlanner.password != userPass) {
                 MessageBox.Show("Wrong password", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
@@ -145,12 +118,7 @@ namespace AmazonDeliveryPlanner
         {
             this.filteredDriversListBox.Items.Clear();
             this.filteredDriversListBox.Items.AddRange(filteredPlanners.ToArray());
-        }
-
-        private void OpenDriverForm_KeyPress(object sender, KeyPressEventArgs e)
-        {
-
-        }
+        }       
 
         private void OpenDriverForm_KeyUp(object sender, KeyEventArgs e)
         {

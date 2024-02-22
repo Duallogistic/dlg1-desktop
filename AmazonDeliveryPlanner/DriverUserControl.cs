@@ -55,71 +55,7 @@ namespace AmazonDeliveryPlanner
             //dayRadioButton.Checked = true;
         }
 
-        /*
-        private void saveButton_Click(object sender, EventArgs e)
-        {
-            try
-            {
-                // MessageBox.Show("Not implemented", GlobalContext.ApplicationTitle);
-
-                //string plan_note = this.plan_note; // (driverRouteEntity != null ? driverRouteEntity.plan_note : null);
-                //string op_note = this.op_note; // (driverRouteEntity != null ? driverRouteEntity.op_note : null);
-                long? id = (driverRouteEntity != null ? driverRouteEntity.id : null);
-
-                driverRouteEntity = DriversAPI.PostRoute(new API.data.DriverRouteEntity()
-                {
-                    id = id,
-                    driver_id = driver.driver_id,
-                    //vrid = vridTextBox.Text,
-                    //loc1 = location1TextBox.Text,
-                    //loc2 = location2TextBox.Text,
-                    //loc3 = location3TextBox.Text,
-                    //pick_up_date = dateTimePicker.Value,
-                    //plan_note = plan_note,
-                    //op_note = op_note,
-                    //shift = dayRadioButton.Checked ? 'D' : 'N',
-                });//.Result;
-
-                if (driverRouteEntity.id == null)
-                {
-                    MessageBox.Show("The returned id is empty/null.", GlobalContext.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return;
-                }
-
-                plan_note = driverRouteEntity.plan_note;
-                op_note = driverRouteEntity.op_note;
-
-                savedIdLabel.Text = "saved id: " + driverRouteEntity.id;
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message.Contains("422"))
-                    MessageBox.Show("Duplicate entry. Probably duplicate VRID (same VRID saved on a second route).", GlobalContext.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                else
-                    MessageBox.Show(ex.Message, GlobalContext.ApplicationTitle, MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-        }
-
-        private void editPlanningNotesButton_Click(object sender, EventArgs e)
-        {
-            // EditPlanningNotesForm epnForm = new EditPlanningNotesForm(driverRouteEntity.plan_note);
-            EditPlanningNotesForm epnForm = new EditPlanningNotesForm(plan_note);
-
-            if (epnForm.ShowDialog() == DialogResult.OK)
-                plan_note = epnForm.PlanningNotes;
-            //driverRouteEntity.plan_note = epnForm.PlanningNotes;
-        }
-
-        private void editOpNotesButton_Click(object sender, EventArgs e)
-        {
-            EditOpNotesForm eonForm = new EditOpNotesForm(op_note);
-            // EditOpNotesForm eonForm = new EditOpNotesForm(driverRouteEntity.op_note);
-
-            if (eonForm.ShowDialog() == DialogResult.OK)
-                op_note = eonForm.OpNotes;
-            // driverRouteEntity.op_note = eonForm.OpNotes;
-        }
-        */
+      
         private void closeButton_Click(object sender, EventArgs e)
         {
             // Show a confirmation dialog to the user
