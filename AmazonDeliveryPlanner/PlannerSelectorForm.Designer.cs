@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.saveButton = new System.Windows.Forms.Button();
+            this.loginButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.filterDriversTextBox = new System.Windows.Forms.TextBox();
@@ -49,17 +49,17 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Filter:";
             // 
-            // saveButton
+            // loginButton
             // 
-            this.saveButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.saveButton.Enabled = false;
-            this.saveButton.Location = new System.Drawing.Point(198, 419);
-            this.saveButton.Name = "saveButton";
-            this.saveButton.Size = new System.Drawing.Size(75, 23);
-            this.saveButton.TabIndex = 2;
-            this.saveButton.Text = "&Log in";
-            this.saveButton.UseVisualStyleBackColor = true;
-            this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+            this.loginButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.loginButton.Enabled = false;
+            this.loginButton.Location = new System.Drawing.Point(198, 419);
+            this.loginButton.Name = "loginButton";
+            this.loginButton.Size = new System.Drawing.Size(75, 23);
+            this.loginButton.TabIndex = 2;
+            this.loginButton.Text = "&Log in";
+            this.loginButton.UseVisualStyleBackColor = true;
+            this.loginButton.Click += new System.EventHandler(this.loginButton_Click);
             // 
             // cancelButton
             // 
@@ -129,7 +129,9 @@
             this.staffPasswordField.Size = new System.Drawing.Size(201, 20);
             this.staffPasswordField.TabIndex = 8;
             this.staffPasswordField.UseSystemPasswordChar = true;
+            this.staffPasswordField.TextChanged += new System.EventHandler(this.staffPasswordField_TextChanged);
             this.staffPasswordField.KeyDown += new System.Windows.Forms.KeyEventHandler(this.textBox1_KeyDown);
+            this.staffPasswordField.Leave += new System.EventHandler(this.staffPasswordField_Leave);
             // 
             // label3
             // 
@@ -151,6 +153,7 @@
             // 
             // PlannerSelectorForm
             // 
+            this.AcceptButton = this.loginButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.cancelButton;
@@ -163,12 +166,11 @@
             this.Controls.Add(this.filterDriversTextBox);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.saveButton);
+            this.Controls.Add(this.loginButton);
             this.Controls.Add(this.label1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.KeyPreview = true;
             this.Name = "PlannerSelectorForm";
-            this.ShowInTaskbar = false;
             this.Text = "Log in planner";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OpenDriverForm_FormClosed);
             this.Load += new System.EventHandler(this.EditPlanningNotesForm_Load);
@@ -182,7 +184,7 @@
         #endregion
 
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button saveButton;
+        private System.Windows.Forms.Button loginButton;
         private System.Windows.Forms.Button cancelButton;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox filterDriversTextBox;

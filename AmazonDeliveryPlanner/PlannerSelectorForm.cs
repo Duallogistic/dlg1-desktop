@@ -31,7 +31,7 @@ namespace AmazonDeliveryPlanner
             PlannerEntity._ListModeToString = true;
         }
 
-        private void saveButton_Click(object sender, EventArgs e)
+        private void loginButton_Click(object sender, EventArgs e)
         {
             OpenPlanner();
         }
@@ -200,7 +200,7 @@ namespace AmazonDeliveryPlanner
 
         private void textBox1_KeyDown(object sender, KeyEventArgs e)
         {
-            saveButton.Enabled = staffPasswordField.Text.Length > 0;
+            loginButton.Enabled = staffPasswordField.Text.Length > 0;
         }
 
         private string GetSHA1HashData(string input)
@@ -209,5 +209,14 @@ namespace AmazonDeliveryPlanner
             return string.Concat(hash.Select(b => b.ToString("x2")));
         }
 
+        private void staffPasswordField_Leave(object sender, EventArgs e)
+        {
+            loginButton.Enabled = staffPasswordField.Text.Length > 0;
+        }
+
+        private void staffPasswordField_TextChanged(object sender, EventArgs e)
+        {
+            loginButton.Enabled = staffPasswordField.Text.Length > 0;
+        }
     }
 }
