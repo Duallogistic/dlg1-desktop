@@ -56,11 +56,13 @@ namespace AmazonDeliveryPlanner
                     {
                         exportFileAutoDownloadEnabledCheckBox.Checked = true;
                         exportFileAutoDownloadEnabledCheckBox.Show();
+                        longboardExportTabPage.Enabled = true;
                     }
                     else
                     {
                         exportFileAutoDownloadEnabledCheckBox.Checked = false;
                         exportFileAutoDownloadEnabledCheckBox.Hide();
+                        longboardExportTabPage.Enabled = false;
                     }
                 }
                 InitMainFormDataControls();
@@ -1204,11 +1206,13 @@ namespace AmazonDeliveryPlanner
                 {
                     exportFileAutoDownloadEnabledCheckBox.Checked = true;
                     exportFileAutoDownloadEnabledCheckBox.Show();
+                    longboardExportTabPage.Enabled = true;
                 }
                 else
                 {
                     exportFileAutoDownloadEnabledCheckBox.Checked = false;
                     exportFileAutoDownloadEnabledCheckBox.Hide();
+                    longboardExportTabPage.Enabled = false;
                 }
             }
         }

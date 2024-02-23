@@ -75,6 +75,7 @@ namespace AmazonDeliveryPlanner
             this.increaseTextSizeButton = new System.Windows.Forms.Button();
             this.refrehPageButton = new System.Windows.Forms.Button();
             this.showDevToolsButton = new System.Windows.Forms.Button();
+            this.longboardExportTabPage = new System.Windows.Forms.TabPage();
             this.toggleLeftPanelVisibilityButton = new System.Windows.Forms.Button();
             this.showOpenDriverFormButton = new System.Windows.Forms.Button();
             this.plannerLabel = new System.Windows.Forms.Label();
@@ -85,6 +86,7 @@ namespace AmazonDeliveryPlanner
             this.btn_dload_History = new System.Windows.Forms.Button();
             this.btn_dload_Transit = new System.Windows.Forms.Button();
             this.btn_dload_Upcomming = new System.Windows.Forms.Button();
+            this.browserLoadboardExportUserControl1 = new AmazonDeliveryPlanner.BrowserLoadboardExportUserControl();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
             this.sessionsTabPage.SuspendLayout();
@@ -97,6 +99,7 @@ namespace AmazonDeliveryPlanner
             this.historyTabPage.SuspendLayout();
             this.loggingTabPage.SuspendLayout();
             this.adminTabPage.SuspendLayout();
+            this.longboardExportTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // openSettingsButton
@@ -237,6 +240,7 @@ namespace AmazonDeliveryPlanner
             this.mainTabControl.Controls.Add(this.historyTabPage);
             this.mainTabControl.Controls.Add(this.loggingTabPage);
             this.mainTabControl.Controls.Add(this.adminTabPage);
+            this.mainTabControl.Controls.Add(this.longboardExportTabPage);
             this.mainTabControl.Location = new System.Drawing.Point(2, 4);
             this.mainTabControl.Name = "mainTabControl";
             this.mainTabControl.SelectedIndex = 0;
@@ -522,6 +526,17 @@ namespace AmazonDeliveryPlanner
             this.showDevToolsButton.UseVisualStyleBackColor = true;
             this.showDevToolsButton.Click += new System.EventHandler(this.showDevToolsButton_Click);
             // 
+            // longboardExportTabPage
+            // 
+            this.longboardExportTabPage.Controls.Add(this.browserLoadboardExportUserControl1);
+            this.longboardExportTabPage.Location = new System.Drawing.Point(4, 22);
+            this.longboardExportTabPage.Name = "longboardExportTabPage";
+            this.longboardExportTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.longboardExportTabPage.Size = new System.Drawing.Size(1557, 776);
+            this.longboardExportTabPage.TabIndex = 6;
+            this.longboardExportTabPage.Text = "Longboard";
+            this.longboardExportTabPage.UseVisualStyleBackColor = true;
+            // 
             // toggleLeftPanelVisibilityButton
             // 
             this.toggleLeftPanelVisibilityButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
@@ -632,6 +647,14 @@ namespace AmazonDeliveryPlanner
             this.btn_dload_Upcomming.UseVisualStyleBackColor = true;
             this.btn_dload_Upcomming.Click += new System.EventHandler(this.btn_dload_Upcomming_Click);
             // 
+            // browserLoadboardExportUserControl1
+            // 
+            this.browserLoadboardExportUserControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.browserLoadboardExportUserControl1.Location = new System.Drawing.Point(3, 3);
+            this.browserLoadboardExportUserControl1.Name = "browserLoadboardExportUserControl1";
+            this.browserLoadboardExportUserControl1.Size = new System.Drawing.Size(1551, 770);
+            this.browserLoadboardExportUserControl1.TabIndex = 0;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -670,6 +693,7 @@ namespace AmazonDeliveryPlanner
             this.loggingTabPage.PerformLayout();
             this.adminTabPage.ResumeLayout(false);
             this.adminTabPage.PerformLayout();
+            this.longboardExportTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -720,5 +744,7 @@ namespace AmazonDeliveryPlanner
         private Button btn_dload_History;
         private Button btn_dload_Transit;
         private Button btn_dload_Upcomming;
+        private TabPage longboardExportTabPage;
+        private BrowserLoadboardExportUserControl browserLoadboardExportUserControl1;
     }
 }
