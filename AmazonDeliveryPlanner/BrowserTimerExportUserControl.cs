@@ -39,7 +39,7 @@ namespace AmazonDeliveryPlanner
         string pageType = "unknown";
 
 
-        public EventHandler<string> DloadDone;
+        public EventHandler<string> DownloadFinished;
 
         public BrowserTimerExportUserControl() : this("", null)
         {
@@ -256,23 +256,25 @@ namespace AmazonDeliveryPlanner
                 GlobalContext.Log($"Exception uploading the file to {uploadURL}: {ex.Message}");
                 MessageBox.Show($"Exception uploading the file to {uploadURL}: {ex.Message}", GlobalContext.ApplicationTitle);
             }
-            onUploadDone(browser);
+
+            OnUploadFinished(browser);
         }
 
-        private void onUploadDone(ChromiumWebBrowser browser)
+        private void OnUploadFinished(ChromiumWebBrowser browser)
         {
             if (this.InvokeRequired)
             {
                 this.Invoke(new Action(() =>
                 {
-                    DloadDone?.Invoke(this, browser.Address);
+                    DownloadFinished?.Invoke(this, browser.Address);
                 }));
             }
             else
             {
-                DloadDone?.Invoke(this, browser.Address);
+                DownloadFinished?.Invoke(this, browser.Address);
             }
-            //DloadDone(this, browser.Address);
+            
+            //DownloadFinished(this, browser.Address);
         }
 
 
@@ -464,7 +466,7 @@ namespace AmazonDeliveryPlanner
             catch (Exception ex)
             {
                 GlobalContext.Log("Failed to click on the export button: {0}", ex.Message);
-                onUploadDone(browser);
+                OnUploadFinished(browser);
             }
         }
 

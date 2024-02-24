@@ -51,20 +51,10 @@ namespace AmazonDeliveryPlanner
                 {
                     // set planner name
                     plannerLabel.Text = "\uA19C" + " " + GlobalContext.LoggedInPlanner.ToString(); // U+1F464 ??  U+A19C ?
-                    string[] roles = GlobalContext.LoggedInPlanner.roles;
-                    if (roles.Contains("pm") || roles.Contains("admin"))
-                    {
-                        exportFileAutoDownloadEnabledCheckBox.Checked = true;
-                        exportFileAutoDownloadEnabledCheckBox.Show();
-                        longboardExportTabPage.Enabled = true;
-                    }
-                    else
-                    {
-                        exportFileAutoDownloadEnabledCheckBox.Checked = false;
-                        exportFileAutoDownloadEnabledCheckBox.Hide();
-                        longboardExportTabPage.Enabled = false;
-                    }
+
+                    PlannerRolesUIUpdate();
                 }
+
                 InitMainFormDataControls();
                 mainTabControl.TabPages.Remove(adminTabPage);
                 InitDriversPanelBrowser();
@@ -195,7 +185,7 @@ namespace AmazonDeliveryPlanner
                 upcomingTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = upcomingTPC.MinRandomIntervalMinutes;
                 upcomingTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = upcomingTPC.MaxRandomIntervalMinutes;
                 upcomingTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
-                upcomingTabBrowserTimerExportUserControl.DloadDone += DloadDoneHandler;
+                upcomingTabBrowserTimerExportUserControl.DownloadFinished += DownloadFinishedHandler;
                 upcomingTabBrowserTimerExportUserControl.ResetTimers();
                 upcomingTabBrowserTimerExportUserControl.GoToURL(upcomingTPC.Url);
             }
@@ -205,7 +195,7 @@ namespace AmazonDeliveryPlanner
                 intransitTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = intransitTPC.MinRandomIntervalMinutes;
                 intransitTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = intransitTPC.MaxRandomIntervalMinutes;
                 intransitTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
-                intransitTabBrowserTimerExportUserControl.DloadDone += DloadDoneHandler;
+                intransitTabBrowserTimerExportUserControl.DownloadFinished += DownloadFinishedHandler;
                 intransitTabBrowserTimerExportUserControl.ResetTimers();
                 intransitTabBrowserTimerExportUserControl.GoToURL(intransitTPC.Url);
             }
@@ -215,7 +205,7 @@ namespace AmazonDeliveryPlanner
                 historyTabBrowserTimerExportUserControl.MinRandomIntervalMinutes = historyTPC.MinRandomIntervalMinutes;
                 historyTabBrowserTimerExportUserControl.MaxRandomIntervalMinutes = historyTPC.MaxRandomIntervalMinutes;
                 historyTabBrowserTimerExportUserControl.ExportFileAutoDownloadEnabled = exportFileAutoDownloadEnabledCheckBox.Checked;
-                historyTabBrowserTimerExportUserControl.DloadDone += DloadDoneHandler;
+                historyTabBrowserTimerExportUserControl.DownloadFinished += DownloadFinishedHandler;
                 historyTabBrowserTimerExportUserControl.ResetTimers();
                 historyTabBrowserTimerExportUserControl.GoToURL(historyTPC.Url);
             }
@@ -1194,26 +1184,36 @@ namespace AmazonDeliveryPlanner
                 // set planner name
                 plannerLabel.Text = "\uA19C" + " " + GlobalContext.LoggedInPlanner.ToString(); // U+1F464 ??  U+A19C ?
                 mainTabControl.TabPages.Remove(adminTabPage);
+
                 string url = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.DriverListURL + "/" + GlobalContext.LoggedInPlanner.token;
+
                 if (adminBrowser != null)
                 {
                     adminBrowser.Load(url);
                 }
+
                 driversPanelBrowser.Load(url);
+
                 GlobalContext.Log("Drivers list url is:  '{0}'", url);
-                string[] roles = GlobalContext.LoggedInPlanner.roles;
-                if (roles.Contains("pm") || roles.Contains("admin"))
-                {
-                    exportFileAutoDownloadEnabledCheckBox.Checked = true;
-                    exportFileAutoDownloadEnabledCheckBox.Show();
-                    longboardExportTabPage.Enabled = true;
-                }
-                else
-                {
-                    exportFileAutoDownloadEnabledCheckBox.Checked = false;
-                    exportFileAutoDownloadEnabledCheckBox.Hide();
-                    longboardExportTabPage.Enabled = false;
-                }
+                PlannerRolesUIUpdate();
+            }
+        }
+
+        private void PlannerRolesUIUpdate()
+        {            
+            string[] roles = GlobalContext.LoggedInPlanner.roles;
+
+            if (roles.Contains("pm") || roles.Contains("admin"))
+            {
+                exportFileAutoDownloadEnabledCheckBox.Checked = true;
+                exportFileAutoDownloadEnabledCheckBox.Show();
+                longboardExportTabPage.Enabled = true;
+            }
+            else
+            {
+                exportFileAutoDownloadEnabledCheckBox.Checked = false;
+                exportFileAutoDownloadEnabledCheckBox.Hide();
+                longboardExportTabPage.Enabled = false;
             }
         }
 
@@ -1280,31 +1280,30 @@ namespace AmazonDeliveryPlanner
             });
         }
 
-        private void btn_dload_History_Click(object sender, EventArgs e)
+        private void downloadHistoryButton_Click(object sender, EventArgs e)
         {
-            btn_dload_History.Enabled = false;
+            downloadHistoryButton.Enabled = false;
             historyTabBrowserTimerExportUserControl.ClickExportTripsFile();
         }
 
-        private void btn_dload_Transit_Click(object sender, EventArgs e)
+        private void downloadTransitButton_Click(object sender, EventArgs e)
         {
-            btn_dload_Transit.Enabled = false;
+            downloadTransitButton.Enabled = false;
             intransitTabBrowserTimerExportUserControl.ClickExportTripsFile();
         }
 
-        private void btn_dload_Upcomming_Click(object sender, EventArgs e)
+        private void downloadUpcomingButton_Click(object sender, EventArgs e)
         {
-            btn_dload_Upcomming.Enabled = false;
+            downloadUpcomingButton.Enabled = false;
             upcomingTabBrowserTimerExportUserControl.ClickExportTripsFile();
         }
 
 
-        private void DloadDoneHandler(object sender, string url)
-        {
-            if (url.Contains("/history")) btn_dload_History.Enabled = true;
-            if (url.Contains("/in-transit")) btn_dload_Transit.Enabled = true;
-            if (url.Contains("/upcoming")) btn_dload_Upcomming.Enabled = true;
-
+        private void DownloadFinishedHandler(object sender, string url)
+        {           
+            downloadHistoryButton.Enabled = url.Contains("/history");            
+            downloadTransitButton.Enabled = url.Contains("/in-transit");                        
+            downloadUpcomingButton.Enabled = url.Contains("/upcoming");
         }
     }
 }

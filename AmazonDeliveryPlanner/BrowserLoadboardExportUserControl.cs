@@ -28,10 +28,12 @@ namespace AmazonDeliveryPlanner
 
         long driverId;
 
+        private System.Windows.Forms.Timer pageRefreshTimer;
+
         public BrowserLoadboardExportUserControl() : this("", null, 0)
         {
         }
-        
+
         public BrowserLoadboardExportUserControl(string url, RequestContextSettings requestContextSettings, long driverId)
         {
             this.driverId = driverId;
@@ -90,7 +92,7 @@ namespace AmazonDeliveryPlanner
 
             browser.DownloadHandler = new DownloadHandler();
 
-            ((DownloadHandler)browser.DownloadHandler).OnDownloadUpdatedFired += BrowserUserControl_OnDownloadUpdatedFired;
+            // ((DownloadHandler)browser.DownloadHandler).OnDownloadUpdatedFired += BrowserUserControl_OnDownloadUpdatedFired;
 
             panel1.Controls.Add(browser);
 
@@ -114,15 +116,40 @@ namespace AmazonDeliveryPlanner
 
             browser.TitleChanged += Browser_TitleChanged;
 
-            InitAutoDownloadTimer(url);
+            // InitAutoDownloadTimer(url);
+
+            pageRefreshTimer = new System.Windows.Forms.Timer();
+            pageRefreshTimer.Interval = (int)TimeSpan.FromMinutes(20).TotalMilliseconds;
+            pageRefreshTimer.Tick += new EventHandler(RefreshTimer_Tick);
+        }
+
+        private void RefreshTimer_Tick(object sender, EventArgs e)
+        {
+            const int intervalMinMinutes = 10;
+            const int intervalMaxMinutes = 35;
+
+            pageRefreshTimer.Interval = GetRandomValueFromInterval((int)TimeSpan.FromMinutes(intervalMinMinutes).TotalMilliseconds, (int)TimeSpan.FromMinutes(intervalMaxMinutes).TotalMilliseconds);
+
+            this.Invoke((MethodInvoker)delegate
+            {
+                GlobalContext.Log("Reloaded page '{0}'", browser.Address);
+                browser.Reload();
+            });
+        }
+
+        private int GetRandomValueFromInterval(int min, int max)
+        {
+            Random random = new Random((int)DateTime.Now.Ticks);
+            return random.Next(min, max);
         }
 
         private void Crh_SearchResultListLoaded(string xhrSource)
         {
             GlobalContext.Log("Crh_SearchResultListLoaded size={0}", xhrSource.Length);
 
-            new Task(async () => { 
-                await UploadSearchResultList(xhrSource); 
+            new Task(async () =>
+            {
+                await UploadSearchResultList(xhrSource);
             }).Start();
         }
 
@@ -132,8 +159,9 @@ namespace AmazonDeliveryPlanner
 
             try
             {
-                string url = "http://niggerica_chietros_mai_da_si_tu_o_bere";
-                
+                // string url = "http://niggerica_chietros_mai_da_si_tu_o_bere";
+                string url = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.ApiBaseURL + "/auth2/external/loadboard";
+                // url = "https://dlg1qa.web.app/api/auth2/external/loadboard";
 
                 //var values = new Dictionary<string, string>
                 //  {
@@ -148,9 +176,14 @@ namespace AmazonDeliveryPlanner
 
                 var response = await client.PostAsync(url, content);
 
+                if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+
+                }
+
                 var responseStr = await response.Content.ReadAsStringAsync();
 
-                if (responseStr == "") 
+                if (responseStr == "")
                     ;
                 else
                     ;
@@ -165,141 +198,141 @@ namespace AmazonDeliveryPlanner
             }
         }
 
-        void InitAutoDownloadTimer(string loadedUrl)
-        {
-            // https://relay.amazon.co.uk/tours/in-transit
-            if (loadedUrl.IndexOf("in-transit", StringComparison.OrdinalIgnoreCase) >= 0 &&
-                loadedUrl.IndexOf("relay.amazon", StringComparison.OrdinalIgnoreCase) >= 0)
-            {
-                if (GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval > 0 &&
-                    GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval > 0 &&
-                    GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval < GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval)
-                {
-                    if (autoDownloadIntervalTask != null)
-                    {
-                        ts.Cancel();
-                        // aut
-                    }
+        //void InitAutoDownloadTimer(string loadedUrl)
+        //{
+        //    // https://relay.amazon.co.uk/tours/in-transit
+        //    if (loadedUrl.IndexOf("in-transit", StringComparison.OrdinalIgnoreCase) >= 0 &&
+        //        loadedUrl.IndexOf("relay.amazon", StringComparison.OrdinalIgnoreCase) >= 0)
+        //    {
+        //        if (GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval > 0 &&
+        //            GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval > 0 &&
+        //            GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval < GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval)
+        //        {
+        //            if (autoDownloadIntervalTask != null)
+        //            {
+        //                ts.Cancel();
+        //                // aut
+        //            }
 
-                    ts = new CancellationTokenSource();
+        //            ts = new CancellationTokenSource();
 
-                    autoDownloadIntervalTask = Task.Run(() =>
-                    {
-                        GlobalContext.Log("Started auto download with random interval between {0} and {1} seconds", GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval, GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval);
-                        StartAutoDownloadInterval(true);
-                    },
-                        ts.Token
-                );
-                }
-                else
-                {
-                    GlobalContext.Log("Auto download with random interval not started because of the configured values 1 - interval between {0} and {1} seconds", GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval, GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval);
-                }
-            }
-        }
+        //            autoDownloadIntervalTask = Task.Run(() =>
+        //            {
+        //                GlobalContext.Log("Started auto download with random interval between {0} and {1} seconds", GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval, GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval);
+        //                StartAutoDownloadInterval(true);
+        //            },
+        //                ts.Token
+        //        );
+        //        }
+        //        else
+        //        {
+        //            GlobalContext.Log("Auto download with random interval not started because of the configured values 1 - interval between {0} and {1} seconds", GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval, GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval);
+        //        }
+        //    }
+        //}
 
-        Task autoDownloadIntervalTask = null;
-        CancellationTokenSource ts;
+        // Task autoDownloadIntervalTask = null;
+        //CancellationTokenSource ts;
 
-        void StartAutoDownloadInterval(bool first)
-        {
-            if (first)
-            {
-                int delayBase = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
-                int addedRandom = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval - GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
+        //void StartAutoDownloadInterval(bool first)
+        //{
+        //    if (first)
+        //    {
+        //        int delayBase = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
+        //        int addedRandom = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval - GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
 
-                int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
+        //        int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
 
-                TimeSpan waitPeriod = TimeSpan.FromSeconds(waitPeriodSec);
+        //        TimeSpan waitPeriod = TimeSpan.FromSeconds(waitPeriodSec);
 
-                if (UpdateAutoDownloadStatus != null)
-                    UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Waiting {0:00} seconds before downloading export file.", waitPeriod.TotalSeconds)));
+        //        if (UpdateAutoDownloadStatus != null)
+        //            UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Waiting {0:00} seconds before downloading export file.", waitPeriod.TotalSeconds)));
 
-                GlobalContext.Log("Auto download with random interval - waiting {0} s", waitPeriod.TotalSeconds);
-                Thread.Sleep(waitPeriod);
-            }
+        //        GlobalContext.Log("Auto download with random interval - waiting {0} s", waitPeriod.TotalSeconds);
+        //        Thread.Sleep(waitPeriod);
+        //    }
 
-            {
-                if (ts.IsCancellationRequested)
-                    return;
+        //    {
+        //        if (ts.IsCancellationRequested)
+        //            return;
 
-                this.Invoke((MethodInvoker)delegate
-                {
-                    ClickExportTripsFile();
-                });
+        //        this.Invoke((MethodInvoker)delegate
+        //        {
+        //            ClickExportTripsFile();
+        //        });
 
-                int delayBase = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
-                int addedRandom = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval - GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
+        //        int delayBase = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
+        //        int addedRandom = GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMaxInterval - GlobalContext.SerializedConfiguration.AutoDownloadExportFileRandomMinInterval;
 
-                int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
+        //        int waitPeriodSec = (int)(delayBase + (new Random(DateTime.Now.Millisecond)).NextDouble() * addedRandom);
 
-                TimeSpan waitPeriod = TimeSpan.FromSeconds(waitPeriodSec);
+        //        TimeSpan waitPeriod = TimeSpan.FromSeconds(waitPeriodSec);
 
-                if (ts.IsCancellationRequested)
-                    return;
+        //        if (ts.IsCancellationRequested)
+        //            return;
 
-                if (UpdateAutoDownloadStatus != null)
-                    UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Last export made at {0}. Expoting again at {1},  in {2:00} s", DateTime.Now.ToString("HH:mm:ss"), DateTime.Now.Add(waitPeriod).ToString("HH:mm:ss"), waitPeriod.TotalSeconds)));
+        //        if (UpdateAutoDownloadStatus != null)
+        //            UpdateAutoDownloadStatus(this, new UpdateAutoDownloadIntervalStatusEventArgs(String.Format("Last export made at {0}. Expoting again at {1},  in {2:00} s", DateTime.Now.ToString("HH:mm:ss"), DateTime.Now.Add(waitPeriod).ToString("HH:mm:ss"), waitPeriod.TotalSeconds)));
 
-                GlobalContext.Log("Auto download with random interval - waiting {0} s", waitPeriod.TotalSeconds);
-                Thread.Sleep(waitPeriod);
+        //        GlobalContext.Log("Auto download with random interval - waiting {0} s", waitPeriod.TotalSeconds);
+        //        Thread.Sleep(waitPeriod);
 
-                StartAutoDownloadInterval(false);
-            }
-        }
+        //        StartAutoDownloadInterval(false);
+        //    }
+        //}
 
-        private async void BrowserUserControl_OnDownloadUpdatedFired(object sender, DownloadItem e)
-        {
-            if (!e.IsComplete) return;
+        //private async void BrowserUserControl_OnDownloadUpdatedFired(object sender, DownloadItem e)
+        //{
+        //    if (!e.IsComplete) return;
 
-            //string uploadURL = "";
+        //    //string uploadURL = "";
 
-            //try
-            //{
-            //    uploadURL = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
+        //    //try
+        //    //{
+        //    //    uploadURL = GlobalContext.SerializedConfiguration.AdminURL + GlobalContext.SerializedConfiguration.ApiBaseURL + GlobalContext.SerializedConfiguration.FileUploadURL;
 
-            //    GlobalContext.Log("Upload URL=\"{0}\"", uploadURL);
+        //    //    GlobalContext.Log("Upload URL=\"{0}\"", uploadURL);
 
-            //    string fileName = e.SuggestedFileName;
-            //    if (string.IsNullOrEmpty(fileName))
-            //        fileName = Path.GetFileName(e.FullPath);
+        //    //    string fileName = e.SuggestedFileName;
+        //    //    if (string.IsNullOrEmpty(fileName))
+        //    //        fileName = Path.GetFileName(e.FullPath);
 
-            //    string csvFileContents = File.ReadAllText(e.FullPath);
-            //    csvFileContents = csvFileContents.Replace(",Operator ID,Spot Work", ",Operator ID,Spot Work,ColBC,COlBD");
+        //    //    string csvFileContents = File.ReadAllText(e.FullPath);
+        //    //    csvFileContents = csvFileContents.Replace(",Operator ID,Spot Work", ",Operator ID,Spot Work,ColBC,COlBD");
 
-            //    byte[] bytes = Encoding.UTF8.GetBytes(csvFileContents);
-            //    HttpContent bytesContent = new ByteArrayContent(bytes);
+        //    //    byte[] bytes = Encoding.UTF8.GetBytes(csvFileContents);
+        //    //    HttpContent bytesContent = new ByteArrayContent(bytes);
 
-            //    using (var client = new HttpClient())
-            //    using (var formData = new MultipartFormDataContent())
-            //    {
-            //        formData.Add(bytesContent, "files", fileName);
+        //    //    using (var client = new HttpClient())
+        //    //    using (var formData = new MultipartFormDataContent())
+        //    //    {
+        //    //        formData.Add(bytesContent, "files", fileName);
 
-            //        var response = await client.PostAsync(uploadURL, formData);
+        //    //        var response = await client.PostAsync(uploadURL, formData);
 
-            //        if (!response.IsSuccessStatusCode)
-            //        {
-            //            // Handle non-successful response
-            //        }
+        //    //        if (!response.IsSuccessStatusCode)
+        //    //        {
+        //    //            // Handle non-successful response
+        //    //        }
 
-            //        using (var stream = await response.Content.ReadAsStreamAsync())
-            //        using (var sr = new StreamReader(stream))
-            //        {
-            //            string responseText = sr.ReadToEnd();
-            //            LogResponse(responseText);
-            //        }
+        //    //        using (var stream = await response.Content.ReadAsStreamAsync())
+        //    //        using (var sr = new StreamReader(stream))
+        //    //        {
+        //    //            string responseText = sr.ReadToEnd();
+        //    //            LogResponse(responseText);
+        //    //        }
 
-            //        response.EnsureSuccessStatusCode();
-            //        FileUploadFinished?.Invoke(this, new FileUploadFinishedEventArgs(fileName));
-            //        MessageBox.Show("Fisierul " + fileName + " a fost descarcat", GlobalContext.ApplicationTitle);
-            //    }
-            //}
-            //catch (Exception ex)
-            //{
-            //    GlobalContext.Log($"Exception uploading the file to {uploadURL}: {ex.Message}");
-            //    MessageBox.Show($"Exception uploading the file to {uploadURL}: {ex.Message}", GlobalContext.ApplicationTitle);
-            //}
-        }
+        //    //        response.EnsureSuccessStatusCode();
+        //    //        FileUploadFinished?.Invoke(this, new FileUploadFinishedEventArgs(fileName));
+        //    //        MessageBox.Show("Fisierul " + fileName + " a fost descarcat", GlobalContext.ApplicationTitle);
+        //    //    }
+        //    //}
+        //    //catch (Exception ex)
+        //    //{
+        //    //    GlobalContext.Log($"Exception uploading the file to {uploadURL}: {ex.Message}");
+        //    //    MessageBox.Show($"Exception uploading the file to {uploadURL}: {ex.Message}", GlobalContext.ApplicationTitle);
+        //    //}
+        //}
 
 
         private static void LogResponse(string responseText)
@@ -353,9 +386,6 @@ namespace AmazonDeliveryPlanner
             else
                 sa();
         }
-
-
-
 
         private async void Browser_FrameLoadEnd(object sender, FrameLoadEndEventArgs e)
         {
@@ -462,7 +492,7 @@ namespace AmazonDeliveryPlanner
         private void loadUrlButton_Click(object sender, EventArgs e)
         {
             browser.Load(urlTextBox.Text);
-            InitAutoDownloadTimer(urlTextBox.Text);
+            // InitAutoDownloadTimer(urlTextBox.Text);
         }
 
         private void goBackButton_Click(object sender, EventArgs e)
@@ -475,7 +505,7 @@ namespace AmazonDeliveryPlanner
             if (e.KeyCode == Keys.Enter)
             {
                 browser.Load(urlTextBox.Text);
-                InitAutoDownloadTimer(urlTextBox.Text);
+                // InitAutoDownloadTimer(urlTextBox.Text);
             }
         }
 

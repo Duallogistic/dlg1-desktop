@@ -83,9 +83,9 @@ namespace AmazonDeliveryPlanner
             this.exportFileAutoDownloadEnabledCheckBox = new System.Windows.Forms.CheckBox();
             this.reloadConfigurationButton = new System.Windows.Forms.Button();
             this.buttonToolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btn_dload_History = new System.Windows.Forms.Button();
-            this.btn_dload_Transit = new System.Windows.Forms.Button();
-            this.btn_dload_Upcomming = new System.Windows.Forms.Button();
+            this.downloadHistoryButton = new System.Windows.Forms.Button();
+            this.downloadTransitButton = new System.Windows.Forms.Button();
+            this.downloadUpcomingButton = new System.Windows.Forms.Button();
             this.browserLoadboardExportUserControl1 = new AmazonDeliveryPlanner.BrowserLoadboardExportUserControl();
             this.driversPanel.SuspendLayout();
             this.mainTabControl.SuspendLayout();
@@ -616,36 +616,36 @@ namespace AmazonDeliveryPlanner
             // 
             // btn_dload_History
             // 
-            this.btn_dload_History.Location = new System.Drawing.Point(806, 2);
-            this.btn_dload_History.Name = "btn_dload_History";
-            this.btn_dload_History.Size = new System.Drawing.Size(21, 23);
-            this.btn_dload_History.TabIndex = 11;
-            this.btn_dload_History.Text = "H";
-            this.buttonToolTip.SetToolTip(this.btn_dload_History, "Download History CSV");
-            this.btn_dload_History.UseVisualStyleBackColor = true;
-            this.btn_dload_History.Click += new System.EventHandler(this.btn_dload_History_Click);
+            this.downloadHistoryButton.Location = new System.Drawing.Point(806, 2);
+            this.downloadHistoryButton.Name = "btn_dload_History";
+            this.downloadHistoryButton.Size = new System.Drawing.Size(21, 23);
+            this.downloadHistoryButton.TabIndex = 11;
+            this.downloadHistoryButton.Text = "H";
+            this.buttonToolTip.SetToolTip(this.downloadHistoryButton, "Download History CSV");
+            this.downloadHistoryButton.UseVisualStyleBackColor = true;
+            this.downloadHistoryButton.Click += new System.EventHandler(this.downloadHistoryButton_Click);
             // 
             // btn_dload_Transit
             // 
-            this.btn_dload_Transit.Location = new System.Drawing.Point(833, 2);
-            this.btn_dload_Transit.Name = "btn_dload_Transit";
-            this.btn_dload_Transit.Size = new System.Drawing.Size(21, 23);
-            this.btn_dload_Transit.TabIndex = 12;
-            this.btn_dload_Transit.Text = "T";
-            this.buttonToolTip.SetToolTip(this.btn_dload_Transit, "Download Transit CSV");
-            this.btn_dload_Transit.UseVisualStyleBackColor = true;
-            this.btn_dload_Transit.Click += new System.EventHandler(this.btn_dload_Transit_Click);
+            this.downloadTransitButton.Location = new System.Drawing.Point(833, 2);
+            this.downloadTransitButton.Name = "btn_dload_Transit";
+            this.downloadTransitButton.Size = new System.Drawing.Size(21, 23);
+            this.downloadTransitButton.TabIndex = 12;
+            this.downloadTransitButton.Text = "T";
+            this.buttonToolTip.SetToolTip(this.downloadTransitButton, "Download Transit CSV");
+            this.downloadTransitButton.UseVisualStyleBackColor = true;
+            this.downloadTransitButton.Click += new System.EventHandler(this.downloadTransitButton_Click);
             // 
             // btn_dload_Upcomming
             // 
-            this.btn_dload_Upcomming.Location = new System.Drawing.Point(860, 2);
-            this.btn_dload_Upcomming.Name = "btn_dload_Upcomming";
-            this.btn_dload_Upcomming.Size = new System.Drawing.Size(21, 23);
-            this.btn_dload_Upcomming.TabIndex = 13;
-            this.btn_dload_Upcomming.Text = "U";
-            this.buttonToolTip.SetToolTip(this.btn_dload_Upcomming, "Download Upcomming  CSV");
-            this.btn_dload_Upcomming.UseVisualStyleBackColor = true;
-            this.btn_dload_Upcomming.Click += new System.EventHandler(this.btn_dload_Upcomming_Click);
+            this.downloadUpcomingButton.Location = new System.Drawing.Point(860, 2);
+            this.downloadUpcomingButton.Name = "btn_dload_Upcomming";
+            this.downloadUpcomingButton.Size = new System.Drawing.Size(21, 23);
+            this.downloadUpcomingButton.TabIndex = 13;
+            this.downloadUpcomingButton.Text = "U";
+            this.buttonToolTip.SetToolTip(this.downloadUpcomingButton, "Download Upcomming  CSV");
+            this.downloadUpcomingButton.UseVisualStyleBackColor = true;
+            this.downloadUpcomingButton.Click += new System.EventHandler(this.downloadUpcomingButton_Click);
             // 
             // browserLoadboardExportUserControl1
             // 
@@ -660,9 +660,9 @@ namespace AmazonDeliveryPlanner
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1565, 807);
-            this.Controls.Add(this.btn_dload_Upcomming);
-            this.Controls.Add(this.btn_dload_Transit);
-            this.Controls.Add(this.btn_dload_History);
+            this.Controls.Add(this.downloadUpcomingButton);
+            this.Controls.Add(this.downloadTransitButton);
+            this.Controls.Add(this.downloadHistoryButton);
             this.Controls.Add(this.reloadConfigurationButton);
             this.Controls.Add(this.exportFileAutoDownloadEnabledCheckBox);
             this.Controls.Add(this.changeUserButton);
@@ -741,9 +741,9 @@ namespace AmazonDeliveryPlanner
         private Button reloadConfigurationButton;
         private ToolTip buttonToolTip;
         private Button button1;
-        private Button btn_dload_History;
-        private Button btn_dload_Transit;
-        private Button btn_dload_Upcomming;
+        private Button downloadHistoryButton;
+        private Button downloadTransitButton;
+        private Button downloadUpcomingButton;
         private TabPage longboardExportTabPage;
         private BrowserLoadboardExportUserControl browserLoadboardExportUserControl1;
     }
